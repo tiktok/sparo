@@ -437,6 +437,10 @@
     {
       "packageName": "sparo",
       "projectFolder": "apps/sparo"
+    },
+    {
+      "packageName": "sparo-lib",
+      "projectFolder": "apps/sparo-lib"
     }
   ]
 }

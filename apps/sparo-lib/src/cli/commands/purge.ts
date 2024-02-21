@@ -2,9 +2,9 @@ import { inject } from 'inversify';
 import { type ArgumentsCamelCase } from 'yargs';
 
 import { ICommand } from './base';
-import { Command } from '../decorator';
-import { GitSparseCheckoutService } from '../services/GitSparseCheckoutService';
-import { LocalState } from '../logic/LocalState';
+import { Command } from '../../decorator';
+import { GitSparseCheckoutService } from '../../services/GitSparseCheckoutService';
+import { LocalState } from '../../logic/LocalState';
 
 export interface ISparseCommandOptions {
   profile: string[];

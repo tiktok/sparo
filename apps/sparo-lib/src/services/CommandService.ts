@@ -1,6 +1,6 @@
 import { inject } from 'inversify';
 import type { Argv } from 'yargs';
-import type { ICommand } from '../commands/base';
+import type { ICommand } from '../cli/commands/base';
 import { HelpTextService } from './HelpTextService';
 import { LogService } from './LogService';
 import { Service } from '../decorator';

@@ -1,11 +1,11 @@
 import childProcess from 'child_process';
 import type { Argv, ArgumentsCamelCase } from 'yargs';
-import { SparseProfileService } from '../services/SparseProfileService';
+import { SparseProfileService } from '../../services/SparseProfileService';
 import { ICommand } from './base';
-import { Command } from '../decorator';
+import { Command } from '../../decorator';
 import { inject } from 'inversify';
-import { GitSparseCheckoutService } from '../services/GitSparseCheckoutService';
-import type { LogService } from '../services/LogService';
+import { GitSparseCheckoutService } from '../../services/GitSparseCheckoutService';
+import type { LogService } from '../../services/LogService';
 
 export interface IProject {
   name: string;

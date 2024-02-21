@@ -1,11 +1,11 @@
 import { inject } from 'inversify';
-import { Command } from '../decorator';
-import { GitService } from '../services/GitService';
+import { Command } from '../../decorator';
+import { GitService } from '../../services/GitService';
 
 import type { Argv, ArgumentsCamelCase } from 'yargs';
 import type { GitRepoInfo } from 'git-repo-info';
 import type { ICommand } from './base';
-import type { LogService } from '../services/LogService';
+import type { LogService } from '../../services/LogService';
 
 export interface IFetchCommandOptions {
   all?: boolean;

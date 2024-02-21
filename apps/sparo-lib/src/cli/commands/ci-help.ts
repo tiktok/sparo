@@ -1,15 +1,15 @@
-import { Command } from '../decorator';
-import { Argv } from 'yargs';
+import { Command } from '../../decorator';
+import type { Argv } from 'yargs';
 import type { ICommand } from './base';
 
-export interface IHelpCommandOptions {}
+export interface ICIHelpCommandOptions {}
 
 @Command()
-export class HelpCommand implements ICommand<IHelpCommandOptions> {
+export class CIHelpCommand implements ICommand<ICIHelpCommandOptions> {
   public cmd: string = 'help';
   public description: string = '';
 
-  public builder(yargs: Argv<IHelpCommandOptions>): void {
+  public builder(yargs: Argv<ICIHelpCommandOptions>): void {
     yargs.command(
       'commands',
       'commands',
@@ -20,8 +20,8 @@ export class HelpCommand implements ICommand<IHelpCommandOptions> {
     );
   }
   public async handler(): Promise<void> {
-    console.log(`Sparo
-usage: sparo COMMAND [OPTIONS]
+    console.log(`Sparo CI
+usage: sparo-ci COMMAND [OPTIONS]
 `);
   }
   public getHelp(): string {

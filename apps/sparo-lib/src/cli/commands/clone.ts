@@ -1,11 +1,11 @@
 import { inject } from 'inversify';
-import { Command } from '../decorator';
+import { Command } from '../../decorator';
 import { executeSelfCmd } from './util';
-import { GitSparseCheckoutService } from '../services/GitSparseCheckoutService';
-import { GitCloneService, ICloneOptions } from '../services/GitCloneService';
+import { GitSparseCheckoutService } from '../../services/GitSparseCheckoutService';
+import { GitCloneService, ICloneOptions } from '../../services/GitCloneService';
 import type { Argv, ArgumentsCamelCase } from 'yargs';
 import type { ICommand } from './base';
-import type { LogService } from '../services/LogService';
+import type { LogService } from '../../services/LogService';
 
 export interface ICloneCommandOptions {
   full?: boolean;

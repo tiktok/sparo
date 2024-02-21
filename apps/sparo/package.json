@@ -31,23 +31,18 @@
   "scripts": {
     "_phase:build": "heft run --only build -- --clean",
     "_phase:test": "heft run --only test -- --clean",
+    "test": "heft test --clean",
     "build": "heft build --clean"
   },
   "dependencies": {
-    "@rushstack/node-core-library": "~3.64.2",
-    "git-repo-info": "~2.1.1",
-    "inversify": "~6.0.2",
-    "reflect-metadata": "~0.2.1",
-    "winston": "~3.11.0",
-    "yargs": "~17.7.2"
+    "sparo-lib": "workspace:*"
   },
   "devDependencies": {
-    "@rushstack/heft": "~0.64.3",
-    "@rushstack/heft-node-rig": "~2.4.5",
+    "@rushstack/heft": "0.64.3",
+    "@rushstack/heft-node-rig": "2.4.5",
     "@types/heft-jest": "1.0.6",
     "@types/node": "20.11.16",
-    "@types/yargs": "17.0.32",
-    "eslint": "~8.56.0",
+    "eslint": "8.56.0",
     "typescript": "~5.3.3"
   },
   "preferGlobal": true

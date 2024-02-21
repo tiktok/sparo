@@ -1,27 +1,31 @@
 import 'reflect-metadata';
 import { getFromContainer, registerClass } from '../di/container';
+import { GitService } from '../services/GitService';
 import { CommandService } from '../services/CommandService';
-import { CI_COMMAND_LIST } from '../commands/cmd-list';
-import { ICommand } from '../commands/base';
 import { ArgvService } from '../services/ArgvService';
-import { CIHelpCommand } from '../commands/ci-help';
+import { COMMAND_LIST } from './commands/cmd-list';
+import { HelpCommand } from './commands/help';
+import { ICommand } from './commands/base';
+import { GitVersionCompatibility } from '../logic/GitVersionCompatibility';
 
-class SparoCI {
+export class SparoCommandLine {
   private _commandsMap: Set<string> = new Set<string>();
 
   private constructor() {}
 
   public static async launchAsync(): Promise<void> {
-    const sparoCI: SparoCI = new SparoCI();
-    await sparoCI.prepareCommandAsync();
-    await sparoCI.runAsync();
+    await GitVersionCompatibility.ensureGitVersionAsync();
+
+    const sparo: SparoCommandLine = new SparoCommandLine();
+    await sparo.prepareCommandAsync();
+    await sparo.runAsync();
   }
 
   public async prepareCommandAsync(): Promise<void> {
     const commandsService: CommandService = await getFromContainer(CommandService);
 
     await Promise.all(
-      CI_COMMAND_LIST.map(async (cmd): Promise<void> => {
+      COMMAND_LIST.map(async (cmd): Promise<void> => {
         registerClass(cmd);
         const cmdInstance: ICommand<{}> = await getFromContainer(cmd);
         commandsService.register(cmdInstance);
@@ -33,11 +37,19 @@ class SparoCI {
   public async runAsync(): Promise<void> {
     const argv: ArgvService = await getFromContainer(ArgvService);
     await argv.parseArgvAsync();
-
     const userInputCmdName: string = argv.getUserCommand();
-    if (!userInputCmdName || !this._supportedCommand(userInputCmdName)) {
-      const helpCommand: CIHelpCommand = await getFromContainer(CIHelpCommand);
+    if (!userInputCmdName) {
+      const helpCommand: HelpCommand = await getFromContainer(HelpCommand);
       return helpCommand.handler();
+    }
+
+    // proxy to gitService
+    if (!this._supportedCommand(userInputCmdName)) {
+      const gitService: GitService = await getFromContainer(GitService);
+      const args: string[] = process.argv.slice(2);
+      gitService.executeGitCommand({
+        args
+      });
     }
   }
 
@@ -45,5 +57,3 @@ class SparoCI {
     return this._commandsMap.has(commandName);
   }
 }
-
-export { SparoCI };

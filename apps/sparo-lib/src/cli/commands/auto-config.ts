@@ -1,9 +1,9 @@
 import { Argv } from 'yargs';
-import { Command } from '../decorator';
+import { Command } from '../../decorator';
 import { inject } from 'inversify';
-import { GitService } from '../services/GitService';
+import { GitService } from '../../services/GitService';
 import type { ArgumentsCamelCase } from 'yargs';
-import type { LogService } from '../services/LogService';
+import type { LogService } from '../../services/LogService';
 import type { ICommand } from './base';
 import type { GitRepoInfo } from 'git-repo-info';
 

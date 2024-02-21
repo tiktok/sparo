@@ -1,4 +1,4 @@
-import { Constructable } from '../di/types';
+import { Constructable } from '../../di/types';
 import { CloneCommand } from './clone';
 import { HelpCommand } from './help';
 import { SparseCommand } from './sparse';

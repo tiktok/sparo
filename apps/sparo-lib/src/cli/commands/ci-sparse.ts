@@ -1,8 +1,8 @@
 import { inject } from 'inversify';
 import type { Argv, ArgumentsCamelCase } from 'yargs';
 import { ICommand } from './base';
-import { Command } from '../decorator';
-import { GitSparseCheckoutService } from '../services/GitSparseCheckoutService';
+import { Command } from '../../decorator';
+import { GitSparseCheckoutService } from '../../services/GitSparseCheckoutService';
 
 export interface ICISparseCommandOptions {
   to?: string[];

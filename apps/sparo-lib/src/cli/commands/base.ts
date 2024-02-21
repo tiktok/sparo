@@ -1,5 +1,5 @@
 import type { Argv, ArgumentsCamelCase } from 'yargs';
-import type { LogService } from '../services/LogService';
+import type { LogService } from '../../services/LogService';
 
 export interface ICommand<O extends {}> {
   /**
