@@ -3,7 +3,7 @@ import { Command } from '../../decorator';
 import { inject } from 'inversify';
 import { GitService } from '../../services/GitService';
 import type { ArgumentsCamelCase } from 'yargs';
-import type { LogService } from '../../services/LogService';
+import type { TerminalService } from '../../services/TerminalService';
 import type { ICommand } from './base';
 import type { GitRepoInfo } from 'git-repo-info';
 
@@ -32,7 +32,7 @@ export class AutoConfigCommand implements ICommand<IAutoConfigCommandOptions> {
   }
   public handler = async (
     args: ArgumentsCamelCase<IAutoConfigCommandOptions>,
-    logService: LogService
+    terminalService: TerminalService
   ): Promise<void> => {
     const { _gitService: gitService } = this;
     const { overwrite = false, dryRun = false } = args;
@@ -42,12 +42,12 @@ export class AutoConfigCommand implements ICommand<IAutoConfigCommandOptions> {
       throw new Error('Please run auto-config command inside a git repository.');
     }
 
-    logService.logger.debug('git args for auto-config command: %o', args);
+    terminalService.terminal.writeDebugLine(`git args for auto-config command: ${JSON.stringify(args)}`);
     try {
       gitService.setRecommendConfig({ overwrite, dryRun });
     } catch (e: unknown) {
       if ((e as Error)?.message?.includes('already exist')) {
-        logService.logger.info('Add option --overwrite to overwrite existing config.');
+        terminalService.terminal.writeLine('Add option --overwrite to overwrite existing config.');
       }
       throw e;
     }

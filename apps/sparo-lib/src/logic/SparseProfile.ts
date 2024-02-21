@@ -1,6 +1,6 @@
 import { JsonFile, JsonSchema } from '@rushstack/node-core-library';
 import schemaJson from '../schemas/sparse-profile.schema.json';
-import { LogService } from '../services/LogService';
+import { TerminalService } from '../services/TerminalService';
 import { Service } from '../decorator';
 
 // https://rushjs.io/pages/developer/selecting_subsets/
@@ -22,7 +22,7 @@ export interface ISparseProfileJson {
 }
 
 export interface ISparseProfileParams {
-  logService: LogService;
+  terminalService: TerminalService;
 }
 
 @Service()
@@ -38,10 +38,10 @@ export class SparseProfile {
   };
 
   private readonly _sparseProfileJson: ISparseProfileJson;
-  private _logService: LogService;
+  private _terminalService: TerminalService;
 
-  public constructor(logService: LogService, sparseProfileJson: ISparseProfileJson) {
-    this._logService = logService;
+  public constructor(terminalService: TerminalService, sparseProfileJson: ISparseProfileJson) {
+    this._terminalService = terminalService;
     this._sparseProfileJson = sparseProfileJson;
 
     const { selections, includeFolders, excludeFolders } = this._sparseProfileJson;
@@ -63,8 +63,7 @@ export class SparseProfile {
             break;
           }
           default: {
-            this._logService.logger.error(`Error, unknown selector ${selection.selector}`);
-            break;
+            throw new Error(`Unknown selector "${selection.selector}"`);
           }
         }
       }
@@ -72,13 +71,13 @@ export class SparseProfile {
   }
 
   public static async loadFromFileAsync(
-    logService: LogService,
+    terminalService: TerminalService,
     jsonFilepath: string
   ): Promise<SparseProfile> {
     const sparseProfileJson: ISparseProfileJson = await JsonFile.loadAndValidateAsync(
       jsonFilepath,
       SparseProfile._jsonSchema
     );
-    return new SparseProfile(logService, sparseProfileJson);
+    return new SparseProfile(terminalService, sparseProfileJson);
   }
 }

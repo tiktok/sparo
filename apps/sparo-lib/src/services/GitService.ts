@@ -3,13 +3,9 @@ import { Executable } from '@rushstack/node-core-library';
 import getRepoInfo, { type GitRepoInfo } from 'git-repo-info';
 import { inject } from 'inversify';
 import { Service } from '../decorator';
-import { LogService } from './LogService';
+import { TerminalService } from './TerminalService';
 import { Stopwatch } from '../logic/Stopwatch';
 import { TelemetryService } from './TelemetryService';
-
-export interface IGitServiceParams {
-  logService: LogService;
-}
 
 /**
  * @alpha
@@ -31,7 +27,7 @@ export class GitService {
   private _gitUser: string | undefined;
   private _gitEmail: string | undefined;
   private _isSparseCheckoutMode: boolean | undefined;
-  @inject(LogService) private _logService!: LogService;
+  @inject(TerminalService) private _terminalService!: TerminalService;
   @inject(TelemetryService) private _telemetryService!: TelemetryService;
 
   public setGitConfig(
@@ -51,7 +47,7 @@ export class GitService {
 
     args.push(k, String(v));
 
-    this._logService.logger.debug('set git config with args %o', args);
+    this._terminalService.terminal.writeDebugLine(`set git config with args ${JSON.stringify(args)}`);
     if (!dryRun) {
       const { status, stderr } = Executable.spawnSync(gitPath, args, {
         currentWorkingDirectory,
@@ -73,7 +69,7 @@ export class GitService {
       args.push('--global');
     }
     args.push(k);
-    this._logService.logger.debug('get git config with args %o', args);
+    this._terminalService.terminal.writeDebugLine(`get git config with args ${JSON.stringify(args)}`);
     if (!dryRun) {
       const { stdout, status, stderr } = Executable.spawnSync(gitPath, args, {
         currentWorkingDirectory
@@ -115,7 +111,7 @@ export class GitService {
     for (const item of recommendedConfigs) {
       // check whether config exist
       const v: string | undefined = this.getGitConfig(item[0], { global: item[2] === 1, dryRun });
-      this._logService.logger.silly(`git config ${item[0]}=${v}`);
+      this._terminalService.terminal.writeVerboseLine(`git config ${item[0]}=${v}`);
       if (v && !overwrite) {
         errors.push(`${item[0]}=${v}`);
         hasExistingConfig = true;
@@ -206,13 +202,13 @@ export class GitService {
 
     const currentWorkingDirectory: string = workingDirectory || this.getRepoInfo().root;
 
-    this._logService.logger.debug('invoke git command: %s %s', gitPath, args.join(' '));
+    this._terminalService.terminal.writeDebugLine(`Invoking git command: ${gitPath} ${args.join(' ')}`);
     const stopwatch: Stopwatch = Stopwatch.start();
     const result: child_process.SpawnSyncReturns<string> = Executable.spawnSync(gitPath, args, {
       currentWorkingDirectory,
       stdio: 'inherit'
     });
-    this._logService.logger.debug('invoke git command done (%s)', stopwatch.toString());
+    this._terminalService.terminal.writeDebugLine(`Invoked git command done (${stopwatch.toString()})`);
     stopwatch.stop();
     this._telemetryService.collectTelemetry({
       commandName: args[0],
@@ -230,13 +226,15 @@ export class GitService {
 
     const currentWorkingDirectory: string = workingDirectory || this.getRepoInfo().root;
 
-    this._logService.logger.debug('invoke git command and capture output: %s %s', gitPath, args.join(' '));
+    this._terminalService.terminal.writeDebugLine(
+      `Invoking git command and capture output: ${gitPath} ${args.join(' ')}`
+    );
     const stopwatch: Stopwatch = Stopwatch.start();
     const result: child_process.SpawnSyncReturns<string> = Executable.spawnSync(gitPath, args, {
       currentWorkingDirectory,
       stdio: ['pipe', 'pipe', 'pipe']
     });
-    this._logService.logger.debug('invoke git command done (%s)', stopwatch.toString());
+    this._terminalService.terminal.writeDebugLine(`Invoked git command done (${stopwatch.toString()})`);
     stopwatch.stop();
     this._telemetryService.collectTelemetry({
       commandName: args[0],
@@ -250,6 +248,12 @@ export class GitService {
     return result.stdout.toString();
   }
 
+  /**
+   * Get the humanish basename from the URL
+   *
+   * The implementation aligns with the git source code at
+   *   https://github.com/git/git/blob/3e0d3cd5c7def4808247caf168e17f2bbf47892b/dir.c#L3175
+   */
   public getBasenameFromUrl(url: string): string {
     const len: number = url.length;
     let start: number = 0;
@@ -354,7 +358,9 @@ Please specify a directory on the command line
       const [, major, minor, patch]: string[] = match;
       result = [parseInt(major, 10), parseInt(minor, 10), parseInt(patch, 10)];
     }
-    this._logService.logger.verbose(`git version: ${Array.isArray(result) ? result.join('.') : ''}`);
+    this._terminalService.terminal.writeVerboseLine(
+      `git version: ${Array.isArray(result) ? result.join('.') : 'unknown'}`
+    );
 
     return result;
   }

@@ -1,5 +1,5 @@
 import 'reflect-metadata';
-import { getFromContainer, registerClass } from '../di/container';
+import { getFromContainerAsync, registerClass } from '../di/container';
 import { GitService } from '../services/GitService';
 import { CommandService } from '../services/CommandService';
 import { ArgvService } from '../services/ArgvService';
@@ -20,7 +20,7 @@ export class SparoCommandLine {
     await GitVersionCompatibility.ensureGitVersionAsync();
 
     if (launchOptions.collectTelemetryAsync) {
-      const telemetryService: TelemetryService = await getFromContainer(TelemetryService);
+      const telemetryService: TelemetryService = await getFromContainerAsync(TelemetryService);
       telemetryService.setCollectTelemetryFunction(launchOptions.collectTelemetryAsync);
     }
 
@@ -30,12 +30,12 @@ export class SparoCommandLine {
   }
 
   public async prepareCommandAsync(): Promise<void> {
-    const commandsService: CommandService = await getFromContainer(CommandService);
+    const commandsService: CommandService = await getFromContainerAsync(CommandService);
 
     await Promise.all(
       COMMAND_LIST.map(async (cmd): Promise<void> => {
         registerClass(cmd);
-        const cmdInstance: ICommand<{}> = await getFromContainer(cmd);
+        const cmdInstance: ICommand<{}> = await getFromContainerAsync(cmd);
         commandsService.register(cmdInstance);
         this._commandsMap.add(getCommandName(cmdInstance.cmd));
       })
@@ -43,17 +43,17 @@ export class SparoCommandLine {
   }
 
   public async runAsync(): Promise<void> {
-    const argv: ArgvService = await getFromContainer(ArgvService);
+    const argv: ArgvService = await getFromContainerAsync(ArgvService);
     await argv.parseArgvAsync();
     const userInputCmdName: string = argv.getUserCommand();
     if (!userInputCmdName) {
-      const helpCommand: HelpCommand = await getFromContainer(HelpCommand);
+      const helpCommand: HelpCommand = await getFromContainerAsync(HelpCommand);
       return helpCommand.handler();
     }
 
     // proxy to gitService
     if (!this._supportedCommand(userInputCmdName)) {
-      const gitService: GitService = await getFromContainer(GitService);
+      const gitService: GitService = await getFromContainerAsync(GitService);
       const args: string[] = process.argv.slice(2);
       gitService.executeGitCommand({
         args

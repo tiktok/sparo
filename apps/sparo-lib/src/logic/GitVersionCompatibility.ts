@@ -1,5 +1,5 @@
 import 'reflect-metadata';
-import { getFromContainer } from '../di/container';
+import { getFromContainerAsync } from '../di/container';
 import { GitService } from '../services/GitService';
 
 /**
@@ -9,7 +9,7 @@ export class GitVersionCompatibility {
   private constructor() {}
 
   public static async ensureGitVersionAsync(): Promise<void> {
-    const gitService: GitService = await getFromContainer(GitService);
+    const gitService: GitService = await getFromContainerAsync(GitService);
     const gitVersion: [number, number, number] | undefined = gitService.getGitVersion();
     if (!gitVersion) {
       throw new Error(`Fail to get git version`);

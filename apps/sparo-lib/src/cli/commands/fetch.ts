@@ -5,7 +5,7 @@ import { GitService } from '../../services/GitService';
 import type { Argv, ArgumentsCamelCase } from 'yargs';
 import type { GitRepoInfo } from 'git-repo-info';
 import type { ICommand } from './base';
-import type { LogService } from '../../services/LogService';
+import type { TerminalService } from '../../services/TerminalService';
 
 export interface IFetchCommandOptions {
   all?: boolean;
@@ -24,14 +24,14 @@ export class FetchCommand implements ICommand<IFetchCommandOptions> {
 
   public handler = async (
     args: ArgumentsCamelCase<IFetchCommandOptions>,
-    logService: LogService
+    terminalService: TerminalService
   ): Promise<void> => {
     const { _gitService: gitService } = this;
-    const { logger } = logService;
+    const { terminal } = terminalService;
     const repoInfo: GitRepoInfo = gitService.getRepoInfo();
     const { branch: defaultBranch } = repoInfo;
 
-    logger.debug('got args in fetch command: %o', args);
+    terminal.writeDebugLine(`got args in fetch command: ${JSON.stringify(args)}`);
     const { all, branch = defaultBranch } = args;
     const fetchArgs: string[] = ['fetch'];
 

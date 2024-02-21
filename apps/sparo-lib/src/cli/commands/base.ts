@@ -1,5 +1,5 @@
 import type { Argv, ArgumentsCamelCase } from 'yargs';
-import type { LogService } from '../../services/LogService';
+import type { TerminalService } from '../../services/TerminalService';
 
 export interface ICommand<O extends {}> {
   /**
@@ -16,6 +16,6 @@ export interface ICommand<O extends {}> {
   description: string;
 
   builder: (yargs: Argv<O>) => void;
-  handler: (args: ArgumentsCamelCase<O>, logService: LogService) => Promise<void>;
+  handler: (args: ArgumentsCamelCase<O>, terminalService: TerminalService) => Promise<void>;
   getHelp: () => string;
 }

@@ -12,7 +12,7 @@ import { GitRepoInfo } from 'git-repo-info';
 // Warning: (ae-forgotten-export) The symbol "Constructable" needs to be exported by the entry point index.d.ts
 //
 // @alpha
-export function getFromContainer<T>(clazz: Constructable<T>): Promise<T>;
+export function getFromContainerAsync<T>(clazz: Constructable<T>): Promise<T>;
 
 // @alpha
 export class GitService {
@@ -20,7 +20,6 @@ export class GitService {
     executeGitCommand({ args, workingDirectory }: IExecuteGitCommandParams): child_process.SpawnSyncReturns<string>;
     // (undocumented)
     executeGitCommandAndCaptureOutput({ args, workingDirectory }: IExecuteGitCommandParams): string;
-    // (undocumented)
     getBasenameFromUrl(url: string): string;
     // (undocumented)
     getGitConfig(k: string, option?: {

@@ -2,7 +2,7 @@ import { inject } from 'inversify';
 import type { Argv } from 'yargs';
 import type { ICommand } from '../cli/commands/base';
 import { HelpTextService } from './HelpTextService';
-import { LogService } from './LogService';
+import { TerminalService } from './TerminalService';
 import { Service } from '../decorator';
 import { ArgvService } from './ArgvService';
 import { Stopwatch } from '../logic/Stopwatch';
@@ -12,20 +12,20 @@ import { getCommandName } from '../cli/commands/util';
 export interface ICommandServiceParams {
   yargs: Argv<{}>;
   helpTextService: HelpTextService;
-  logService: LogService;
+  terminalService: TerminalService;
 }
 
 @Service()
 export class CommandService {
   @inject(ArgvService) private _yargs!: ArgvService;
   @inject(HelpTextService) private _helpTextService!: HelpTextService;
-  @inject(LogService) private _logService!: LogService;
+  @inject(TerminalService) private _terminalService!: TerminalService;
   @inject(TelemetryService) private _telemetryService!: TelemetryService;
 
   public register<O extends {}>(command: ICommand<O>): void {
     const { cmd, description, builder, handler, getHelp } = command;
-    const { _logService: logService } = this;
-    const { logger } = logService;
+    const { _terminalService: terminalService } = this;
+    const { terminal } = terminalService;
     const commandName: string = getCommandName(cmd);
     this._yargs.yargsArgv.command<O>(
       cmd,
@@ -37,10 +37,10 @@ export class CommandService {
       async (args) => {
         process.exitCode = 1;
         try {
-          logger.silly(`invoke command "%s" with args %o`, commandName, args);
+          terminal.writeVerboseLine(`Invoking command "${commandName}" with args ${JSON.stringify(args)}`);
           const stopwatch: Stopwatch = Stopwatch.start();
-          await handler(args, logService);
-          logger.silly(`invoke command "%s" done (%s)`, commandName, stopwatch.toString());
+          await handler(args, terminalService);
+          terminal.writeVerboseLine(`Invoked command "${commandName}" done (${stopwatch.toString()})`);
           stopwatch.stop();
           this._telemetryService.collectTelemetry({
             commandName,
@@ -54,7 +54,7 @@ export class CommandService {
         } catch (e) {
           // @todo: `e` from git service is undefined sometime
           // to reproduce try call `auto-config` command
-          if (typeof e !== 'undefined') logger.error((e as Error).message);
+          if (typeof e !== 'undefined') terminal.writeErrorLine((e as Error).message);
         }
       }
     );

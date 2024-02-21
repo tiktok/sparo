@@ -4,7 +4,7 @@ import { Command } from '../../decorator';
 import type { ICommand } from './base';
 import { type ArgumentsCamelCase, type Argv } from 'yargs';
 import { GitService } from '../../services/GitService';
-import { LogService } from '../../services/LogService';
+import { TerminalService } from '../../services/TerminalService';
 import { ILocalStateProfiles, LocalState } from '../../logic/LocalState';
 import { SparseProfileService } from '../../services/SparseProfileService';
 import { GitSparseCheckoutService } from '../../services/GitSparseCheckoutService';
@@ -63,7 +63,7 @@ export class CheckoutCommand implements ICommand<ICheckoutCommandOptions> {
 
   public handler = async (
     args: ArgumentsCamelCase<ICheckoutCommandOptions>,
-    logService: LogService
+    terminalService: TerminalService
   ): Promise<void> => {
     const { _gitService: gitService, _localState: localState } = this;
     const { profile, b, B, branch, startPoint } = args;

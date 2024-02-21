@@ -6,7 +6,7 @@ import { LocalState, LocalStateUpdateAction } from '../logic/LocalState';
 import { type ISelection, SparseProfile } from '../logic/SparseProfile';
 import { GitService } from './GitService';
 import { SparseProfileService } from './SparseProfileService';
-import { LogService } from './LogService';
+import { TerminalService } from './TerminalService';
 import { Executable, FileSystem, JsonFile, JsonSyntax } from '@rushstack/node-core-library';
 import { Stopwatch } from '../logic/Stopwatch';
 
@@ -33,7 +33,7 @@ export class GitSparseCheckoutService {
   @inject(SparseProfileService) private _sparseProfileService!: SparseProfileService;
   @inject(GitService) private _gitService!: GitService;
   @inject(LocalState) private _localState!: LocalState;
-  @inject(LogService) private _logService!: LogService;
+  @inject(TerminalService) private _terminalService!: TerminalService;
 
   private _rushConfigLoaded: boolean = false;
   private _rushProjects: IRushProject[] = [];
@@ -137,7 +137,7 @@ ${availableProfiles.join(',')}
       checkoutAction = 'add'
     } = options;
 
-    const { logger } = this._logService;
+    const { terminal } = this._terminalService;
 
     // Check git repo
     if (
@@ -154,7 +154,7 @@ ${availableProfiles.join(',')}
     {
       const stopwatch: Stopwatch = Stopwatch.start();
       this.initializeRepository();
-      logger.info('Initialize repo sparse checkout. (%s)', stopwatch.toString());
+      terminal.writeLine('Initialize repo sparse checkout. (%s)', stopwatch.toString());
       stopwatch.stop();
     }
 
@@ -184,7 +184,7 @@ ${availableProfiles.join(',')}
           break;
         }
         default: {
-          logger.error(`Error, unknown selector ${selection.selector}`);
+          terminal.writeErrorLine(`Error, unknown selector ${selection.selector}`);
           break;
         }
       }
@@ -210,10 +210,10 @@ ${availableProfiles.join(',')}
     if (toSelectors.size !== 0 || fromSelectors.size !== 0) {
       const stopwatch: Stopwatch = Stopwatch.start();
       targetFolders = this._getTargetFoldersByRushList({ toSelectors, fromSelectors });
-      logger.info('Run rush list command. (%s)', stopwatch.toString());
+      terminal.writeLine('Run rush list command. (%s)', stopwatch.toString());
       stopwatch.stop();
     } else {
-      logger.debug('Skip rush list regarding the absence of from selectors and to selectors');
+      terminal.writeDebugLine('Skip rush list regarding the absence of from selectors and to selectors');
     }
 
     // include rule
@@ -232,15 +232,15 @@ ${availableProfiles.join(',')}
       // FIXME: too long CLI parameter
       if (!(checkoutAction === 'purge' || checkoutAction === 'skeleton')) {
         if (targetFolders.length === 0) {
-          logger.debug(`Skip sparse checkout regarding no target folders`);
+          terminal.writeDebugLine(`Skip sparse checkout regarding no target folders`);
         } else {
-          logger.info(`Run sparse checkout for these folders: ${targetFolders.join(' ')}`);
+          terminal.writeLine(`Run sparse checkout for these folders: ${targetFolders.join(' ')}`);
           this._sparseCheckoutPaths(targetFolders, {
             action: 'add'
           });
         }
       }
-      logger.info('Sparse checkout target folders. (%s)', stopwatch.toString());
+      terminal.writeLine('Sparse checkout target folders. (%s)', stopwatch.toString());
       stopwatch.stop();
     }
   }
@@ -280,7 +280,7 @@ ${availableProfiles.join(',')}
   private _prepareMonorepoSkeleton(options: { restore?: boolean } = {}): void {
     const { restore } = options;
     const finalSkeletonPaths: string[] = this._getSkeletonPaths();
-    this._logService.logger.info('Initializing skeleton folders, files of package.json');
+    this._terminalService.terminal.writeLine('Initializing skeleton folders, files of package.json');
     this._sparseCheckoutPaths(finalSkeletonPaths, {
       action: restore ? 'set' : 'add'
     });
@@ -382,7 +382,7 @@ ${availableProfiles.join(',')}
     toSelectors: Iterable<string>;
     fromSelectors: Iterable<string>;
   }): string[] {
-    const { logger } = this._logService;
+    const { terminal } = this._terminalService;
 
     const args: string[] = ['list', '--json'];
 
@@ -395,7 +395,7 @@ ${availableProfiles.join(',')}
       args.push(fromSelector);
     }
 
-    logger.verbose(`Run command: rush ${args.join(' ')}`);
+    terminal.writeVerboseLine(`Run command: rush ${args.join(' ')}`);
 
     const result: child_process.SpawnSyncReturns<string> = Executable.spawnSync('rush', args, {
       stdio: ['pipe', 'pipe', 'pipe']
@@ -403,7 +403,7 @@ ${availableProfiles.join(',')}
 
     const processedResult: string = this._processListResult(result.stdout.toString());
 
-    logger.verbose('%s', processedResult);
+    terminal.writeVerboseLine(processedResult);
 
     const { projects: targetDeps } = JSON.parse(processedResult) as {
       projects: { path: string }[];

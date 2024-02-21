@@ -4,7 +4,7 @@ import { inject } from 'inversify';
 import { FileSystem } from '@rushstack/node-core-library';
 import { Service } from '../decorator';
 import { GitService } from './GitService';
-import { LogService } from './LogService';
+import { TerminalService } from './TerminalService';
 
 export interface ICloneOptions {
   repository: string;
@@ -14,17 +14,17 @@ export interface ICloneOptions {
 @Service()
 export class GitCloneService {
   @inject(GitService) private _gitService!: GitService;
-  @inject(LogService) private _logService!: LogService;
+  @inject(TerminalService) private _terminalService!: TerminalService;
 
   public resolveCloneDirectory(args: { repository: string; directory?: string }): string {
-    const { logger } = this._logService;
+    const { terminal } = this._terminalService;
     const { repository } = args;
     let { directory } = args;
 
     // directory
     if (!directory) {
       directory = this._gitService.getBasenameFromUrl(repository);
-      logger.debug(`got basename %s from %s`, directory, repository);
+      terminal.writeDebugLine(`got basename ${directory} from ${repository}`);
     }
 
     this._checkCloneDestination(directory);
@@ -33,14 +33,14 @@ export class GitCloneService {
   }
 
   private _checkCloneDestination(directory: string): void {
-    const { logger } = this._logService;
+    const { terminal } = this._terminalService;
 
     // absolute path
     let dest: string = directory;
     if (!path.isAbsolute(dest)) {
       dest = path.resolve(process.cwd(), directory);
     }
-    logger.debug(`repo destination is %s`, dest);
+    terminal.writeDebugLine(`repo destination is ${dest}`);
 
     const destExists: boolean = FileSystem.exists(dest);
     if (destExists) {
@@ -52,8 +52,8 @@ an empty directory.`);
   }
 
   public fullClone({ repository, directory }: ICloneOptions): void {
-    const { logger } = this._logService;
-    logger.debug('full clone start...');
+    const { terminal } = this._terminalService;
+    terminal.writeDebugLine('full clone start...');
     const cloneArgs: string[] = ['clone', repository, directory];
     const result: child_process.SpawnSyncReturns<string> = this._gitService.executeGitCommand({
       args: cloneArgs
@@ -61,13 +61,13 @@ an empty directory.`);
     if (result?.status) {
       throw new Error(`git clone failed with exit code ${result.status}`);
     }
-    logger.debug('full clone done');
+    terminal.writeDebugLine('full clone done');
   }
 
   public bloblessClone({ repository, directory }: ICloneOptions): void {
-    const { logger } = this._logService;
+    const { terminal } = this._terminalService;
 
-    logger.debug('blobless clone start...');
+    terminal.writeDebugLine('blobless clone start...');
     const cloneArgs: string[] = [
       'clone',
       '--filter=blob:none',
@@ -82,13 +82,13 @@ an empty directory.`);
     if (result?.status) {
       throw new Error(`git clone failed with exit code ${result.status}`);
     }
-    logger.debug('blobless clone done');
+    terminal.writeDebugLine('blobless clone done');
   }
 
   public treelessClone({ repository, directory }: ICloneOptions): void {
-    const { logger } = this._logService;
+    const { terminal } = this._terminalService;
 
-    logger.debug('treeless clone start...');
+    terminal.writeDebugLine('treeless clone start...');
     const cloneArgs: string[] = [
       'clone',
       '--filter=tree:0',
@@ -103,6 +103,6 @@ an empty directory.`);
     if (result?.status) {
       throw new Error(`git clone failed with exit code ${result.status}`);
     }
-    logger.debug('treeless clone done');
+    terminal.writeDebugLine('treeless clone done');
   }
 }

@@ -1,12 +1,26 @@
-import { getFromContainer } from '../../di/container';
+import { getFromContainerAsync } from '../../di/container';
 import { GitService } from '../GitService';
 
 describe(GitService.name, () => {
   it(`should work with git ssh url`, async () => {
-    const gitService = await getFromContainer(GitService);
+    const gitService = await getFromContainerAsync(GitService);
     const { getBasenameFromUrl } = gitService;
     expect(getBasenameFromUrl('git@github.com:example/sparo.git')).toBe('sparo');
     expect(getBasenameFromUrl('git@github.com:example/sparo_foo.git')).toBe('sparo_foo');
     expect(getBasenameFromUrl('git@github.com:example/sparo-foo.git')).toBe('sparo-foo');
+  });
+
+  it('should work with malicious url', async () => {
+    /**
+     * This test make sure sparo aligns with git's behavior when handling URL characters.
+     */
+    const gitService = await getFromContainerAsync(GitService);
+    const { getBasenameFromUrl } = gitService;
+    // Example: ../sparo
+    expect(getBasenameFromUrl('git@github.com:example/%2E%2E%2Fsparo.git')).toBe('%2E%2E%2Fsparo');
+    // Example: \.\.\/sparo
+    expect(getBasenameFromUrl('git@github.com:example/%252E%252E%252Fsparo.git')).toBe(
+      '%252E%252E%252Fsparo'
+    );
   });
 });

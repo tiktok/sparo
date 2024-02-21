@@ -5,7 +5,7 @@ import { ICommand } from './base';
 import { Command } from '../../decorator';
 import { inject } from 'inversify';
 import { GitSparseCheckoutService } from '../../services/GitSparseCheckoutService';
-import type { LogService } from '../../services/LogService';
+import type { TerminalService } from '../../services/TerminalService';
 
 export interface IProject {
   name: string;
@@ -27,7 +27,7 @@ export class SparseListCommand implements ICommand<ISparseListCommandOptions> {
   }
   public handler = async (
     args: ArgumentsCamelCase<ISparseListCommandOptions>,
-    logService: LogService
+    terminalService: TerminalService
   ): Promise<void> => {
     // ensure sparse profiles folder
     this._gitSparseCheckoutService.initializeRepository();
@@ -53,11 +53,11 @@ export class SparseListCommand implements ICommand<ISparseListCommandOptions> {
 
     const { project } = args;
     if (profileProjects.has(project)) {
-      logService.logger.info(
+      terminalService.terminal.writeLine(
         `${project} was included in the below profiles:\n ${profileProjects.get(project)?.join('\n')}`
       );
     } else {
-      logService.logger.error(`${project} is not included in any pre-configured profile`);
+      terminalService.terminal.writeErrorLine(`${project} is not included in any pre-configured profile`);
     }
   };
   public getHelp(): string {

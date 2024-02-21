@@ -2,11 +2,11 @@ import { FileSystem, Async } from '@rushstack/node-core-library';
 import { inject } from 'inversify';
 import { Service } from '../decorator';
 import { SparseProfile } from '../logic/SparseProfile';
-import { LogService } from './LogService';
+import { TerminalService } from './TerminalService';
 import { GitService } from './GitService';
 
 export interface ISparseProfileServiceParams {
-  logService: LogService;
+  terminalService: TerminalService;
   sparseProfileFolder: string;
 }
 const defaultSparseProfileFolder: string = 'common/sparse-profiles';
@@ -17,7 +17,7 @@ export class SparseProfileService {
   private _loadPromise: Promise<void> | undefined;
 
   @inject(GitService) private _gitService!: GitService;
-  @inject(LogService) private _logService!: LogService;
+  @inject(TerminalService) private _terminalService!: TerminalService;
 
   public async loadProfilesAsync(): Promise<void> {
     if (!this._loadPromise) {
@@ -30,15 +30,17 @@ export class SparseProfileService {
         await Async.forEachAsync(sparseProfilePaths, async (sparseProfilePath: string) => {
           let sparseProfile: SparseProfile | undefined;
           try {
-            sparseProfile = await SparseProfile.loadFromFileAsync(this._logService, sparseProfilePath);
+            sparseProfile = await SparseProfile.loadFromFileAsync(this._terminalService, sparseProfilePath);
           } catch (e) {
             // TODO: more error handling
-            this._logService.logger.info(e);
+            this._terminalService.terminal.writeLine((e as Error).message);
           }
 
           if (sparseProfile) {
             const profileName: string = SparseProfileService._getProfileName(sparseProfilePath);
-            this._logService.logger.debug(`load sparse profile %s from %s`, profileName, sparseProfilePath);
+            this._terminalService.terminal.writeDebugLine(
+              `load sparse profile ${profileName} from ${sparseProfilePath}`
+            );
             this._profiles.set(profileName, sparseProfile);
           }
         });

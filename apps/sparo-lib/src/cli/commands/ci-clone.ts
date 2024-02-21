@@ -4,7 +4,7 @@ import { GitSparseCheckoutService } from '../../services/GitSparseCheckoutServic
 import { GitCloneService, ICloneOptions } from '../../services/GitCloneService';
 import type { Argv, ArgumentsCamelCase } from 'yargs';
 import type { ICommand } from './base';
-import type { LogService } from '../../services/LogService';
+import type { TerminalService } from '../../services/TerminalService';
 
 export interface ICloneCommandOptions {
   full?: boolean;
@@ -48,9 +48,9 @@ export class CICloneCommand implements ICommand<ICloneCommandOptions> {
 
   public handler = async (
     args: ArgumentsCamelCase<ICloneCommandOptions>,
-    logService: LogService
+    terminalService: TerminalService
   ): Promise<void> => {
-    const { logger } = logService;
+    const { terminal } = terminalService;
 
     const directory: string = this._gitCloneService.resolveCloneDirectory(args);
 
@@ -69,7 +69,7 @@ export class CICloneCommand implements ICommand<ICloneCommandOptions> {
     process.chdir(directory);
     await this._gitSparseCheckoutService.checkoutSkeletonAsync();
 
-    logger.info(`Remember to run "cd ${directory}"`);
+    terminal.writeLine(`Remember to run "cd ${directory}"`);
   };
 
   public getHelp(): string {

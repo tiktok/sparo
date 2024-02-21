@@ -13,10 +13,10 @@
   },
   "dependencies": {
     "@rushstack/node-core-library": "~3.64.2",
+    "@rushstack/terminal": "~0.8.1",
     "git-repo-info": "~2.1.1",
     "inversify": "~6.0.2",
     "reflect-metadata": "~0.2.1",
-    "winston": "~3.11.0",
     "yargs": "~17.7.2"
   },
   "devDependencies": {
