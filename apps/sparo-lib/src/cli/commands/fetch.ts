@@ -10,7 +10,6 @@ import type { LogService } from '../../services/LogService';
 export interface IFetchCommandOptions {
   all?: boolean;
   branch?: string;
-  dryRun?: boolean;
 }
 
 @Command()
@@ -20,11 +19,7 @@ export class FetchCommand implements ICommand<IFetchCommandOptions> {
 
   @inject(GitService) private _gitService!: GitService;
   public builder(yargs: Argv<{}>): void {
-    yargs.boolean('full').option('dryRun', {
-      type: 'boolean',
-      hidden: true,
-      default: false
-    });
+    yargs.boolean('full');
   }
 
   public handler = async (
@@ -37,7 +32,7 @@ export class FetchCommand implements ICommand<IFetchCommandOptions> {
     const { branch: defaultBranch } = repoInfo;
 
     logger.debug('got args in fetch command: %o', args);
-    const { all, dryRun, branch = defaultBranch } = args;
+    const { all, branch = defaultBranch } = args;
     const fetchArgs: string[] = ['fetch'];
 
     if (all) {
@@ -46,7 +41,7 @@ export class FetchCommand implements ICommand<IFetchCommandOptions> {
       fetchArgs.push('origin', branch);
     }
 
-    gitService.executeGitCommand({ args: fetchArgs, dryRun });
+    gitService.executeGitCommand({ args: fetchArgs });
   };
 
   public getHelp(): string {

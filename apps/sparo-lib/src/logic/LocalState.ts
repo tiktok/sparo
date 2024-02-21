@@ -6,6 +6,10 @@ import type { ISparseProfileJson } from './SparseProfile';
 import { Service } from '../decorator';
 import { GitService } from '../services/GitService';
 
+export interface ILocalStateProfiles {
+  [name: string]: ISparseProfileJson;
+}
+
 export interface ILocalStateParams {
   repositoryRoot: string;
 }
@@ -13,9 +17,7 @@ export interface ILocalStateParams {
 export type LocalStateUpdateAction = 'add' | 'set';
 
 export interface ILocalStateJson {
-  profiles: {
-    [name: string]: ISparseProfileJson;
-  };
+  profiles: ILocalStateProfiles;
 }
 
 @Service()
@@ -41,12 +43,12 @@ export class LocalState {
   }
 
   public async setProfiles(
-    profiles: ILocalStateJson['profiles'],
+    profiles: ILocalStateProfiles,
     localStateUpdateAction: LocalStateUpdateAction
   ): Promise<void> {
     await this.loadAsync();
 
-    const getNextProfiles = (): ILocalStateJson['profiles'] => {
+    const getNextProfiles = (): ILocalStateProfiles => {
       switch (localStateUpdateAction) {
         case 'add':
           return {
@@ -70,6 +72,11 @@ export class LocalState {
     JsonFile.save(newLocalState, this.getStateFilePath(), {
       updateExistingFile: true
     });
+  }
+
+  public async getProfiles(): Promise<ILocalStateProfiles | undefined> {
+    await this.loadAsync();
+    return this._localStateJson?.profiles;
   }
 
   public reset(): void {

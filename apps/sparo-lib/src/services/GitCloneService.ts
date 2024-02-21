@@ -9,7 +9,6 @@ import { LogService } from './LogService';
 export interface ICloneOptions {
   repository: string;
   directory: string;
-  dryRun?: boolean;
 }
 
 @Service()
@@ -52,18 +51,20 @@ an empty directory.`);
     }
   }
 
-  public fullClone({ repository, directory, dryRun }: ICloneOptions): void {
+  public fullClone({ repository, directory }: ICloneOptions): void {
     const { logger } = this._logService;
     logger.debug('full clone start...');
     const cloneArgs: string[] = ['clone', repository, directory];
-    this._gitService.executeGitCommand({
-      dryRun,
+    const result: child_process.SpawnSyncReturns<string> = this._gitService.executeGitCommand({
       args: cloneArgs
     });
+    if (result?.status) {
+      throw new Error(`git clone failed with exit code ${result.status}`);
+    }
     logger.debug('full clone done');
   }
 
-  public bloblessClone({ repository, directory, dryRun }: ICloneOptions): void {
+  public bloblessClone({ repository, directory }: ICloneOptions): void {
     const { logger } = this._logService;
 
     logger.debug('blobless clone start...');
@@ -75,8 +76,7 @@ an empty directory.`);
       repository,
       directory
     ];
-    const result: child_process.SpawnSyncReturns<string> | undefined = this._gitService.executeGitCommand({
-      dryRun,
+    const result: child_process.SpawnSyncReturns<string> = this._gitService.executeGitCommand({
       args: cloneArgs
     });
     if (result?.status) {
@@ -85,7 +85,7 @@ an empty directory.`);
     logger.debug('blobless clone done');
   }
 
-  public treelessClone({ repository, directory, dryRun }: ICloneOptions): void {
+  public treelessClone({ repository, directory }: ICloneOptions): void {
     const { logger } = this._logService;
 
     logger.debug('treeless clone start...');
@@ -97,8 +97,7 @@ an empty directory.`);
       repository,
       directory
     ];
-    const result: child_process.SpawnSyncReturns<string> | undefined = this._gitService.executeGitCommand({
-      dryRun,
+    const result: child_process.SpawnSyncReturns<string> = this._gitService.executeGitCommand({
       args: cloneArgs
     });
     if (result?.status) {

@@ -3,6 +3,7 @@ import { inject } from 'inversify';
 import { Service } from '../decorator';
 import { SparseProfile } from '../logic/SparseProfile';
 import { LogService } from './LogService';
+import { GitService } from './GitService';
 
 export interface ISparseProfileServiceParams {
   logService: LogService;
@@ -14,6 +15,8 @@ const defaultSparseProfileFolder: string = 'common/sparse-profiles';
 export class SparseProfileService {
   public _profiles: Map<string, SparseProfile> = new Map<string, SparseProfile>();
   private _loadPromise: Promise<void> | undefined;
+
+  @inject(GitService) private _gitService!: GitService;
   @inject(LogService) private _logService!: LogService;
 
   public async loadProfilesAsync(): Promise<void> {
@@ -52,6 +55,10 @@ export class SparseProfileService {
   public async getProfilesAsync(): Promise<Map<string, SparseProfile>> {
     await this.loadProfilesAsync();
     return this._profiles;
+  }
+
+  public hasProfile(name: string, branch: string): boolean {
+    return this._gitService.hasFile(`${defaultSparseProfileFolder}/${name}.json`, branch);
   }
 
   private static _getProfileName(profilePath: string): string {

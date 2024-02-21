@@ -8,9 +8,11 @@ import { PurgeCommand } from './purge';
 import { CIHelpCommand } from './ci-help';
 import { CISparseCommand } from './ci-sparse';
 import { CICloneCommand } from './ci-clone';
+import { CheckoutCommand } from './checkout';
 
 export const COMMAND_LIST: Constructable[] = [
   CloneCommand,
+  CheckoutCommand,
   HelpCommand,
   SparseListCommand,
   AutoConfigCommand,

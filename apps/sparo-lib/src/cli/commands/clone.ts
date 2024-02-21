@@ -11,7 +11,6 @@ export interface ICloneCommandOptions {
   full?: boolean;
   repository: string;
   directory?: string;
-  dryRun?: boolean;
 }
 
 @Command()
@@ -33,11 +32,6 @@ export class CloneCommand implements ICommand<ICloneCommandOptions> {
         describe:
           'The name of a new directory to clone into. The "humanish" part of the source repository is used if no directory is explicitly given (repo for /path/to/repo.gitService and foo for host.xz:foo/.gitService). Cloning into an existing directory is only allowed if the directory is empty',
         type: 'string'
-      })
-      .option('dryRun', {
-        type: 'boolean',
-        hidden: true,
-        default: false
       })
       .check((argv) => {
         if (!argv.repository) {

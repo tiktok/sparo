@@ -17,9 +17,9 @@ export function getFromContainer<T>(clazz: Constructable<T>): Promise<T>;
 // @alpha
 export class GitService {
     // (undocumented)
-    executeGitCommand({ args, workingDirectory, dryRun }: IExecuteGitCommandParams): child_process.SpawnSyncReturns<string> | undefined;
+    executeGitCommand({ args, workingDirectory }: IExecuteGitCommandParams): child_process.SpawnSyncReturns<string>;
     // (undocumented)
-    executeGitCommandAndCaptureOutput({ args, workingDirectory, dryRun }: IExecuteGitCommandParams): string;
+    executeGitCommandAndCaptureOutput({ args, workingDirectory }: IExecuteGitCommandParams): string;
     // (undocumented)
     getBasenameFromUrl(url: string): string;
     // (undocumented)
@@ -41,6 +41,8 @@ export class GitService {
     getRepoInfo(): GitRepoInfo;
     get gitPath(): string | undefined;
     // (undocumented)
+    hasFile(filename: string, branch: string): boolean;
+    // (undocumented)
     setGitConfig(k: string, v: string | number | boolean, option?: {
         dryRun?: boolean;
         global?: boolean;
@@ -59,8 +61,6 @@ export type ICollectTelemetryFunction = (data: ITelemetryData) => Promise<void>;
 export interface IExecuteGitCommandParams {
     // (undocumented)
     args: string[];
-    // (undocumented)
-    dryRun?: boolean;
     // (undocumented)
     workingDirectory?: string;
 }

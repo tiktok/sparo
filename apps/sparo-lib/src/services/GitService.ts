@@ -17,7 +17,6 @@ export interface IGitServiceParams {
 export interface IExecuteGitCommandParams {
   args: string[];
   workingDirectory?: string;
-  dryRun?: boolean;
 }
 
 /**
@@ -131,7 +130,7 @@ export class GitService {
     }
 
     /* enable git maintenance */
-    this.executeGitCommand({ args: ['maintenance', 'register'], dryRun });
+    this.executeGitCommand({ args: ['maintenance', 'register'] });
   }
 
   public getGitUser(): string | undefined {
@@ -201,68 +200,54 @@ export class GitService {
 
   public executeGitCommand({
     args,
-    workingDirectory,
-    dryRun
-  }: IExecuteGitCommandParams): child_process.SpawnSyncReturns<string> | undefined {
+    workingDirectory
+  }: IExecuteGitCommandParams): child_process.SpawnSyncReturns<string> {
     const gitPath: string = this.getGitPathOrThrow();
 
     const currentWorkingDirectory: string = workingDirectory || this.getRepoInfo().root;
 
     this._logService.logger.debug('invoke git command: %s %s', gitPath, args.join(' '));
-    if (!dryRun) {
-      const stopwatch: Stopwatch = Stopwatch.start();
-      const result: child_process.SpawnSyncReturns<string> = Executable.spawnSync(gitPath, args, {
-        currentWorkingDirectory,
-        stdio: 'inherit'
-      });
-      this._logService.logger.debug('invoke git command done (%s)', stopwatch.toString());
-      stopwatch.stop();
-      this._telemetryService.collectTelemetry({
-        commandName: args[0],
-        args: args.slice(1),
-        durationInSeconds: stopwatch.duration,
-        startTimestampMs: stopwatch.startTime,
-        endTimestampMs: stopwatch.endTime,
-        isRawGitCommand: true
-      });
-      return result;
-    } else {
-      this._logService.logger.debug('skip running because of dry run mode');
-    }
+    const stopwatch: Stopwatch = Stopwatch.start();
+    const result: child_process.SpawnSyncReturns<string> = Executable.spawnSync(gitPath, args, {
+      currentWorkingDirectory,
+      stdio: 'inherit'
+    });
+    this._logService.logger.debug('invoke git command done (%s)', stopwatch.toString());
+    stopwatch.stop();
+    this._telemetryService.collectTelemetry({
+      commandName: args[0],
+      args: args.slice(1),
+      durationInSeconds: stopwatch.duration,
+      startTimestampMs: stopwatch.startTime,
+      endTimestampMs: stopwatch.endTime,
+      isRawGitCommand: true
+    });
+    return result;
   }
 
-  public executeGitCommandAndCaptureOutput({
-    args,
-    workingDirectory,
-    dryRun
-  }: IExecuteGitCommandParams): string {
+  public executeGitCommandAndCaptureOutput({ args, workingDirectory }: IExecuteGitCommandParams): string {
     const gitPath: string = this.getGitPathOrThrow();
 
     const currentWorkingDirectory: string = workingDirectory || this.getRepoInfo().root;
 
     this._logService.logger.debug('invoke git command and capture output: %s %s', gitPath, args.join(' '));
-    if (!dryRun) {
-      const stopwatch: Stopwatch = Stopwatch.start();
-      const result: child_process.SpawnSyncReturns<string> = Executable.spawnSync(gitPath, args, {
-        currentWorkingDirectory,
-        stdio: ['pipe', 'pipe', 'pipe']
-      });
-      this._logService.logger.debug('invoke git command done (%s)', stopwatch.toString());
-      stopwatch.stop();
-      this._telemetryService.collectTelemetry({
-        commandName: args[0],
-        args: args.slice(1),
-        durationInSeconds: stopwatch.duration,
-        startTimestampMs: stopwatch.startTime,
-        endTimestampMs: stopwatch.endTime,
-        isRawGitCommand: true
-      });
-      this._processResult(result);
-      return result.stdout.toString();
-    } else {
-      this._logService.logger.debug('skip running because of dry run mode');
-      return '';
-    }
+    const stopwatch: Stopwatch = Stopwatch.start();
+    const result: child_process.SpawnSyncReturns<string> = Executable.spawnSync(gitPath, args, {
+      currentWorkingDirectory,
+      stdio: ['pipe', 'pipe', 'pipe']
+    });
+    this._logService.logger.debug('invoke git command done (%s)', stopwatch.toString());
+    stopwatch.stop();
+    this._telemetryService.collectTelemetry({
+      commandName: args[0],
+      args: args.slice(1),
+      durationInSeconds: stopwatch.duration,
+      startTimestampMs: stopwatch.startTime,
+      endTimestampMs: stopwatch.endTime,
+      isRawGitCommand: true
+    });
+    this._processResult(result);
+    return result.stdout.toString();
   }
 
   public getBasenameFromUrl(url: string): string {
@@ -372,6 +357,13 @@ Please specify a directory on the command line
     this._logService.logger.verbose(`git version: ${Array.isArray(result) ? result.join('.') : ''}`);
 
     return result;
+  }
+
+  public hasFile(filename: string, branch: string): boolean {
+    const result: string = this.executeGitCommandAndCaptureOutput({
+      args: ['ls-tree', '--name-only', branch, filename]
+    });
+    return Boolean(result);
   }
 
   private _processResult(result: child_process.SpawnSyncReturns<string>): void {
