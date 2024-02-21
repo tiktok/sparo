@@ -304,6 +304,11 @@ ${availableProfiles.join(',')}
     const ignoreNames: Set<string> = new Set(['node_modules']);
     const rushPluginPaths: string[] = [];
 
+    if (!FileSystem.exists(autoInstallerPath)) {
+      // No rush autoinstallers defined
+      return [];
+    }
+
     if (!FileSystem.getStatistics(autoInstallerPath).isDirectory()) {
       throw new Error(
         `A non-directory path was put into the rush plugin scan process, please contact tool author`
