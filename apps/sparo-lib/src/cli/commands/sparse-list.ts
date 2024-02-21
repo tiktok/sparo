@@ -1,6 +1,6 @@
 import childProcess from 'child_process';
 import type { Argv, ArgumentsCamelCase } from 'yargs';
-import { SparseProfileService } from '../../services/SparseProfileService';
+import { SparoProfileService } from '../../services/SparoProfileService';
 import { ICommand } from './base';
 import { Command } from '../../decorator';
 import { inject } from 'inversify';
@@ -19,7 +19,7 @@ export interface ISparseListCommandOptions {
 export class SparseListCommand implements ICommand<ISparseListCommandOptions> {
   public cmd: string = 'sparse-list';
   public description: string = '';
-  @inject(SparseProfileService) private _sparseProfileService!: SparseProfileService;
+  @inject(SparoProfileService) private _sparoProfileService!: SparoProfileService;
   @inject(GitSparseCheckoutService) private _gitSparseCheckoutService!: GitSparseCheckoutService;
 
   public builder(yargs: Argv<ISparseListCommandOptions>): void {
@@ -33,8 +33,8 @@ export class SparseListCommand implements ICommand<ISparseListCommandOptions> {
     this._gitSparseCheckoutService.initializeRepository();
 
     const profileProjects: Map<string, string[]> = new Map<string, string[]>();
-    for (const [profileName, sparseProfile] of await this._sparseProfileService.getProfilesAsync()) {
-      const { toSelectors, fromSelectors } = sparseProfile.rushSelectors;
+    for (const [profileName, sparoProfile] of await this._sparoProfileService.getProfilesAsync()) {
+      const { toSelectors, fromSelectors } = sparoProfile.rushSelectors;
       const rushListCmd: string = `rush list --json ${Array.from(toSelectors)
         .map((x) => `--to ${x}`)
         .join(' ')} ${Array.from(fromSelectors)

@@ -1,6 +1,6 @@
 {
   "$schema": "http://json-schema.org/draft-04/schema#",
-  "title": "Profile for sparse checkout.",
+  "title": "Profile for Sparo tool.",
   "description": "For use with the sparo tool, this file provides the scope of folders in the sparse checkout cone",
 
   "type": "object",
@@ -32,7 +32,7 @@
     },
 
     "includeFolders": {
-      "description": "A list of folders expand the sparse profile, adding more include folders.",
+      "description": "A list of folders expand the sparse checkout cone, adding more include folders.",
       "type": "array",
       "items": {
         "description": "A relative path from the root of monorepo",

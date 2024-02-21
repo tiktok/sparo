@@ -2,12 +2,12 @@ import * as path from 'path';
 import { inject } from 'inversify';
 import { JsonFile, FileSystem } from '@rushstack/node-core-library';
 
-import type { ISparseProfileJson } from './SparseProfile';
+import type { ISparoProfileJson } from './SparoProfile';
 import { Service } from '../decorator';
 import { GitService } from '../services/GitService';
 
 export interface ILocalStateProfiles {
-  [name: string]: ISparseProfileJson;
+  [name: string]: ISparoProfileJson;
 }
 
 export interface ILocalStateParams {

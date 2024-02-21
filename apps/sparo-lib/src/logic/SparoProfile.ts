@@ -1,5 +1,5 @@
 import { JsonFile, JsonSchema } from '@rushstack/node-core-library';
-import schemaJson from '../schemas/sparse-profile.schema.json';
+import schemaJson from '../schemas/sparo-profile.schema.json';
 import { TerminalService } from '../services/TerminalService';
 import { Service } from '../decorator';
 
@@ -15,18 +15,18 @@ export interface IRushSelectors {
   toSelectors: Set<string>;
   fromSelectors: Set<string>;
 }
-export interface ISparseProfileJson {
+export interface ISparoProfileJson {
   selections?: ISelection[];
   includeFolders?: string[];
   excludeFolders?: string[];
 }
 
-export interface ISparseProfileParams {
+export interface ISparoProfileParams {
   terminalService: TerminalService;
 }
 
 @Service()
-export class SparseProfile {
+export class SparoProfile {
   private static _jsonSchema: JsonSchema = JsonSchema.fromLoadedObject(schemaJson);
 
   public readonly selections: ISelection[];
@@ -37,14 +37,14 @@ export class SparseProfile {
     fromSelectors: new Set()
   };
 
-  private readonly _sparseProfileJson: ISparseProfileJson;
+  private readonly _sparoProfileJson: ISparoProfileJson;
   private _terminalService: TerminalService;
 
-  public constructor(terminalService: TerminalService, sparseProfileJson: ISparseProfileJson) {
+  public constructor(terminalService: TerminalService, sparoProfileJson: ISparoProfileJson) {
     this._terminalService = terminalService;
-    this._sparseProfileJson = sparseProfileJson;
+    this._sparoProfileJson = sparoProfileJson;
 
-    const { selections, includeFolders, excludeFolders } = this._sparseProfileJson;
+    const { selections, includeFolders, excludeFolders } = this._sparoProfileJson;
     this.selections = selections || [];
     this.includeFolders = includeFolders || [];
     this.excludeFolders = excludeFolders || [];
@@ -73,11 +73,11 @@ export class SparseProfile {
   public static async loadFromFileAsync(
     terminalService: TerminalService,
     jsonFilepath: string
-  ): Promise<SparseProfile> {
-    const sparseProfileJson: ISparseProfileJson = await JsonFile.loadAndValidateAsync(
+  ): Promise<SparoProfile> {
+    const sparoProfileJson: ISparoProfileJson = await JsonFile.loadAndValidateAsync(
       jsonFilepath,
-      SparseProfile._jsonSchema
+      SparoProfile._jsonSchema
     );
-    return new SparseProfile(terminalService, sparseProfileJson);
+    return new SparoProfile(terminalService, sparoProfileJson);
   }
 }

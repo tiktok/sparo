@@ -6,7 +6,7 @@ import { type ArgumentsCamelCase, type Argv } from 'yargs';
 import { GitService } from '../../services/GitService';
 import { TerminalService } from '../../services/TerminalService';
 import { ILocalStateProfiles, LocalState } from '../../logic/LocalState';
-import { SparseProfileService } from '../../services/SparseProfileService';
+import { SparoProfileService } from '../../services/SparoProfileService';
 import { GitSparseCheckoutService } from '../../services/GitSparseCheckoutService';
 
 export interface ICheckoutCommandOptions {
@@ -24,7 +24,7 @@ export class CheckoutCommand implements ICommand<ICheckoutCommandOptions> {
     'Updates files in the working tree to match the version in the index or the specified tree. If no pathspec was given, git checkout will also update HEAD to set the specified branch as the current branch.';
 
   @inject(GitService) private _gitService!: GitService;
-  @inject(SparseProfileService) private _sparseProfileService!: SparseProfileService;
+  @inject(SparoProfileService) private _sparoProfileService!: SparoProfileService;
   @inject(GitSparseCheckoutService) private _gitSparseCheckoutService!: GitSparseCheckoutService;
   @inject(LocalState) private _localState!: LocalState;
 
@@ -106,7 +106,7 @@ export class CheckoutCommand implements ICommand<ICheckoutCommandOptions> {
 
     const nonExistProfileNames: string[] = [];
     for (const targetProfileName of targetProfileNames) {
-      if (!this._sparseProfileService.hasProfile(targetProfileName, operationBranch)) {
+      if (!this._sparoProfileService.hasProfile(targetProfileName, operationBranch)) {
         nonExistProfileNames.push(targetProfileName);
       }
     }
@@ -146,7 +146,7 @@ export class CheckoutCommand implements ICommand<ICheckoutCommandOptions> {
     localState.reset();
     for (const p of targetProfileNames) {
       const { selections, includeFolders, excludeFolders } =
-        await this._gitSparseCheckoutService.resolveSparseProfileAsync(p, {
+        await this._gitSparseCheckoutService.resolveSparoProfileAsync(p, {
           localStateUpdateAction: 'add'
         });
       // TODO: policy #1: Can not sparse checkout with uncommitted changes in the cone.

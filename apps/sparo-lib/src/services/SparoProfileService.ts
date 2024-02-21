@@ -1,19 +1,19 @@
 import { FileSystem, Async } from '@rushstack/node-core-library';
 import { inject } from 'inversify';
 import { Service } from '../decorator';
-import { SparseProfile } from '../logic/SparseProfile';
+import { SparoProfile } from '../logic/SparoProfile';
 import { TerminalService } from './TerminalService';
 import { GitService } from './GitService';
 
-export interface ISparseProfileServiceParams {
+export interface ISparoProfileServiceParams {
   terminalService: TerminalService;
-  sparseProfileFolder: string;
+  sparoProfileFolder: string;
 }
-const defaultSparseProfileFolder: string = 'common/sparse-profiles';
+const defaultSparoProfileFolder: string = 'common/sparo-profiles';
 
 @Service()
-export class SparseProfileService {
-  public _profiles: Map<string, SparseProfile> = new Map<string, SparseProfile>();
+export class SparoProfileService {
+  public _profiles: Map<string, SparoProfile> = new Map<string, SparoProfile>();
   private _loadPromise: Promise<void> | undefined;
 
   @inject(GitService) private _gitService!: GitService;
@@ -22,26 +22,26 @@ export class SparseProfileService {
   public async loadProfilesAsync(): Promise<void> {
     if (!this._loadPromise) {
       this._loadPromise = (async () => {
-        const sparseProfileFolder: string = defaultSparseProfileFolder;
-        const sparseProfilePaths: string[] = await FileSystem.readFolderItemNamesAsync(sparseProfileFolder, {
+        const sparoProfileFolder: string = defaultSparoProfileFolder;
+        const sparoProfilePaths: string[] = await FileSystem.readFolderItemNamesAsync(sparoProfileFolder, {
           absolutePaths: true
         });
 
-        await Async.forEachAsync(sparseProfilePaths, async (sparseProfilePath: string) => {
-          let sparseProfile: SparseProfile | undefined;
+        await Async.forEachAsync(sparoProfilePaths, async (sparoProfilePath: string) => {
+          let sparoProfile: SparoProfile | undefined;
           try {
-            sparseProfile = await SparseProfile.loadFromFileAsync(this._terminalService, sparseProfilePath);
+            sparoProfile = await SparoProfile.loadFromFileAsync(this._terminalService, sparoProfilePath);
           } catch (e) {
             // TODO: more error handling
             this._terminalService.terminal.writeLine((e as Error).message);
           }
 
-          if (sparseProfile) {
-            const profileName: string = SparseProfileService._getProfileName(sparseProfilePath);
+          if (sparoProfile) {
+            const profileName: string = SparoProfileService._getProfileName(sparoProfilePath);
             this._terminalService.terminal.writeDebugLine(
-              `load sparse profile ${profileName} from ${sparseProfilePath}`
+              `load sparse profile ${profileName} from ${sparoProfilePath}`
             );
-            this._profiles.set(profileName, sparseProfile);
+            this._profiles.set(profileName, sparoProfile);
           }
         });
       })();
@@ -49,18 +49,18 @@ export class SparseProfileService {
     return this._loadPromise;
   }
 
-  public async getProfileAsync(name: string): Promise<SparseProfile | undefined> {
+  public async getProfileAsync(name: string): Promise<SparoProfile | undefined> {
     await this.loadProfilesAsync();
     return this._profiles.get(name);
   }
 
-  public async getProfilesAsync(): Promise<Map<string, SparseProfile>> {
+  public async getProfilesAsync(): Promise<Map<string, SparoProfile>> {
     await this.loadProfilesAsync();
     return this._profiles;
   }
 
   public hasProfile(name: string, branch: string): boolean {
-    return this._gitService.hasFile(`${defaultSparseProfileFolder}/${name}.json`, branch);
+    return this._gitService.hasFile(`${defaultSparoProfileFolder}/${name}.json`, branch);
   }
 
   private static _getProfileName(profilePath: string): string {

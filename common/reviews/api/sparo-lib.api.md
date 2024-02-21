@@ -8,6 +8,7 @@
 
 import * as child_process from 'child_process';
 import { GitRepoInfo } from 'git-repo-info';
+import { ITerminal } from '@rushstack/terminal';
 
 // Warning: (ae-forgotten-export) The symbol "Constructable" needs to be exported by the entry point index.d.ts
 //
@@ -80,12 +81,25 @@ export interface ITelemetryData {
     readonly startTimestampMs?: number;
 }
 
+export { ITerminal }
+
 // @public
 export class Sparo {
     // (undocumented)
     static launchSparoAsync(launchOptions: ILaunchOptions): Promise<void>;
     // (undocumented)
     static launchSparoCIAsync(launchOptions: ILaunchOptions): Promise<void>;
+}
+
+// @alpha
+export class TerminalService {
+    constructor();
+    // (undocumented)
+    setIsDebug(value: boolean): void;
+    // (undocumented)
+    setIsVerbose(value: boolean): void;
+    // (undocumented)
+    get terminal(): ITerminal;
 }
 
 // (No @packageDocumentation comment for this package)

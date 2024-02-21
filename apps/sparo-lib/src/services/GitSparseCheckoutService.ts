@@ -3,9 +3,9 @@ import * as child_process from 'child_process';
 import { inject } from 'inversify';
 import { Service } from '../decorator';
 import { LocalState, LocalStateUpdateAction } from '../logic/LocalState';
-import { type ISelection, SparseProfile } from '../logic/SparseProfile';
+import { type ISelection, SparoProfile } from '../logic/SparoProfile';
 import { GitService } from './GitService';
-import { SparseProfileService } from './SparseProfileService';
+import { SparoProfileService } from './SparoProfileService';
 import { TerminalService } from './TerminalService';
 import { Executable, FileSystem, JsonFile, JsonSyntax } from '@rushstack/node-core-library';
 import { Stopwatch } from '../logic/Stopwatch';
@@ -24,13 +24,13 @@ export interface IRushProject {
   projectFolder: string;
 }
 
-export interface IResolveSparseProfileOptions {
+export interface IResolveSparoProfileOptions {
   localStateUpdateAction: LocalStateUpdateAction;
 }
 
 @Service()
 export class GitSparseCheckoutService {
-  @inject(SparseProfileService) private _sparseProfileService!: SparseProfileService;
+  @inject(SparoProfileService) private _sparoProfileService!: SparoProfileService;
   @inject(GitService) private _gitService!: GitService;
   @inject(LocalState) private _localState!: LocalState;
   @inject(TerminalService) private _terminalService!: TerminalService;
@@ -48,9 +48,9 @@ export class GitSparseCheckoutService {
     this._prepareMonorepoSkeleton();
   }
 
-  public async resolveSparseProfileAsync(
+  public async resolveSparoProfileAsync(
     profile: string,
-    options: IResolveSparseProfileOptions
+    options: IResolveSparoProfileOptions
   ): Promise<{
     selections: ISelection[];
     includeFolders: string[];
@@ -58,12 +58,11 @@ export class GitSparseCheckoutService {
   }> {
     this.initializeRepository();
 
-    const sparseProfile: SparseProfile | undefined =
-      await this._sparseProfileService.getProfileAsync(profile);
+    const sparoProfile: SparoProfile | undefined = await this._sparoProfileService.getProfileAsync(profile);
 
-    if (!sparseProfile) {
+    if (!sparoProfile) {
       const availableProfiles: string[] = Array.from(
-        (await this._sparseProfileService.getProfilesAsync()).keys()
+        (await this._sparoProfileService.getProfilesAsync()).keys()
       );
       throw new Error(
         `Parse sparse profile "${profile}" error. ${
@@ -81,7 +80,7 @@ ${availableProfiles.join(',')}
       throw new Error(`Running outside of the git repository folder`);
     }
 
-    const { selections, includeFolders, excludeFolders } = sparseProfile;
+    const { selections, includeFolders, excludeFolders } = sparoProfile;
     const { localStateUpdateAction } = options;
     await this._localState.setProfiles(
       {
