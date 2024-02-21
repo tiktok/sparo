@@ -1,0 +1,28 @@
+name: Publish NPM Packages
+on: workflow_dispatch
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 2
+          token: ${{ secrets.BOT_ACCESS_TOKEN }}
+      - name: Git config user
+        uses: snow-actions/git-config-user@v1.0.0
+        with:
+          name: tiktokbot
+          email: tiktokbot@users.noreply.github.com
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 16
+      - name: Rush Install
+        run: node common/scripts/install-run-rush.js install
+      - name: Rush build
+        run: node common/scripts/install-run-rush.js build --verbose --production
+      - name: Rush test
+        run: node common/scripts/install-run-rush.js test --verbose
+      - name: Rush publish
+        run: node common/scripts/install-run-rush.js publish --apply --publish --version-policy sparo --target-branch ${{ github.ref_name }}
+        env:
+          NPM_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}

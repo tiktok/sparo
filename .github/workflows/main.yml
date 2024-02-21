@@ -1,9 +1,9 @@
-name: CI
+name: Build and Test
 on:
   push:
-    branches: [ "main" ]
+    branches: ['main']
   pull_request:
-    branches: [ "main" ]
+    branches: ['main']
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -14,8 +14,8 @@ jobs:
       - name: Git config user
         uses: snow-actions/git-config-user@v1.0.0
         with:
-          name: # Service Account's Name
-          email: # Service Account's Email Address
+          name: tiktokbot
+          email: tiktokbot@users.noreply.github.com
       - uses: actions/setup-node@v3
         with:
           node-version: 16
@@ -25,3 +25,5 @@ jobs:
         run: node common/scripts/install-run-rush.js install
       - name: Rush rebuild
         run: node common/scripts/install-run-rush.js rebuild --verbose --production
+      - name: Rush test
+        run: node common/scripts/install-run-rush.js test --verbose
