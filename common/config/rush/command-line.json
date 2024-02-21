@@ -185,6 +185,20 @@
 
       // This will invoke common/autoinstallers/rush-prettier/node_modules/.bin/pretty-quick
       "shellCommand": "pretty-quick --staged"
+    },
+    {
+      "commandKind": "bulk",
+      "name": "test",
+      "summary": "Bulk test script",
+      "description": "This is an command that runs test script separately for each project",
+      "safeForSimultaneousRushProcesses": false,
+      "enableParallelism": true,
+      "ignoreDependencyOrder": false,
+      "ignoreMissingScript": false,
+      "allowWarningsInSuccessfulBuild": false,
+      "incremental": false,
+      "watchForChanges": false,
+      "disableBuildCache": false
     }
   ],
 
