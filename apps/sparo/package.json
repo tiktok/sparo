@@ -1,0 +1,54 @@
+{
+  "name": "sparo",
+  "version": "0.0.0",
+  "description": "Improve Git performance in your large scale frontend monorepo by integrating sparse checkout with Rush and PNPM",
+  "keywords": [
+    "background prefetch",
+    "blobless",
+    "checkout",
+    "clone",
+    "cone",
+    "git",
+    "GVFS",
+    "index",
+    "monorepo",
+    "partial",
+    "pnpm",
+    "repo",
+    "repository",
+    "rush",
+    "scalar",
+    "sparse",
+    "treeless",
+    "VFS for Git",
+    "workspace"
+  ],
+  "license": "MIT",
+  "bin": {
+    "sparo": "./bin/sparo",
+    "sparo-ci": "./bin/sparo-ci"
+  },
+  "scripts": {
+    "_phase:build": "heft run --only build -- --clean",
+    "_phase:test": "heft run --only test -- --clean",
+    "build": "heft build --clean"
+  },
+  "dependencies": {
+    "@rushstack/node-core-library": "~3.64.2",
+    "git-repo-info": "~2.1.1",
+    "inversify": "~6.0.2",
+    "reflect-metadata": "~0.2.1",
+    "winston": "~3.11.0",
+    "yargs": "~17.7.2"
+  },
+  "devDependencies": {
+    "@rushstack/heft": "~0.64.3",
+    "@rushstack/heft-node-rig": "~2.4.5",
+    "@types/heft-jest": "1.0.6",
+    "@types/node": "20.11.16",
+    "@types/yargs": "17.0.32",
+    "eslint": "~8.56.0",
+    "typescript": "~5.3.3"
+  },
+  "preferGlobal": true
+}
