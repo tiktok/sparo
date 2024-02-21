@@ -10,6 +10,31 @@ importers:
 
   ../../apps/sparo:
     dependencies:
+      sparo-lib:
+        specifier: workspace:*
+        version: link:../sparo-lib
+    devDependencies:
+      '@rushstack/heft':
+        specifier: 0.64.3
+        version: 0.64.3(@types/node@20.11.16)
+      '@rushstack/heft-node-rig':
+        specifier: 2.4.5
+        version: 2.4.5(@rushstack/heft@0.64.3)(@types/node@20.11.16)
+      '@types/heft-jest':
+        specifier: 1.0.6
+        version: 1.0.6
+      '@types/node':
+        specifier: 20.11.16
+        version: 20.11.16
+      eslint:
+        specifier: 8.56.0
+        version: 8.56.0
+      typescript:
+        specifier: ~5.3.3
+        version: 5.3.3
+
+  ../../apps/sparo-lib:
+    dependencies:
       '@rushstack/node-core-library':
         specifier: ~3.64.2
         version: 3.64.2(@types/node@20.11.16)
@@ -30,10 +55,10 @@ importers:
         version: 17.7.2
     devDependencies:
       '@rushstack/heft':
-        specifier: ~0.64.3
+        specifier: 0.64.3
         version: 0.64.3(@types/node@20.11.16)
       '@rushstack/heft-node-rig':
-        specifier: ~2.4.5
+        specifier: 2.4.5
         version: 2.4.5(@rushstack/heft@0.64.3)(@types/node@20.11.16)
       '@types/heft-jest':
         specifier: 1.0.6
@@ -45,7 +70,7 @@ importers:
         specifier: 17.0.32
         version: 17.0.32
       eslint:
-        specifier: ~8.56.0
+        specifier: 8.56.0
         version: 8.56.0
       typescript:
         specifier: ~5.3.3
@@ -545,7 +570,7 @@ packages:
       '@jest/console': 29.7.0
       '@jest/reporters': 29.5.0
       '@jest/test-result': 29.7.0
-      '@jest/transform': 29.5.0
+      '@jest/transform': 29.7.0
       '@jest/types': 29.6.3
       '@types/node': 20.11.16
       ansi-escapes: 4.3.2
@@ -558,11 +583,11 @@ packages:
       jest-haste-map: 29.7.0
       jest-message-util: 29.7.0
       jest-regex-util: 29.6.3
-      jest-resolve: 29.5.0
+      jest-resolve: 29.7.0
       jest-resolve-dependencies: 29.7.0
       jest-runner: 29.7.0
       jest-runtime: 29.7.0
-      jest-snapshot: 29.5.0
+      jest-snapshot: 29.7.0
       jest-util: 29.7.0
       jest-validate: 29.7.0
       jest-watcher: 29.7.0
@@ -639,7 +664,7 @@ packages:
       '@bcoe/v8-coverage': 0.2.3
       '@jest/console': 29.7.0
       '@jest/test-result': 29.7.0
-      '@jest/transform': 29.5.0
+      '@jest/transform': 29.7.0
       '@jest/types': 29.6.3
       '@jridgewell/trace-mapping': 0.3.22
       '@types/node': 20.11.16
@@ -2897,7 +2922,7 @@ packages:
       jest-environment-node: 29.7.0
       jest-get-type: 29.6.3
       jest-regex-util: 29.6.3
-      jest-resolve: 29.5.0
+      jest-resolve: 29.7.0
       jest-runner: 29.7.0
       jest-util: 29.7.0
       jest-validate: 29.7.0
@@ -3168,7 +3193,7 @@ packages:
       '@babel/traverse': 7.23.9
       '@babel/types': 7.23.9
       '@jest/expect-utils': 29.7.0
-      '@jest/transform': 29.5.0
+      '@jest/transform': 29.7.0
       '@jest/types': 29.6.3
       '@types/babel__traverse': 7.20.5
       '@types/prettier': 2.7.3
