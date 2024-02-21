@@ -7,14 +7,22 @@ import { COMMAND_LIST } from './commands/cmd-list';
 import { HelpCommand } from './commands/help';
 import { ICommand } from './commands/base';
 import { GitVersionCompatibility } from '../logic/GitVersionCompatibility';
+import { TelemetryService } from '../services/TelemetryService';
+import { getCommandName } from './commands/util';
+import type { ILaunchOptions } from '../api/Sparo';
 
 export class SparoCommandLine {
   private _commandsMap: Set<string> = new Set<string>();
 
   private constructor() {}
 
-  public static async launchAsync(): Promise<void> {
+  public static async launchAsync(launchOptions: ILaunchOptions): Promise<void> {
     await GitVersionCompatibility.ensureGitVersionAsync();
+
+    if (launchOptions.collectTelemetryAsync) {
+      const telemetryService: TelemetryService = await getFromContainer(TelemetryService);
+      telemetryService.setCollectTelemetryFunction(launchOptions.collectTelemetryAsync);
+    }
 
     const sparo: SparoCommandLine = new SparoCommandLine();
     await sparo.prepareCommandAsync();
@@ -29,7 +37,7 @@ export class SparoCommandLine {
         registerClass(cmd);
         const cmdInstance: ICommand<{}> = await getFromContainer(cmd);
         commandsService.register(cmdInstance);
-        this._commandsMap.add(cmdInstance.cmd);
+        this._commandsMap.add(getCommandName(cmdInstance.cmd));
       })
     );
   }

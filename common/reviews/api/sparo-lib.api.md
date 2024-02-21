@@ -4,12 +4,89 @@
 
 ```ts
 
+/// <reference types="node" />
+
+import * as child_process from 'child_process';
+import { GitRepoInfo } from 'git-repo-info';
+
+// Warning: (ae-forgotten-export) The symbol "Constructable" needs to be exported by the entry point index.d.ts
+//
+// @alpha
+export function getFromContainer<T>(clazz: Constructable<T>): Promise<T>;
+
+// @alpha
+export class GitService {
+    // (undocumented)
+    executeGitCommand({ args, workingDirectory, dryRun }: IExecuteGitCommandParams): child_process.SpawnSyncReturns<string> | undefined;
+    // (undocumented)
+    executeGitCommandAndCaptureOutput({ args, workingDirectory, dryRun }: IExecuteGitCommandParams): string;
+    // (undocumented)
+    getBasenameFromUrl(url: string): string;
+    // (undocumented)
+    getGitConfig(k: string, option?: {
+        dryRun?: boolean;
+        global?: boolean;
+    }): string | undefined;
+    // (undocumented)
+    getGitEmail(): string | undefined;
+    // (undocumented)
+    getGitPathOrThrow(): string;
+    // (undocumented)
+    getGitUser(): string | undefined;
+    // (undocumented)
+    getGitVersion(): [number, number, number] | undefined;
+    // (undocumented)
+    getIsSparseCheckoutMode(): boolean | undefined;
+    // (undocumented)
+    getRepoInfo(): GitRepoInfo;
+    get gitPath(): string | undefined;
+    // (undocumented)
+    setGitConfig(k: string, v: string | number | boolean, option?: {
+        dryRun?: boolean;
+        global?: boolean;
+    }): void;
+    // (undocumented)
+    setRecommendConfig(option?: {
+        overwrite?: boolean;
+        dryRun?: boolean;
+    }): void;
+}
+
+// @alpha (undocumented)
+export type ICollectTelemetryFunction = (data: ITelemetryData) => Promise<void>;
+
+// @alpha (undocumented)
+export interface IExecuteGitCommandParams {
+    // (undocumented)
+    args: string[];
+    // (undocumented)
+    dryRun?: boolean;
+    // (undocumented)
+    workingDirectory?: string;
+}
+
+// @public
+export interface ILaunchOptions {
+    // @internal
+    collectTelemetryAsync?: ICollectTelemetryFunction;
+}
+
+// @alpha (undocumented)
+export interface ITelemetryData {
+    readonly args: string[];
+    readonly commandName: string;
+    readonly durationInSeconds: number;
+    readonly endTimestampMs?: number;
+    readonly isRawGitCommand?: boolean;
+    readonly startTimestampMs?: number;
+}
+
 // @public
 export class Sparo {
     // (undocumented)
-    static launchSparoAsync(): Promise<void>;
+    static launchSparoAsync(launchOptions: ILaunchOptions): Promise<void>;
     // (undocumented)
-    static launchSparoCIAsync(): Promise<void>;
+    static launchSparoCIAsync(launchOptions: ILaunchOptions): Promise<void>;
 }
 
 // (No @packageDocumentation comment for this package)

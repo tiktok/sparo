@@ -5,17 +5,26 @@ import { inject } from 'inversify';
 import { Service } from '../decorator';
 import { LogService } from './LogService';
 import { Stopwatch } from '../logic/Stopwatch';
+import { TelemetryService } from './TelemetryService';
 
 export interface IGitServiceParams {
   logService: LogService;
 }
 
+/**
+ * @alpha
+ */
 export interface IExecuteGitCommandParams {
   args: string[];
   workingDirectory?: string;
   dryRun?: boolean;
 }
 
+/**
+ * Help class for git operations
+ *
+ * @alpha
+ */
 @Service()
 export class GitService {
   private _checkedGitPath: boolean = false;
@@ -24,6 +33,7 @@ export class GitService {
   private _gitEmail: string | undefined;
   private _isSparseCheckoutMode: boolean | undefined;
   @inject(LogService) private _logService!: LogService;
+  @inject(TelemetryService) private _telemetryService!: TelemetryService;
 
   public setGitConfig(
     k: string,
@@ -207,6 +217,14 @@ export class GitService {
       });
       this._logService.logger.debug('invoke git command done (%s)', stopwatch.toString());
       stopwatch.stop();
+      this._telemetryService.collectTelemetry({
+        commandName: args[0],
+        args: args.slice(1),
+        durationInSeconds: stopwatch.duration,
+        startTimestampMs: stopwatch.startTime,
+        endTimestampMs: stopwatch.endTime,
+        isRawGitCommand: true
+      });
       return result;
     } else {
       this._logService.logger.debug('skip running because of dry run mode');
@@ -231,6 +249,14 @@ export class GitService {
       });
       this._logService.logger.debug('invoke git command done (%s)', stopwatch.toString());
       stopwatch.stop();
+      this._telemetryService.collectTelemetry({
+        commandName: args[0],
+        args: args.slice(1),
+        durationInSeconds: stopwatch.duration,
+        startTimestampMs: stopwatch.startTime,
+        endTimestampMs: stopwatch.endTime,
+        isRawGitCommand: true
+      });
       this._processResult(result);
       return result.stdout.toString();
     } else {

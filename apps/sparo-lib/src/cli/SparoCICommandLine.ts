@@ -6,14 +6,22 @@ import { ICommand } from './commands/base';
 import { ArgvService } from '../services/ArgvService';
 import { CIHelpCommand } from './commands/ci-help';
 import { GitVersionCompatibility } from '../logic/GitVersionCompatibility';
+import { TelemetryService } from '../services/TelemetryService';
+import { getCommandName } from './commands/util';
+import type { ILaunchOptions } from '../api/Sparo';
 
 export class SparoCICommandLine {
   private _commandsMap: Set<string> = new Set<string>();
 
   private constructor() {}
 
-  public static async launchAsync(): Promise<void> {
+  public static async launchAsync(launchOptions: ILaunchOptions): Promise<void> {
     await GitVersionCompatibility.ensureGitVersionAsync();
+
+    if (launchOptions.collectTelemetryAsync) {
+      const telemetryService: TelemetryService = await getFromContainer(TelemetryService);
+      telemetryService.setCollectTelemetryFunction(launchOptions.collectTelemetryAsync);
+    }
 
     const sparoCI: SparoCICommandLine = new SparoCICommandLine();
     await sparoCI.prepareCommandAsync();
@@ -28,7 +36,7 @@ export class SparoCICommandLine {
         registerClass(cmd);
         const cmdInstance: ICommand<{}> = await getFromContainer(cmd);
         commandsService.register(cmdInstance);
-        this._commandsMap.add(cmdInstance.cmd);
+        this._commandsMap.add(getCommandName(cmdInstance.cmd));
       })
     );
   }

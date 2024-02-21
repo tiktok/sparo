@@ -40,6 +40,11 @@ const defaultContainer: IContainer = new (class {
   }
 })();
 
+/**
+ * Get instance from container
+ *
+ * @alpha
+ */
 export async function getFromContainer<T>(clazz: Constructable<T>): Promise<T> {
   const instance: T = await defaultContainer.getAsync<T & IAppClassInterface>(clazz);
   return instance as T;
