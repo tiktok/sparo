@@ -1,7 +1,7 @@
 import { Constructable } from '../../di/types';
 import { CloneCommand } from './clone';
 import { HelpCommand } from './help';
-import { SparseListCommand } from './sparse-list';
+import { ListProfilesCommand } from './list-profiles';
 import { AutoConfigCommand } from './auto-config';
 import { FetchCommand } from './fetch';
 import { PurgeCommand } from './purge';
@@ -14,7 +14,7 @@ export const COMMAND_LIST: Constructable[] = [
   CloneCommand,
   CheckoutCommand,
   HelpCommand,
-  SparseListCommand,
+  ListProfilesCommand,
   AutoConfigCommand,
   FetchCommand,
   PurgeCommand

@@ -11,22 +11,22 @@ export interface IProject {
   name: string;
   path: string;
 }
-export interface ISparseListCommandOptions {
+export interface IListProfilesCommandOptions {
   project: string;
 }
 
 @Command()
-export class SparseListCommand implements ICommand<ISparseListCommandOptions> {
-  public cmd: string = 'sparse-list';
+export class ListProfilesCommand implements ICommand<IListProfilesCommandOptions> {
+  public cmd: string = 'list-profiles';
   public description: string = '';
   @inject(SparoProfileService) private _sparoProfileService!: SparoProfileService;
   @inject(GitSparseCheckoutService) private _gitSparseCheckoutService!: GitSparseCheckoutService;
 
-  public builder(yargs: Argv<ISparseListCommandOptions>): void {
+  public builder(yargs: Argv<IListProfilesCommandOptions>): void {
     yargs.string('project').demandOption(['project']);
   }
   public handler = async (
-    args: ArgumentsCamelCase<ISparseListCommandOptions>,
+    args: ArgumentsCamelCase<IListProfilesCommandOptions>,
     terminalService: TerminalService
   ): Promise<void> => {
     // ensure sparse profiles folder
@@ -61,6 +61,6 @@ export class SparseListCommand implements ICommand<ISparseListCommandOptions> {
     }
   };
   public getHelp(): string {
-    return 'sparse list help';
+    return 'list-profiles help';
   }
 }
