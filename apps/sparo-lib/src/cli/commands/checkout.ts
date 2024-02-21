@@ -27,6 +27,7 @@ export class CheckoutCommand implements ICommand<ICheckoutCommandOptions> {
   @inject(SparoProfileService) private _sparoProfileService!: SparoProfileService;
   @inject(GitSparseCheckoutService) private _gitSparseCheckoutService!: GitSparseCheckoutService;
   @inject(LocalState) private _localState!: LocalState;
+  @inject(TerminalService) private _terminalService!: TerminalService;
 
   public builder(yargs: Argv<{}>): void {
     /**
@@ -65,8 +66,15 @@ export class CheckoutCommand implements ICommand<ICheckoutCommandOptions> {
     args: ArgumentsCamelCase<ICheckoutCommandOptions>,
     terminalService: TerminalService
   ): Promise<void> => {
+    console.log(JSON.stringify(args, null, 2));
+    const a: number = 1;
+    if (a > 0) {
+      process.exit(1);
+    }
     const { _gitService: gitService, _localState: localState } = this;
-    const { profile, b, B, branch, startPoint } = args;
+    const { b, B, branch, startPoint } = args;
+
+    const { isNoProfile, profiles } = this._processProfilesFromArg(args.profile);
 
     /**
      * Since we set up single branch by default and branch can be missing in local, we are going to fetch the branch from remote server here.
@@ -90,37 +98,38 @@ export class CheckoutCommand implements ICommand<ICheckoutCommandOptions> {
       }
     }
 
-    // Get target profile.
-    // 1. Read from existing profile from local state.
-    // 2. If profile specified from CLI parameter, it takes over.
-    const localStateProfiles: ILocalStateProfiles | undefined = await localState.getProfiles();
-
     let targetProfileNames: string[] = [];
-    if (localStateProfiles) {
-      targetProfileNames = Object.keys(localStateProfiles);
-    }
+    if (!isNoProfile) {
+      // Get target profile.
+      // 1. Read from existing profile from local state.
+      // 2. If profile specified from CLI parameter, it takes over.
+      const localStateProfiles: ILocalStateProfiles | undefined = await localState.getProfiles();
 
-    if (profile.length) {
-      targetProfileNames = profile;
-    }
+      if (localStateProfiles) {
+        targetProfileNames = Object.keys(localStateProfiles);
+      }
 
-    const nonExistProfileNames: string[] = [];
-    for (const targetProfileName of targetProfileNames) {
-      if (!this._sparoProfileService.hasProfile(targetProfileName, operationBranch)) {
-        nonExistProfileNames.push(targetProfileName);
+      if (profiles.length) {
+        targetProfileNames = profiles;
+      }
+
+      const nonExistProfileNames: string[] = [];
+      for (const targetProfileName of targetProfileNames) {
+        if (!this._sparoProfileService.hasProfile(targetProfileName, operationBranch)) {
+          nonExistProfileNames.push(targetProfileName);
+        }
+      }
+
+      if (nonExistProfileNames.length) {
+        throw new Error(
+          `Checkout failed. The following profile(s) are missing in the branch "${operationBranch}": ${targetProfileNames.join(
+            ', '
+          )}`
+        );
       }
     }
 
-    if (nonExistProfileNames.length) {
-      throw new Error(
-        `Checkout failed. The following profile(s) are missing in the branch "${operationBranch}": ${targetProfileNames.join(
-          ', '
-        )}`
-      );
-    }
-
     // native git checkout
-    // eslint-disable-next-line no-debugger
     const checkoutArgs: string[] = (args._ as string[]).slice();
     if (b) {
       checkoutArgs.push('-b');
@@ -144,18 +153,22 @@ export class CheckoutCommand implements ICommand<ICheckoutCommandOptions> {
 
     // checkout profiles
     localState.reset();
-    for (const p of targetProfileNames) {
-      const { selections, includeFolders, excludeFolders } =
-        await this._gitSparseCheckoutService.resolveSparoProfileAsync(p, {
-          localStateUpdateAction: 'add'
-        });
-      // TODO: policy #1: Can not sparse checkout with uncommitted changes in the cone.
+    if (targetProfileNames.length) {
+      for (const p of targetProfileNames) {
+        const { selections, includeFolders, excludeFolders } =
+          await this._gitSparseCheckoutService.resolveSparoProfileAsync(p, {
+            localStateUpdateAction: 'add'
+          });
+        // TODO: policy #1: Can not sparse checkout with uncommitted changes in the cone.
 
-      await this._gitSparseCheckoutService.checkoutAsync({
-        selections,
-        includeFolders,
-        excludeFolders
-      });
+        await this._gitSparseCheckoutService.checkoutAsync({
+          selections,
+          includeFolders,
+          excludeFolders
+        });
+      }
+    } else {
+      await this._gitSparseCheckoutService.purgeAsync();
     }
   };
 
@@ -209,5 +222,35 @@ export class CheckoutCommand implements ICommand<ICheckoutCommandOptions> {
      *   "git config --get branch.<branch>.remote"
      */
     return 'origin';
+  }
+
+  private _processProfilesFromArg(profilesFromArg: string[]): { isNoProfile: boolean; profiles: string[] } {
+    /**
+     * --profile is defined as array type parameter, specifying --no-profile is resolved to false by yargs.
+     *
+     * @example --no-profile -> [false]
+     * @example --no-profile --profile foo -> [false, "foo"]
+     * @example --profile foo --no-profile -> ["foo", false]
+     */
+    let isNoProfile: boolean = false;
+    const profiles: string[] = [];
+
+    for (const profile of profilesFromArg) {
+      if (typeof profile === 'boolean' && profile === false) {
+        isNoProfile = true;
+        continue;
+      }
+
+      profiles.push(profile);
+    }
+
+    if (isNoProfile && profiles.length) {
+      throw new Error(`"--no-profile" and "--profile" can not be specified at the same time`);
+    }
+
+    return {
+      isNoProfile,
+      profiles
+    };
   }
 }
