@@ -8,19 +8,19 @@
 
 import * as child_process from 'child_process';
 import { GitRepoInfo } from 'git-repo-info';
+import { ITerminal } from '@rushstack/terminal';
 
 // Warning: (ae-forgotten-export) The symbol "Constructable" needs to be exported by the entry point index.d.ts
 //
 // @alpha
-export function getFromContainer<T>(clazz: Constructable<T>): Promise<T>;
+export function getFromContainerAsync<T>(clazz: Constructable<T>): Promise<T>;
 
 // @alpha
 export class GitService {
     // (undocumented)
-    executeGitCommand({ args, workingDirectory, dryRun }: IExecuteGitCommandParams): child_process.SpawnSyncReturns<string> | undefined;
+    executeGitCommand({ args, workingDirectory }: IExecuteGitCommandParams): child_process.SpawnSyncReturns<string>;
     // (undocumented)
-    executeGitCommandAndCaptureOutput({ args, workingDirectory, dryRun }: IExecuteGitCommandParams): string;
-    // (undocumented)
+    executeGitCommandAndCaptureOutput({ args, workingDirectory }: IExecuteGitCommandParams): string;
     getBasenameFromUrl(url: string): string;
     // (undocumented)
     getGitConfig(k: string, option?: {
@@ -41,6 +41,8 @@ export class GitService {
     getRepoInfo(): GitRepoInfo;
     get gitPath(): string | undefined;
     // (undocumented)
+    hasFile(filename: string, branch: string): boolean;
+    // (undocumented)
     setGitConfig(k: string, v: string | number | boolean, option?: {
         dryRun?: boolean;
         global?: boolean;
@@ -59,8 +61,6 @@ export type ICollectTelemetryFunction = (data: ITelemetryData) => Promise<void>;
 export interface IExecuteGitCommandParams {
     // (undocumented)
     args: string[];
-    // (undocumented)
-    dryRun?: boolean;
     // (undocumented)
     workingDirectory?: string;
 }
@@ -81,12 +81,25 @@ export interface ITelemetryData {
     readonly startTimestampMs?: number;
 }
 
+export { ITerminal }
+
 // @public
 export class Sparo {
     // (undocumented)
     static launchSparoAsync(launchOptions: ILaunchOptions): Promise<void>;
     // (undocumented)
     static launchSparoCIAsync(launchOptions: ILaunchOptions): Promise<void>;
+}
+
+// @alpha
+export class TerminalService {
+    constructor();
+    // (undocumented)
+    setIsDebug(value: boolean): void;
+    // (undocumented)
+    setIsVerbose(value: boolean): void;
+    // (undocumented)
+    get terminal(): ITerminal;
 }
 
 // (No @packageDocumentation comment for this package)

@@ -1,40 +1,40 @@
 import childProcess from 'child_process';
 import type { Argv, ArgumentsCamelCase } from 'yargs';
-import { SparseProfileService } from '../../services/SparseProfileService';
+import { SparoProfileService } from '../../services/SparoProfileService';
 import { ICommand } from './base';
 import { Command } from '../../decorator';
 import { inject } from 'inversify';
 import { GitSparseCheckoutService } from '../../services/GitSparseCheckoutService';
-import type { LogService } from '../../services/LogService';
+import type { TerminalService } from '../../services/TerminalService';
 
 export interface IProject {
   name: string;
   path: string;
 }
-export interface ISparseListCommandOptions {
+export interface IListProfilesCommandOptions {
   project: string;
 }
 
 @Command()
-export class SparseListCommand implements ICommand<ISparseListCommandOptions> {
-  public cmd: string = 'sparse-list';
+export class ListProfilesCommand implements ICommand<IListProfilesCommandOptions> {
+  public cmd: string = 'list-profiles';
   public description: string = '';
-  @inject(SparseProfileService) private _sparseProfileService!: SparseProfileService;
+  @inject(SparoProfileService) private _sparoProfileService!: SparoProfileService;
   @inject(GitSparseCheckoutService) private _gitSparseCheckoutService!: GitSparseCheckoutService;
 
-  public builder(yargs: Argv<ISparseListCommandOptions>): void {
+  public builder(yargs: Argv<IListProfilesCommandOptions>): void {
     yargs.string('project').demandOption(['project']);
   }
   public handler = async (
-    args: ArgumentsCamelCase<ISparseListCommandOptions>,
-    logService: LogService
+    args: ArgumentsCamelCase<IListProfilesCommandOptions>,
+    terminalService: TerminalService
   ): Promise<void> => {
     // ensure sparse profiles folder
     this._gitSparseCheckoutService.initializeRepository();
 
     const profileProjects: Map<string, string[]> = new Map<string, string[]>();
-    for (const [profileName, sparseProfile] of await this._sparseProfileService.getProfilesAsync()) {
-      const { toSelectors, fromSelectors } = sparseProfile.rushSelectors;
+    for (const [profileName, sparoProfile] of await this._sparoProfileService.getProfilesAsync()) {
+      const { toSelectors, fromSelectors } = sparoProfile.rushSelectors;
       const rushListCmd: string = `rush list --json ${Array.from(toSelectors)
         .map((x) => `--to ${x}`)
         .join(' ')} ${Array.from(fromSelectors)
@@ -53,14 +53,14 @@ export class SparseListCommand implements ICommand<ISparseListCommandOptions> {
 
     const { project } = args;
     if (profileProjects.has(project)) {
-      logService.logger.info(
+      terminalService.terminal.writeLine(
         `${project} was included in the below profiles:\n ${profileProjects.get(project)?.join('\n')}`
       );
     } else {
-      logService.logger.error(`${project} is not included in any pre-configured profile`);
+      terminalService.terminal.writeErrorLine(`${project} is not included in any pre-configured profile`);
     }
   };
   public getHelp(): string {
-    return 'sparse list help';
+    return 'list-profiles help';
   }
 }

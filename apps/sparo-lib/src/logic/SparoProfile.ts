@@ -1,6 +1,6 @@
 import { JsonFile, JsonSchema } from '@rushstack/node-core-library';
-import schemaJson from '../schemas/sparse-profile.schema.json';
-import { LogService } from '../services/LogService';
+import schemaJson from '../schemas/sparo-profile.schema.json';
+import { TerminalService } from '../services/TerminalService';
 import { Service } from '../decorator';
 
 // https://rushjs.io/pages/developer/selecting_subsets/
@@ -15,18 +15,18 @@ export interface IRushSelectors {
   toSelectors: Set<string>;
   fromSelectors: Set<string>;
 }
-export interface ISparseProfileJson {
+export interface ISparoProfileJson {
   selections?: ISelection[];
   includeFolders?: string[];
   excludeFolders?: string[];
 }
 
-export interface ISparseProfileParams {
-  logService: LogService;
+export interface ISparoProfileParams {
+  terminalService: TerminalService;
 }
 
 @Service()
-export class SparseProfile {
+export class SparoProfile {
   private static _jsonSchema: JsonSchema = JsonSchema.fromLoadedObject(schemaJson);
 
   public readonly selections: ISelection[];
@@ -37,14 +37,14 @@ export class SparseProfile {
     fromSelectors: new Set()
   };
 
-  private readonly _sparseProfileJson: ISparseProfileJson;
-  private _logService: LogService;
+  private readonly _sparoProfileJson: ISparoProfileJson;
+  private _terminalService: TerminalService;
 
-  public constructor(logService: LogService, sparseProfileJson: ISparseProfileJson) {
-    this._logService = logService;
-    this._sparseProfileJson = sparseProfileJson;
+  public constructor(terminalService: TerminalService, sparoProfileJson: ISparoProfileJson) {
+    this._terminalService = terminalService;
+    this._sparoProfileJson = sparoProfileJson;
 
-    const { selections, includeFolders, excludeFolders } = this._sparseProfileJson;
+    const { selections, includeFolders, excludeFolders } = this._sparoProfileJson;
     this.selections = selections || [];
     this.includeFolders = includeFolders || [];
     this.excludeFolders = excludeFolders || [];
@@ -63,8 +63,7 @@ export class SparseProfile {
             break;
           }
           default: {
-            this._logService.logger.error(`Error, unknown selector ${selection.selector}`);
-            break;
+            throw new Error(`Unknown selector "${selection.selector}"`);
           }
         }
       }
@@ -72,13 +71,13 @@ export class SparseProfile {
   }
 
   public static async loadFromFileAsync(
-    logService: LogService,
+    terminalService: TerminalService,
     jsonFilepath: string
-  ): Promise<SparseProfile> {
-    const sparseProfileJson: ISparseProfileJson = await JsonFile.loadAndValidateAsync(
+  ): Promise<SparoProfile> {
+    const sparoProfileJson: ISparoProfileJson = await JsonFile.loadAndValidateAsync(
       jsonFilepath,
-      SparseProfile._jsonSchema
+      SparoProfile._jsonSchema
     );
-    return new SparseProfile(logService, sparseProfileJson);
+    return new SparoProfile(terminalService, sparoProfileJson);
   }
 }

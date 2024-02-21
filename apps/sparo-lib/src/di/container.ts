@@ -45,7 +45,7 @@ const defaultContainer: IContainer = new (class {
  *
  * @alpha
  */
-export async function getFromContainer<T>(clazz: Constructable<T>): Promise<T> {
+export async function getFromContainerAsync<T>(clazz: Constructable<T>): Promise<T> {
   const instance: T = await defaultContainer.getAsync<T & IAppClassInterface>(clazz);
   return instance as T;
 }
@@ -73,7 +73,7 @@ export function registerClass<T extends Constructable>(clazz: T): T {
   return clazz;
 }
 
-export function registerPossibleAsyncInit<T extends Constructable>(clazz: T): void {
+function registerPossibleAsyncInit<T extends Constructable>(clazz: T): void {
   if (typeof clazz.prototype.asyncInit === 'function') {
     if (!Reflect.hasOwnMetadata(METADATA_KEY.POST_CONSTRUCT, clazz.constructor)) {
       decorate(postConstruct(), clazz.prototype, 'asyncInit');

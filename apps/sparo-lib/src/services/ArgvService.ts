@@ -1,5 +1,7 @@
+import { inject } from 'inversify';
 import { Service } from '../decorator';
-import yargs, { type Argv } from 'yargs';
+import yargs, { type MiddlewareFunction, type Argv } from 'yargs';
+import { TerminalService } from './TerminalService';
 
 @Service()
 export class ArgvService {
@@ -9,16 +11,35 @@ export class ArgvService {
     $0: string;
   };
 
+  @inject(TerminalService) private _terminalService!: TerminalService;
+
   public yargsArgv!: Argv;
   public constructor() {
     this.yargsArgv = yargs.scriptName('sparo');
   }
 
   public async parseArgvAsync(): Promise<void> {
-    this._parsed = await this.yargsArgv.help(false).parseAsync();
+    this._parsed = await this.yargsArgv
+      .help(false)
+      .boolean('debug')
+      .boolean('verbose')
+      .middleware([this._terminalMiddleware])
+      .parseAsync();
   }
 
   public getUserCommand(): string {
     return String(this._parsed._[0] || '');
   }
+
+  private _terminalMiddleware: MiddlewareFunction<{
+    debug: boolean | undefined;
+    verbose: boolean | undefined;
+  }> = ({ debug, verbose }) => {
+    if (debug) {
+      this._terminalService.setIsDebug(debug);
+    }
+    if (verbose) {
+      this._terminalService.setIsVerbose(verbose);
+    }
+  };
 }
