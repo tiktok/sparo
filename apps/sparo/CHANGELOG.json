@@ -1,0 +1,17 @@
+{
+  "name": "sparo",
+  "entries": [
+    {
+      "version": "0.0.1",
+      "tag": "sparo_v0.0.1",
+      "date": "Thu, 22 Feb 2024 00:07:39 GMT",
+      "comments": {
+        "none": [
+          {
+            "comment": "Initial implementation"
+          }
+        ]
+      }
+    }
+  ]
+}
