@@ -153,7 +153,7 @@ ${availableProfiles.join(',')}
     {
       const stopwatch: Stopwatch = Stopwatch.start();
       this.initializeRepository();
-      terminal.writeLine('Initialize repo sparse checkout. (%s)', stopwatch.toString());
+      terminal.writeLine(`Initialize repo sparse checkout. (${stopwatch.toString()})`);
       stopwatch.stop();
     }
 
@@ -209,7 +209,7 @@ ${availableProfiles.join(',')}
     if (toSelectors.size !== 0 || fromSelectors.size !== 0) {
       const stopwatch: Stopwatch = Stopwatch.start();
       targetFolders = this._getTargetFoldersByRushList({ toSelectors, fromSelectors });
-      terminal.writeLine('Run rush list command. (%s)', stopwatch.toString());
+      terminal.writeLine(`Run rush list command. (${stopwatch.toString()})`);
       stopwatch.stop();
     } else {
       terminal.writeDebugLine('Skip rush list regarding the absence of from selectors and to selectors');
@@ -239,7 +239,7 @@ ${availableProfiles.join(',')}
           });
         }
       }
-      terminal.writeLine('Sparse checkout target folders. (%s)', stopwatch.toString());
+      terminal.writeLine(`Sparse checkout target folders. (${stopwatch.toString()})`);
       stopwatch.stop();
     }
   }
