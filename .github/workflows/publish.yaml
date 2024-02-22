@@ -22,6 +22,6 @@ jobs:
       - name: Rush test
         run: node common/scripts/install-run-rush.js test --verbose
       - name: Rush publish
-        run: node common/scripts/install-run-rush.js publish --apply --publish --version-policy sparo --target-branch ${{ github.ref_name }}
+        run: node common/scripts/install-run-rush.js publish --apply --publish --include-all --target-branch ${{ github.ref_name }}
         env:
           NPM_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
