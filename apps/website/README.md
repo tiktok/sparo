@@ -1,41 +1,48 @@
 # Website
 
-This website is built using [Docusaurus](https://docusaurus.io/), a modern static website generator.
+This is the [Docusaurus](https://docusaurus.io/) project for the Sparo website.
 
-### Installation
+## Development
 
-```
-$ yarn
-```
+1. Install the monorepo dependencies using [RushJS](https://rushjs.io/):
 
-### Local Development
+   ```shell
+   rush install
+   rush build
+   ```
 
-```
-$ yarn start
-```
+2. Launch the local development server:
+
+   ```shell
+   cd apps/website
+   rushx start
+   ```
 
 This command starts a local development server and opens up a browser window. Most changes are reflected live without having to restart the server.
 
-### Build
+## Deployment
 
-```
-$ yarn build
-```
+1. If you will manually copy the files to a server, you can build the **apps/sparo/build** folder like this:
 
-This command generates static content into the `build` directory and can be served using any static contents hosting service.
+   ```shell
+   cd apps/website
+   rushx build
+   ```
 
-### Deployment
+2. To automatically deploy to GitHub Pages (as an administrator):
 
-Using SSH:
+   ```shell
+   # If you are using HTTPS authentication for GitHub:
+   cd apps/website
+   GIT_USER=<Your GitHub username> rushx deploy
+   ```
 
-```
-$ USE_SSH=true yarn deploy
-```
+   ```
+   # If you are using SSH authentication for GitHub:
+   USE_SSH=true rushx deploy
+   ```
 
-Not using SSH:
+## See also
 
-```
-$ GIT_USER=<Your GitHub username> yarn deploy
-```
+- [Deployment](https://docusaurus.io/docs/deployment) from the Docusaurus help
 
-If you are using GitHub pages for hosting, this command is a convenient way to build the website and push to the `gh-pages` branch.
