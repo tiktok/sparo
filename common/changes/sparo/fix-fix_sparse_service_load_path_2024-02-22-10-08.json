@@ -1,0 +1,10 @@
+{
+  "changes": [
+    {
+      "packageName": "sparo",
+      "comment": "fix load path in sparo profile service",
+      "type": "none"
+    }
+  ],
+  "packageName": "sparo"
+}
