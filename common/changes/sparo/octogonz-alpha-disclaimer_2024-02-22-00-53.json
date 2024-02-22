@@ -1,0 +1,10 @@
+{
+  "changes": [
+    {
+      "packageName": "sparo",
+      "comment": "Update documentation",
+      "type": "none"
+    }
+  ],
+  "packageName": "sparo"
+}
