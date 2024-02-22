@@ -31,6 +31,17 @@ export class ArgvService {
     return String(this._parsed._[0] || '');
   }
 
+  public stripSparoArgs(args: string[]): string[] {
+    const newArgs: string[] = [];
+    for (const arg of args) {
+      if (['--debug', '--verbose'].includes(arg)) {
+        continue;
+      }
+      newArgs.push(arg);
+    }
+    return newArgs;
+  }
+
   private _terminalMiddleware: MiddlewareFunction<{
     debug: boolean | undefined;
     verbose: boolean | undefined;

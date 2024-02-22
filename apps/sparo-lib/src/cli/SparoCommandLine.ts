@@ -54,7 +54,7 @@ export class SparoCommandLine {
     // proxy to gitService
     if (!this._supportedCommand(userInputCmdName)) {
       const gitService: GitService = await getFromContainerAsync(GitService);
-      const args: string[] = process.argv.slice(2);
+      const args: string[] = argv.stripSparoArgs(process.argv.slice(2));
       gitService.executeGitCommand({
         args
       });

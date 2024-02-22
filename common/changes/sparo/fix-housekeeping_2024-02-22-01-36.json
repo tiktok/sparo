@@ -1,0 +1,10 @@
+{
+  "changes": [
+    {
+      "packageName": "sparo",
+      "comment": "Remove housekeeping code",
+      "type": "none"
+    }
+  ],
+  "packageName": "sparo"
+}
