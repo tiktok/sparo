@@ -34,13 +34,23 @@ For details, consult the [Sparo documentation](./apps/sparo/README.md).
 
 <!-- GENERATED PROJECT SUMMARY START -->
 
-## Packages
+## Published Packages
+
+<!-- the table below was generated using the ./repo-scripts/repo-toolbox script -->
+
+| Folder | Version | Changelog | Package |
+| ------ | ------- | --------- | ------- |
+| [/apps/sparo](./apps/sparo/) | [![npm version](https://badge.fury.io/js/sparo.svg)](https://badge.fury.io/js/sparo) | [changelog](./apps/sparo/CHANGELOG.md) | [sparo](https://www.npmjs.com/package/sparo) |
+| [/apps/sparo-lib](./apps/sparo-lib/) | [![npm version](https://badge.fury.io/js/sparo-lib.svg)](https://badge.fury.io/js/sparo-lib) | | [sparo-lib](https://www.npmjs.com/package/sparo-lib) |
+
+
+## Unpublished Local Projects
 
 <!-- the table below was generated using the ./repo-scripts/repo-toolbox script -->
 
 | Folder | Description |
 | ------ | -----------|
-| [/apps/sparo](./apps/sparo/) | Improve Git performance in your large scale frontend monorepo by integrating sparse checkout with Rush and PNPM |
+| [/apps/website](./apps/website/) | The Sparo documentation website |
 <!-- GENERATED PROJECT SUMMARY END -->
 
 ## Contributing
