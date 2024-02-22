@@ -1,14 +1,14 @@
 ---
-title: Command line overview
+title: Overview
 ---
 
-The `git` command-line tool supports various subcommands such as `git clone`, `git checkout`, and so forth.  The `sparo` command-line is intended to be a complete replacement for `git`.  
+The `git` command-line tool supports various subcommands such as `git clone`, `git checkout`, and so forth.  The `sparo` command-line is intended to be a complete replacement for `git`.
 
 Sparo has four kinds of subcommands:
 
 1. **Mirrored subcommands** such as `sparo branch` and `sparo revert` directly invoke the corresponding `git` version of that subcommand.  The motivation for using mirrored subcommands is to enable Sparo to provide advice about parameters that may cause performance issues.  Additionally, you can optionally configure Sparo to collect anonymized usage metrics to help you measure the experience in your repository.  (Collected data is sent to your own service. It is not accessible by any other party.)
 
-2. **Enhanced subcommands** follow the same basic design as their `git` counterparts, but with adaptations for sparse checkout profiles and more efficient defaults.  There are four enhanced commands: 
+2. **Enhanced subcommands** follow the same basic design as their `git` counterparts, but with adaptations for sparse checkout profiles and more efficient defaults.  There are four enhanced commands:
    - `sparo clone`
    - `sparo checkout`
    - `sparo fetch`

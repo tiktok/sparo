@@ -4,18 +4,21 @@ hide_title: true
 custom_edit_url: null
 ---
 
-![Sparo](../static/images/sparo-380.png)
+<div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+  <img src="images/site/sparo-logo.svg" alt="Sparo" title="Sparo" style={{ width: '380px', paddingTop: '30px' }} />
+</div>
 
+## Clone faster!
+
+Sparo optimizes performance of Git operations for your large frontend monorepo.
 
 <!-- Text below this line should stay in sync with the project and repo README.md -->
 <!-- ---------------------------------------------------------------------------- -->
 
-**Sparo** optimizes performance of Git operations for your large frontend monorepo.
-
 ## Key features
 
 - **Familiar interface:** The `sparo` command-line interface (CLI) wrapper offers **better defaults** and **performance suggestions** without altering the familiar `git` syntax. (The native `git` CLI is also supported.)
-- **A proven solution:** Git provides [quite a lot of ingredients](./pages/guide/git_features.md) for optimizing very large repos; Sparo is your recipe for combining these features intelligently.
+- **A proven solution:** Git provides [quite a lot of ingredients](./pages/reference/git_optimization.md) for optimizing very large repos; Sparo is your recipe for combining these features intelligently.
 - **Simplified sparse checkout:** Work with sparse checkout [profiles](./pages/guide/sparo_profiles.md) instead of confusing "cones" and globs
 - **Frontend integration:** Sparo leverages [Rush](https://rushjs.io/) and [PNPM](https://pnpm.io/) workspace configurations, including the ability to automatically checkout project dependencies
 - **Dual workflows:** The `sparo-ci` tool implements a specialized checkout model optimized for continuous integration (CI) pipelines
@@ -77,7 +80,3 @@ Try out Sparo in 5 easy steps:
    sparo commit -m "Example command"
    ```
 
-<br>
-<br>
-
-👉 [Getting started](./pages/guide/getting_started.md)

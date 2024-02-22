@@ -25,9 +25,9 @@ sparo clone https://github.com/my-company/my-monorepo.git
 
 - Only the default branch (usually `main`) is fetched.
 
-- Git blobless [partial clone](../reference/git_features.md) is enabled to postpone downloading file contents.
+- Git blobless [partial clone](../reference/git_optimization.md) is enabled to postpone downloading file contents.
 
-- Git [sparse checkout](../reference/git_features.md) is used to clone only the ["skeleton" folders](../reference/skeleton_folders.md), which includes all workspace **package.json** files, but excludes the source code subfolders.
+- Git [sparse checkout](../reference/git_optimization.md) is used to clone only the ["skeleton" folders](../reference/skeleton_folders.md), which includes all workspace **package.json** files, but excludes the source code subfolders.
 
 - Sparse checkout is configured for the more efficient "cone mode".
 
@@ -35,7 +35,7 @@ sparo clone https://github.com/my-company/my-monorepo.git
 
 ### Step 3: Create a sparse profile
 
-Define a [Sparo profile](./pages/configs/profile_json.md) describing the subset of repository folders for Git sparse checkout.  Here is a basic example:
+Define a [Sparo profile](../configs/profile_json.md) describing the subset of repository folders for Git sparse checkout.  Here is a basic example:
 
 **common/sparo-profiles/my-team.json**
 ```json
@@ -75,7 +75,7 @@ sparo checkout --profile my-team
 
 ### Step 5: Use the mirrored subcommands
 
-For everyday work, consider choosing [mirrored subcommands](./pages/commands/overview.md) such as `sparo revert` instead of `git revert`. The Sparo wrapper provides (1) better defaults, (2) suggestions for better performance, and (3) optional anonymized performance metrics.
+For everyday work, consider choosing [mirrored subcommands](../commands/overview.md) such as `sparo revert` instead of `git revert`. The Sparo wrapper provides (1) better defaults, (2) suggestions for better performance, and (3) optional anonymized performance metrics.
 
 Examples:
 
