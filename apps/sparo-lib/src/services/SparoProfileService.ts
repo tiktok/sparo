@@ -23,8 +23,7 @@ export class SparoProfileService {
   public async loadProfilesAsync(): Promise<void> {
     if (!this._loadPromise) {
       this._loadPromise = (async () => {
-        const repoRoot: string = this._gitService.getRepoInfo().root;
-        const sparoProfileFolder: string = path.resolve(repoRoot, defaultSparoProfileFolder);
+        const sparoProfileFolder: string = this._sparoProfileFolder;
         this._terminalService.terminal.writeDebugLine(
           'loading sparse profiles from folder:',
           sparoProfileFolder
@@ -39,7 +38,7 @@ export class SparoProfileService {
             sparoProfile = await SparoProfile.loadFromFileAsync(this._terminalService, sparoProfilePath);
           } catch (e) {
             // TODO: more error handling
-            this._terminalService.terminal.writeLine((e as Error).message);
+            this._terminalService.terminal.writeErrorLine((e as Error).message);
           }
 
           if (sparoProfile) {
@@ -65,8 +64,19 @@ export class SparoProfileService {
     return this._profiles;
   }
 
-  public hasProfile(name: string, branch: string): boolean {
+  public hasProfileInGit(name: string, branch: string): boolean {
     return this._gitService.hasFile(`${defaultSparoProfileFolder}/${name}.json`, branch);
+  }
+
+  public hasProfileInFS(name: string): boolean {
+    const sparoProfileFilepath: string = path.resolve(this._sparoProfileFolder, `${name}.json`);
+    return FileSystem.exists(sparoProfileFilepath);
+  }
+
+  private get _sparoProfileFolder(): string {
+    const repoRoot: string = this._gitService.getRepoInfo().root;
+    const sparoProfileFolder: string = path.resolve(repoRoot, defaultSparoProfileFolder);
+    return sparoProfileFolder;
   }
 
   private static _getProfileName(profilePath: string): string {
