@@ -32,9 +32,37 @@ const sidebars = {
   docsSidebar: [
     {
       type: 'category',
-      label: 'Developer tutorials',
+      label: 'Introduction',
       collapsible: false,
-      items: ['pages/guide/getting_started']
+      items: ['index', 'pages/guide/getting_started', 'pages/guide/sparo_profiles']
+    },
+    {
+      type: 'category',
+      label: 'Reference',
+      collapsible: false,
+      items: [
+        'pages/reference/git_optimization',
+        'pages/reference/skeleton_folders',
+        'pages/reference/security'
+      ]
+    },
+    {
+      type: 'category',
+      label: 'Config files',
+      collapsible: false,
+      items: ['pages/configs/profile_json']
+    },
+    {
+      type: 'category',
+      label: 'Commands',
+      collapsible: false,
+      items: ['pages/commands/overview']
+    },
+    {
+      type: 'category',
+      label: 'Support',
+      collapsible: false,
+      items: ['pages/support/help', 'pages/support/news', 'pages/support/contributing']
     }
   ]
 };

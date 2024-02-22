@@ -76,9 +76,28 @@ const config = {
         },
         items: [
           {
+            type: 'localeDropdown',
+            position: 'left'
+          },
+          {
+            to: 'pages/guide/getting_started',
+            position: 'right',
+            label: 'Docs'
+          },
+          {
             href: 'https://github.com/tiktok/sparo',
             label: 'GitHub',
             position: 'right'
+          },
+          {
+            to: 'pages/support/news',
+            position: 'right',
+            label: 'News'
+          },
+          {
+            to: 'pages/support/help',
+            position: 'right',
+            label: 'Help'
           }
         ]
       },
