@@ -2,6 +2,13 @@
 
 <img width="380" src="../../common/assets/sparo-380.png" alt="Sparo" />
 
+> 🚧 UNDER CONSTRUCTION 🚧
+>
+> This is an early test release of the software.
+> It is not yet ready for general usage.
+> If you have questions about this project, let us know
+> using [GitHub discussions](https://github.com/tiktok/sparo/discussions).
+
 ## Is Git too slow in your frontend monorepo?
 
 By default `git clone` will download every file in your Git repository, as well as the complete history of every file. For small repositories, that's no big deal. But as your monorepo accumulates projects and years of history, Git operations become slower and slower, until one day `git status` is taking 10 seconds or more. What to do?
@@ -20,7 +27,7 @@ However, achieving good performance in a large repository requires more complex 
 
 - **Git worktrees** allow multiple working directories on your computer to share a single `.git` folder, avoiding the cost of multiple clones. However this feature comes with awkward limitations, for example the same branch can't be checked out in two worktrees, and Git hooks are also shared.
 
-- **Sparse checkout** allows `git checkout` to extract a subset of files instead of the entire directory structure. Combined with partial clone, sparse checkout is the "battle axe" of Git optimization: although irrelevant projects and history will accumulate, your wait time will be proportional to the files you actually need. 
+- **Sparse checkout** allows `git checkout` to extract a subset of files instead of the entire directory structure. Combined with partial clone, sparse checkout is the "battle axe" of Git optimization: although irrelevant projects and history will accumulate, your wait time will be proportional to the files you actually need.
 
 ## How does Sparo help?
 

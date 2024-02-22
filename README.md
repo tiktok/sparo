@@ -1,6 +1,13 @@
 
 <img width="380" src="./common/assets/sparo-380.png" alt="Sparo" />
 
+> 🚧 UNDER CONSTRUCTION 🚧
+>
+> This project is still under development.
+> It is not yet ready for general usage.
+> If you have questions or feedback, let us know
+> using [GitHub discussions](https://github.com/tiktok/sparo/discussions).
+
 ## Monorepo for Sparo toolkit
 
 <!-- Text below this line should stay in sync with the website index.md -->
@@ -28,7 +35,7 @@ For details, consult the [Sparo documentation](./apps/sparo/README.md).
 <!-- GENERATED PROJECT SUMMARY START -->
 
 ## Packages
- 
+
 <!-- the table below was generated using the ./repo-scripts/repo-toolbox script -->
 
 | Folder | Description |
