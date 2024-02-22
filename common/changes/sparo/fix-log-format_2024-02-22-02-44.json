@@ -1,0 +1,10 @@
+{
+  "changes": [
+    {
+      "packageName": "sparo",
+      "comment": "Fix log format",
+      "type": "none"
+    }
+  ],
+  "packageName": "sparo"
+}
