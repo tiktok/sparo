@@ -8,14 +8,13 @@ jobs:
         with:
           fetch-depth: 2
           token: ${{ secrets.BOT_ACCESS_TOKEN }}
-      - name: Git config user
-        uses: snow-actions/git-config-user@v1.0.0
-        with:
-          name: tiktokbot
-          email: tiktokbot@users.noreply.github.com
       - uses: actions/setup-node@v3
         with:
           node-version: 16
+      - name: git config email
+        run: git config --local user.email tiktokbot@users.noreply.github.com
+      - name: git config name
+        run: git config --local user.name tiktokbot
       - name: Rush Install
         run: node common/scripts/install-run-rush.js install
       - name: Rush build
