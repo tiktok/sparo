@@ -1,4 +1,5 @@
 import { FileSystem, Async } from '@rushstack/node-core-library';
+import path from 'path';
 import { inject } from 'inversify';
 import { Service } from '../decorator';
 import { SparoProfile } from '../logic/SparoProfile';
@@ -22,7 +23,12 @@ export class SparoProfileService {
   public async loadProfilesAsync(): Promise<void> {
     if (!this._loadPromise) {
       this._loadPromise = (async () => {
-        const sparoProfileFolder: string = defaultSparoProfileFolder;
+        const repoRoot: string = this._gitService.getRepoInfo().root;
+        const sparoProfileFolder: string = path.resolve(repoRoot, defaultSparoProfileFolder);
+        this._terminalService.terminal.writeDebugLine(
+          'loading sparse profiles from folder:',
+          sparoProfileFolder
+        );
         const sparoProfilePaths: string[] = await FileSystem.readFolderItemNamesAsync(sparoProfileFolder, {
           absolutePaths: true
         });
