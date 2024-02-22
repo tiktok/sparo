@@ -181,7 +181,8 @@ export class CheckoutCommand implements ICommand<ICheckoutCommandOptions> {
     );
     if (!branchExistsInLocal) {
       // fetch from remote
-      const remote: string = this._getBranchRemote();
+      const remote: string = this._gitService.getBranchRemote(branch);
+
       const fetchResult: child_process.SpawnSyncReturns<string> = this._gitService.executeGitCommand({
         args: ['fetch', remote, `refs/heads/${branch}:refs/remotes/${remote}/${branch}`]
       });
@@ -208,15 +209,6 @@ export class CheckoutCommand implements ICommand<ICheckoutCommandOptions> {
       })
       .trim();
     return currentBranch;
-  }
-
-  private _getBranchRemote(): string {
-    /**
-     * TODO: Git supports multiple remotes. We need to support using a different
-     *   remote from "origin". A possible way is reading from git config by running
-     *   "git config --get branch.<branch>.remote"
-     */
-    return 'origin';
   }
 
   private _processProfilesFromArg(profilesFromArg: string[]): { isNoProfile: boolean; profiles: string[] } {

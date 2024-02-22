@@ -16,9 +16,9 @@ export class GitPullCommand implements ICommand<{}> {
     const { _gitService: gitService } = this;
     const { terminal } = terminalService;
     const rawArgs: string[] = process.argv.slice(2);
-    const idx: number = rawArgs.indexOf(this.cmd);
-    if (idx >= 0) {
-      rawArgs[idx] = 'pull';
+    const index: number = rawArgs.indexOf(this.cmd);
+    if (index >= 0) {
+      rawArgs[index] = 'pull';
     }
     terminal.writeDebugLine(`proxy args in git-pull command: ${JSON.stringify(rawArgs)}`);
     gitService.executeGitCommand({ args: rawArgs });

@@ -1,0 +1,10 @@
+{
+  "changes": [
+    {
+      "packageName": "sparo",
+      "comment": "add remote and branch arguments for sparo fetch & cr fix",
+      "type": "none"
+    }
+  ],
+  "packageName": "sparo"
+}

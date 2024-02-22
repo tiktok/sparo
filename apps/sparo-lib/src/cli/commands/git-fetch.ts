@@ -19,9 +19,9 @@ export class GitFetchCommand implements ICommand<{}> {
     const { _gitService: gitService } = this;
     const { terminal } = terminalService;
     const rawArgs: string[] = process.argv.slice(2);
-    const idx: number = rawArgs.indexOf(this.cmd);
-    if (idx >= 0) {
-      rawArgs[idx] = 'fetch';
+    const index: number = rawArgs.indexOf(this.cmd);
+    if (index >= 0) {
+      rawArgs[index] = 'fetch';
     }
     terminal.writeDebugLine(`proxy args in git-fetch command: ${JSON.stringify(rawArgs)}`);
     gitService.executeGitCommand({ args: rawArgs });
