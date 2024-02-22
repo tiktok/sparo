@@ -10,16 +10,25 @@ import type { TerminalService } from '../../services/TerminalService';
 export interface IFetchCommandOptions {
   all?: boolean;
   branch?: string;
+  remote?: string;
 }
 
 @Command()
 export class FetchCommand implements ICommand<IFetchCommandOptions> {
-  public cmd: string = 'fetch';
+  public cmd: string = 'fetch [remote] [branch]';
   public description: string = 'fetch remote branch to local';
 
   @inject(GitService) private _gitService!: GitService;
   public builder(yargs: Argv<{}>): void {
-    yargs.boolean('full');
+    /**
+     * sparo fetch <remote> <branch> [--all]
+     */
+    yargs
+      .positional('remote', { type: 'string' })
+      .positional('branch', { type: 'string' })
+      .string('remote')
+      .string('branch')
+      .boolean('full');
   }
 
   public handler = async (
@@ -32,13 +41,13 @@ export class FetchCommand implements ICommand<IFetchCommandOptions> {
     const { branch: defaultBranch } = repoInfo;
 
     terminal.writeDebugLine(`got args in fetch command: ${JSON.stringify(args)}`);
-    const { all, branch = defaultBranch } = args;
+    const { all, branch = defaultBranch, remote = this._gitService.getBranchRemote(branch) } = args;
     const fetchArgs: string[] = ['fetch'];
 
     if (all) {
       fetchArgs.push('--all');
     } else {
-      fetchArgs.push('origin', branch);
+      fetchArgs.push(remote, branch);
     }
 
     gitService.executeGitCommand({ args: fetchArgs });

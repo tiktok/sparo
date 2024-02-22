@@ -346,6 +346,22 @@ Please specify a directory on the command line
     return getRepoInfo();
   }
 
+  public getBranchRemote(branch: string): string {
+    const gitPath: string = this.getGitPathOrThrow();
+    const { stdout, status } = Executable.spawnSync(gitPath, ['config', `branch.${branch}.remote`]);
+
+    if (status === 1 && stdout.trim().length === 0) {
+      // git config branch.<branch_name>.remote can't get correct remote in these two scenarios
+      // 1. If target branch is not checked out locally.
+      // 2. If target branch is a newly created local branch and not pushed to remote.
+      // For these two scenarios, just return origin as default.
+      return 'origin';
+    } else if (status !== 0) {
+      throw new Error(`Can't get remote for branch ${branch}`);
+    }
+    return stdout.trim();
+  }
+
   public getGitVersion(): [number, number, number] | undefined {
     let result: [number, number, number] | undefined;
 

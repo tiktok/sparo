@@ -23,6 +23,8 @@ export class GitService {
     executeGitCommandAndCaptureOutput({ args, workingDirectory }: IExecuteGitCommandParams): string;
     getBasenameFromUrl(url: string): string;
     // (undocumented)
+    getBranchRemote(branch: string): string;
+    // (undocumented)
     getGitConfig(k: string, option?: {
         dryRun?: boolean;
         global?: boolean;
