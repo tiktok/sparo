@@ -66,11 +66,6 @@ export class CheckoutCommand implements ICommand<ICheckoutCommandOptions> {
     args: ArgumentsCamelCase<ICheckoutCommandOptions>,
     terminalService: TerminalService
   ): Promise<void> => {
-    console.log(JSON.stringify(args, null, 2));
-    const a: number = 1;
-    if (a > 0) {
-      process.exit(1);
-    }
     const { _gitService: gitService, _localState: localState } = this;
     const { b, B, branch, startPoint } = args;
 
