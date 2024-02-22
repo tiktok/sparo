@@ -86,3 +86,7 @@ dist
 dist-storybook
 *.scss.ts
 *.sass.ts
+
+# Docusaurus build outputs
+build
+.docusaurus
