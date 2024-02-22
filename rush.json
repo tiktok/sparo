@@ -437,11 +437,13 @@
     {
       "packageName": "sparo",
       "projectFolder": "apps/sparo",
+      "versionPolicyName": "sparo",
       "shouldPublish": true
     },
     {
       "packageName": "sparo-lib",
       "projectFolder": "apps/sparo-lib",
+      "versionPolicyName": "sparo",
       "shouldPublish": true
     }
   ]
