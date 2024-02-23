@@ -102,6 +102,10 @@ export class TerminalService {
     setIsVerbose(value: boolean): void;
     // (undocumented)
     get terminal(): ITerminal;
+    // (undocumented)
+    writeTaskFooter(): void;
+    // (undocumented)
+    writeTaskHeader(taskTitle: string): void;
 }
 
 // (No @packageDocumentation comment for this package)

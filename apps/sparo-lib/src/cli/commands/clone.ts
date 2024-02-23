@@ -3,6 +3,7 @@ import { Command } from '../../decorator';
 import { GitService } from '../../services/GitService';
 import { GitSparseCheckoutService } from '../../services/GitSparseCheckoutService';
 import { GitCloneService, ICloneOptions } from '../../services/GitCloneService';
+import { Stopwatch } from '../../logic/Stopwatch';
 import type { Argv, ArgumentsCamelCase } from 'yargs';
 import type { ICommand } from './base';
 import type { TerminalService } from '../../services/TerminalService';
@@ -63,6 +64,9 @@ export class CloneCommand implements ICommand<ICloneCommandOptions> {
       directory: directory
     };
 
+    terminal.writeLine('Initializing working directory...');
+    const stopwatch: Stopwatch = Stopwatch.start();
+
     if (args.full) {
       this._gitCloneService.fullClone(cloneOptions);
       return;
@@ -71,14 +75,25 @@ export class CloneCommand implements ICommand<ICloneCommandOptions> {
     this._gitCloneService.bloblessClone(cloneOptions);
 
     process.chdir(directory);
-    await this._GitSparseCheckoutService.checkoutSkeletonAsync();
 
-    terminal.writeLine(`Remember to run "cd ${directory}"`);
+    await this._GitSparseCheckoutService.checkoutSkeletonAsync();
 
     // set recommended git config
     if (!args.skipGitConfig) {
+      terminal.writeLine(`Setting up recommend configurations...`);
       this._gitService.setRecommendConfig({ overwrite: true });
     }
+
+    terminal.writeLine(`Success: Working directory "${directory}" was prepared in ${stopwatch.toString()}`);
+    stopwatch.stop();
+
+    terminal.writeLine('Your next step is to choose a profile for checkout');
+    terminal.writeLine('To see available profiles in this repo:');
+    terminal.writeLine(`  cd ${directory}`);
+    terminal.writeLine('  sparo list-profiles');
+    terminal.writeLine('To checkout a profile:');
+    terminal.writeLine(`  cd ${directory}`);
+    terminal.writeLine('  sparo checkout --profile <profile_name>');
   };
 
   public getHelp(): string {
