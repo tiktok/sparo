@@ -1,0 +1,10 @@
+{
+  "changes": [
+    {
+      "packageName": "sparo",
+      "comment": "Support checkout uncommitted sparo profiles",
+      "type": "none"
+    }
+  ],
+  "packageName": "sparo"
+}

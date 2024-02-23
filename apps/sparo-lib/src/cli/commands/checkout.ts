@@ -110,8 +110,18 @@ export class CheckoutCommand implements ICommand<ICheckoutCommandOptions> {
 
       const nonExistProfileNames: string[] = [];
       for (const targetProfileName of targetProfileNames) {
-        if (!this._sparoProfileService.hasProfile(targetProfileName, operationBranch)) {
-          nonExistProfileNames.push(targetProfileName);
+        /**
+         * If the operation branch is current branch, check the existence from file system.
+         * Otherwise, check the existence from git.
+         */
+        if (operationBranch === currentBranch) {
+          if (!this._sparoProfileService.hasProfileInFS(targetProfileName)) {
+            nonExistProfileNames.push(targetProfileName);
+          }
+        } else {
+          if (!this._sparoProfileService.hasProfileInGit(targetProfileName, operationBranch)) {
+            nonExistProfileNames.push(targetProfileName);
+          }
         }
       }
 
