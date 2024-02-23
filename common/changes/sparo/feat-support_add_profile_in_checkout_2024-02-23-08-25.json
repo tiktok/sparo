@@ -1,0 +1,10 @@
+{
+  "changes": [
+    {
+      "packageName": "sparo",
+      "comment": "feat: support --add-profile in sparo checkout",
+      "type": "none"
+    }
+  ],
+  "packageName": "sparo"
+}

@@ -15,6 +15,7 @@ export interface ICheckoutCommandOptions {
   b?: boolean;
   B?: boolean;
   startPoint?: string;
+  addProfile?: string[];
 }
 
 @Command()
@@ -59,7 +60,9 @@ export class CheckoutCommand implements ICommand<ICheckoutCommandOptions> {
       .string('branch')
       .string('startPoint')
       .array('profile')
-      .default('profile', []);
+      .default('profile', [])
+      .array('add-profile')
+      .default('add-profile', []);
   }
 
   public handler = async (
@@ -69,7 +72,10 @@ export class CheckoutCommand implements ICommand<ICheckoutCommandOptions> {
     const { _gitService: gitService, _localState: localState } = this;
     const { b, B, branch, startPoint } = args;
 
-    const { isNoProfile, profiles } = this._processProfilesFromArg(args.profile);
+    const { isNoProfile, profiles, addProfiles } = this._processProfilesFromArg({
+      addProfilesFromArg: args.addProfile ?? [],
+      profilesFromArg: args.profile
+    });
 
     /**
      * Since we set up single branch by default and branch can be missing in local, we are going to fetch the branch from remote server here.
@@ -98,6 +104,7 @@ export class CheckoutCommand implements ICommand<ICheckoutCommandOptions> {
       // Get target profile.
       // 1. Read from existing profile from local state.
       // 2. If profile specified from CLI parameter, it takes over.
+      // 3. If add profile was specified from CLI parameter, add them to existing profile or profiles from CLI parameter
       const localStateProfiles: ILocalStateProfiles | undefined = await localState.getProfiles();
 
       if (localStateProfiles) {
@@ -106,6 +113,10 @@ export class CheckoutCommand implements ICommand<ICheckoutCommandOptions> {
 
       if (profiles.length) {
         targetProfileNames = profiles;
+      }
+
+      if (addProfiles.length) {
+        targetProfileNames.push(...addProfiles);
       }
 
       const nonExistProfileNames: string[] = [];
@@ -221,7 +232,17 @@ export class CheckoutCommand implements ICommand<ICheckoutCommandOptions> {
     return currentBranch;
   }
 
-  private _processProfilesFromArg(profilesFromArg: string[]): { isNoProfile: boolean; profiles: string[] } {
+  private _processProfilesFromArg({
+    profilesFromArg,
+    addProfilesFromArg
+  }: {
+    profilesFromArg: string[];
+    addProfilesFromArg: string[];
+  }): {
+    isNoProfile: boolean;
+    profiles: string[];
+    addProfiles: string[];
+  } {
     /**
      * --profile is defined as array type parameter, specifying --no-profile is resolved to false by yargs.
      *
@@ -241,13 +262,24 @@ export class CheckoutCommand implements ICommand<ICheckoutCommandOptions> {
       profiles.push(profile);
     }
 
-    if (isNoProfile && profiles.length) {
-      throw new Error(`"--no-profile" and "--profile" can not be specified at the same time`);
+    /**
+     * --add-profile is defined as array type parameter
+     * @example --no-profile --add-profile foo -> throw error
+     * @example --profile bar --add-profile foo -> current profiles = bar + foo
+     * @example --add-profile foo -> current profiles = current profiles + foo
+     */
+    const addProfiles: string[] = addProfilesFromArg.filter((p) => typeof p === 'string');
+
+    if (isNoProfile && (profiles.length || addProfiles.length)) {
+      throw new Error(
+        `"--no-profile" can not be specified at the same time with "--profile" or "--add-profile"`
+      );
     }
 
     return {
       isNoProfile,
-      profiles
+      profiles,
+      addProfiles
     };
   }
 }
