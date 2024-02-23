@@ -9,6 +9,7 @@ import { ICommand } from './commands/base';
 import { GitVersionCompatibility } from '../logic/GitVersionCompatibility';
 import { TelemetryService } from '../services/TelemetryService';
 import { getCommandName } from './commands/util';
+import { SparoStartupBanner } from './SparoStartupBanner';
 import type { ILaunchOptions } from '../api/Sparo';
 
 export class SparoCommandLine {
@@ -17,12 +18,13 @@ export class SparoCommandLine {
   private constructor() {}
 
   public static async launchAsync(launchOptions: ILaunchOptions): Promise<void> {
-    await GitVersionCompatibility.ensureGitVersionAsync();
-
     if (launchOptions.collectTelemetryAsync) {
       const telemetryService: TelemetryService = await getFromContainerAsync(TelemetryService);
       telemetryService.setCollectTelemetryFunction(launchOptions.collectTelemetryAsync);
     }
+
+    GitVersionCompatibility.ensureGitVersion();
+    SparoStartupBanner.logBanner();
 
     const sparo: SparoCommandLine = new SparoCommandLine();
     await sparo.prepareCommandAsync();

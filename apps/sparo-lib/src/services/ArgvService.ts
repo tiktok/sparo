@@ -21,7 +21,9 @@ export class ArgvService {
   public async parseArgvAsync(): Promise<void> {
     this._parsed = await this.yargsArgv
       .help(false)
+      // --debug
       .boolean('debug')
+      // --verbose
       .boolean('verbose')
       .middleware([this._terminalMiddleware])
       .parseAsync();
