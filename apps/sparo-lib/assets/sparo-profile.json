@@ -1,0 +1,39 @@
+{
+  /**
+   * A list of project selection definition
+   */
+  "selections": [
+    // {
+    //   /**
+    //    * A selector parameter. See https://rushjs.io/pages/developer/selecting_subsets/
+    //    */
+    //   "selector": "--to",
+    //   /**
+    //    * The argument of selector, it can be one project name, tagged projects prefixes
+    //    * with tag: and modified projects prefixes with git:
+    //    */
+    //   "argument": "sparo"
+    // }
+  ],
+
+  /**
+   * A list of folders expand the sparse checkout cone, adding more include folders.
+   */
+  "includeFolders": [
+    /**
+     * A relative path from the root of monorepo.
+     */
+    // "include/foo"
+  ],
+
+  /**
+   * A list of folders will be excluded in the sparse checkout cone.
+   * The exclude folders overrides include folders and result of selection.
+   */
+  "excludeFolders": [
+    /**
+     * A relative path from the root of monorepo.
+     */
+    // "exclude/bar"
+  ]
+}

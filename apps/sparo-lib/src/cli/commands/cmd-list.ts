@@ -12,11 +12,13 @@ import { GitCloneCommand } from './git-clone';
 import { GitCheckoutCommand } from './git-checkout';
 import { GitFetchCommand } from './git-fetch';
 import { GitPullCommand } from './git-pull';
+import { InitProfileCommand } from './init-profile';
 
 export const COMMAND_LIST: Constructable[] = [
   HelpCommand,
-  ListProfilesCommand,
   AutoConfigCommand,
+  ListProfilesCommand,
+  InitProfileCommand,
 
   CloneCommand,
   CheckoutCommand,
