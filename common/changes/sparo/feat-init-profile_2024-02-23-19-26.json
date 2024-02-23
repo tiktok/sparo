@@ -1,0 +1,10 @@
+{
+  "changes": [
+    {
+      "packageName": "sparo",
+      "comment": "Add \"sparo init-project --profile <name>\" command",
+      "type": "none"
+    }
+  ],
+  "packageName": "sparo"
+}
