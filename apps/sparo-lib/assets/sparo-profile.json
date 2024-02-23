@@ -1,39 +1,46 @@
 {
+  "$schema": "https://tiktok.github.io/sparo/schemas/sparo-profile.schema.json",
+
   /**
-   * A list of project selection definition
+   * A list of Rush project selectors indicating the project folders to be
+   * included for sparse checkout.  The selectors will be combined to make
+   * the union superset of projects.  See the Rush selector docs for details:
+   * https://rushjs.io/pages/developer/selecting_subsets/
    */
   "selections": [
+    /**
+     * For example, include all Rush projects tagged with "tag:my-team"
+     * as well as the dependency workspace projects needed to build them.
+     */
     // {
-    //   /**
-    //    * A selector parameter. See https://rushjs.io/pages/developer/selecting_subsets/
-    //    */
     //   "selector": "--to",
-    //   /**
-    //    * The argument of selector, it can be one project name, tagged projects prefixes
-    //    * with tag: and modified projects prefixes with git:
-    //    */
-    //   "argument": "sparo"
+    //   "argument": "tag:my-team"
+    // },
+    /**
+     * For example, include the project called "my-library", as well as all
+     * projects that are impacted by changes to it, as well as the dependency
+     * projects needed to build everything.
+     */
+    // {
+    //   "selector": "--from",
+    //   "argument": "my-library"
     // }
   ],
 
   /**
-   * A list of folders expand the sparse checkout cone, adding more include folders.
+   * A list of arbitrary additional folders to be included, not necessarily
+   * corresponding to any workspace project.
    */
   "includeFolders": [
-    /**
-     * A relative path from the root of monorepo.
-     */
-    // "include/foo"
+    // "path/to/include"
   ],
 
   /**
-   * A list of folders will be excluded in the sparse checkout cone.
-   * The exclude folders overrides include folders and result of selection.
+   * A list of folders to be excluded.  This field takes precedence over
+   * the "includeFolders" and "selections" fields, guaranteeing that the
+   * specified path will definitely not be included.
    */
   "excludeFolders": [
-    /**
-     * A relative path from the root of monorepo.
-     */
-    // "exclude/bar"
+    // "path/to/exclude"
   ]
 }
