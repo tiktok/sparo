@@ -2,7 +2,7 @@
   "changes": [
     {
       "packageName": "sparo",
-      "comment": "Add \"sparo init-project --profile <name>\" command",
+      "comment": "Add \"sparo init-profile --profile <name>\" command",
       "type": "none"
     }
   ],
