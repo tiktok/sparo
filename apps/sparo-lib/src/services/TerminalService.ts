@@ -17,12 +17,12 @@ export class TerminalService {
 
   public setIsVerbose(value: boolean): void {
     this._terminalProvider.verboseEnabled = value;
-    // verbose implies debug
-    this._terminalProvider.debugEnabled = value;
   }
 
   public setIsDebug(value: boolean): void {
     this._terminalProvider.debugEnabled = value;
+    // debug implies verbose
+    this._terminalProvider.verboseEnabled = value;
   }
 
   public get terminal(): ITerminal {

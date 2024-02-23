@@ -17,6 +17,7 @@
     "git-repo-info": "~2.1.1",
     "inversify": "~6.0.2",
     "reflect-metadata": "~0.2.1",
+    "semver": "~7.6.0",
     "yargs": "~17.7.2"
   },
   "devDependencies": {
@@ -24,6 +25,7 @@
     "@rushstack/heft-node-rig": "2.4.5",
     "@types/heft-jest": "1.0.6",
     "@types/node": "20.11.16",
+    "@types/semver": "7.5.7",
     "@types/yargs": "17.0.32",
     "eslint": "8.56.0",
     "typescript": "~5.3.3"

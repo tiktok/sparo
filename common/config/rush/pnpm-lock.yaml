@@ -50,6 +50,9 @@ importers:
       reflect-metadata:
         specifier: ~0.2.1
         version: 0.2.1
+      semver:
+        specifier: ~7.6.0
+        version: 7.6.0
       yargs:
         specifier: ~17.7.2
         version: 17.7.2
@@ -66,6 +69,9 @@ importers:
       '@types/node':
         specifier: 20.11.16
         version: 20.11.16
+      '@types/semver':
+        specifier: 7.5.7
+        version: 7.5.7
       '@types/yargs':
         specifier: 17.0.32
         version: 17.0.32

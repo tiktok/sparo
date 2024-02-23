@@ -1,0 +1,10 @@
+{
+  "changes": [
+    {
+      "packageName": "sparo",
+      "comment": "Add a startup banner display version infos",
+      "type": "none"
+    }
+  ],
+  "packageName": "sparo"
+}

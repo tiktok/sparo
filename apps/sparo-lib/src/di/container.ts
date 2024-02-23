@@ -50,6 +50,11 @@ export async function getFromContainerAsync<T>(clazz: Constructable<T>): Promise
   return instance as T;
 }
 
+export function getFromContainer<T>(clazz: Constructable<T>): T {
+  const instance: T = defaultContainer.get<T & IAppClassInterface>(clazz);
+  return instance as T;
+}
+
 /**
  * Register a class into dependency-injection container
  * @example
