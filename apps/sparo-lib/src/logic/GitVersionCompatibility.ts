@@ -24,7 +24,7 @@ export class GitVersionCompatibility {
       const gitService: GitService = getFromContainer(GitService);
       const gitVersion: [number, number, number] | undefined = gitService.getGitVersion();
       if (!gitVersion) {
-        throw new Error(`Fail to get git version`);
+        throw new Error(`Fail to detect Git version`);
       }
       GitVersionCompatibility._gitVersion = gitVersion;
     }
