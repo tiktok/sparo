@@ -1,10 +1,12 @@
 import { inject } from 'inversify';
+import type { Argv, ArgumentsCamelCase } from 'yargs';
+import { Colorize } from '@rushstack/terminal';
+
 import { Command } from '../../decorator';
 import { GitService } from '../../services/GitService';
 import { GitSparseCheckoutService } from '../../services/GitSparseCheckoutService';
 import { GitCloneService, ICloneOptions } from '../../services/GitCloneService';
 import { Stopwatch } from '../../logic/Stopwatch';
-import type { Argv, ArgumentsCamelCase } from 'yargs';
 import type { ICommand } from './base';
 import type { TerminalService } from '../../services/TerminalService';
 
@@ -80,20 +82,26 @@ export class CloneCommand implements ICommand<ICloneCommandOptions> {
 
     // set recommended git config
     if (!args.skipGitConfig) {
-      terminal.writeLine(`Setting up recommend configurations...`);
+      terminal.writeLine(`Applying recommended configuration...`);
       this._gitService.setRecommendConfig({ overwrite: true });
     }
 
-    terminal.writeLine(`Success: Working directory "${directory}" was prepared in ${stopwatch.toString()}`);
+    terminal.writeLine(
+      Colorize.green(`Success: Working directory "${directory}" was prepared in ${stopwatch.toString()}.`)
+    );
     stopwatch.stop();
 
-    terminal.writeLine('Your next step is to choose a profile for checkout');
+    terminal.writeLine();
+    terminal.writeLine(`Don't forget to change your shell path:`);
+    terminal.writeLine('   ' + Colorize.cyan(`cd ${directory}`));
+    terminal.writeLine();
+    terminal.writeLine('Your next step is to choose a Sparo profile for checkout.');
     terminal.writeLine('To see available profiles in this repo:');
-    terminal.writeLine(`  cd ${directory}`);
-    terminal.writeLine('  sparo list-profiles');
+    terminal.writeLine('   ' + Colorize.cyan('sparo list-profiles'));
     terminal.writeLine('To checkout a profile:');
-    terminal.writeLine(`  cd ${directory}`);
-    terminal.writeLine('  sparo checkout --profile <profile_name>');
+    terminal.writeLine('   ' + Colorize.cyan('sparo checkout --profile <profile_name>'));
+    terminal.writeLine('To create a new profile:');
+    terminal.writeLine('   ' + Colorize.cyan('sparo init-profile --profile <profile_name>'));
   };
 
   public getHelp(): string {

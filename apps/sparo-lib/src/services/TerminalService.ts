@@ -40,8 +40,10 @@ export class TerminalService {
     //
     // --[ git clone ]------------------------------------------------
 
+    this._terminal.writeLine();
+
     // leftPart: "--[ git clone "
-    const leftPart: string = Colorize.gray('--[') + ' ' + Colorize.cyan(taskTitle) + ' ';
+    const leftPart: string = Colorize.gray('--[') + ' ' + Colorize.bold(taskTitle) + ' ';
     const leftPartLength: number = 4 + taskTitle.length + 1;
 
     // restPart: "]-------------"
@@ -58,6 +60,7 @@ export class TerminalService {
 
   public writeTaskFooter(): void {
     this._terminal.writeLine(Colorize.gray('-'.repeat(ASCII_HEADER_WIDTH)));
+    this._terminal.writeLine();
   }
 }
 

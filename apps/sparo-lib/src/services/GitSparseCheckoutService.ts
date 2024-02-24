@@ -40,7 +40,7 @@ export class GitSparseCheckoutService {
   private _packageNames: Set<string> = new Set<string>();
 
   public initializeRepository(): void {
-    this._terminalService.terminal.writeLine('Configuring skeleton...');
+    this._terminalService.terminal.writeLine('Checking out core files...');
 
     if ('true' !== this._gitService.getGitConfig('core.sparsecheckout')?.trim()) {
       throw new Error('Sparse checkout is not enabled in this repo.');
@@ -241,7 +241,7 @@ ${availableProfiles.join(',')}
           });
         }
       }
-      terminal.writeLine(`Sparse checkout target folders. (${stopwatch.toString()})`);
+      terminal.writeLine(`Sparse checkout completed in ${stopwatch.toString()}`);
       stopwatch.stop();
     }
   }
