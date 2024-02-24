@@ -1,10 +1,11 @@
 import { Service } from '../decorator';
-import { Colorize, ConsoleTerminalProvider, Terminal, type ITerminal } from '@rushstack/terminal';
-
-/**
- * Format "-----" lines for a shell window with classic 80 columns
- */
-const ASCII_HEADER_WIDTH: number = 79;
+import {
+  Colorize,
+  ConsoleTerminalProvider,
+  Terminal,
+  type ITerminal,
+  PrintUtilities
+} from '@rushstack/terminal';
 
 /**
  * Help class for terminal UI
@@ -15,9 +16,11 @@ const ASCII_HEADER_WIDTH: number = 79;
 export class TerminalService {
   private _terminal: ITerminal;
   private _terminalProvider: ConsoleTerminalProvider;
+  private _asciiHeaderWidth: number;
   public constructor() {
     this._terminalProvider = new ConsoleTerminalProvider();
     this._terminal = new Terminal(this._terminalProvider);
+    this._asciiHeaderWidth = (PrintUtilities.getConsoleWidth() ?? 80) - 1;
   }
 
   public setIsVerbose(value: boolean): void {
@@ -49,7 +52,7 @@ export class TerminalService {
     // restPart: "]-------------"
     const bracketLength: number = 1;
     const restPartLengthMinusBracket: number = Math.max(
-      ASCII_HEADER_WIDTH - (leftPartLength + bracketLength),
+      this._asciiHeaderWidth - (leftPartLength + bracketLength),
       0
     );
 
@@ -59,7 +62,7 @@ export class TerminalService {
   }
 
   public writeTaskFooter(): void {
-    this._terminal.writeLine(Colorize.gray('-'.repeat(ASCII_HEADER_WIDTH)));
+    this._terminal.writeLine(Colorize.gray('-'.repeat(this._asciiHeaderWidth)));
     this._terminal.writeLine();
   }
 }
