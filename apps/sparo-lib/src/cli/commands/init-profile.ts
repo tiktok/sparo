@@ -34,8 +34,6 @@ export class InitProfileCommand implements ICommand<IInitProjectCommandOptions> 
   ): Promise<void> => {
     const { profile } = args;
 
-    this._terminalService.terminal.writeLine();
-
     const destinationPath: string = this._sparoProfileService.getProfileFilepathByName(profile);
 
     if (this._sparoProfileService.hasProfileInFS(profile)) {
