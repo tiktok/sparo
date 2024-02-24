@@ -4,6 +4,8 @@
   "private": true,
   "description": "The Sparo documentation website",
   "scripts": {
+    "_phase:build": "node build.js",
+    "_phase:test": "",
     "docusaurus": "docusaurus",
     "start": "docusaurus start",
     "build": "docusaurus build",
