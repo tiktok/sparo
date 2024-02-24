@@ -2,6 +2,36 @@
   "name": "sparo",
   "entries": [
     {
+      "version": "0.0.3",
+      "tag": "sparo_v0.0.3",
+      "date": "Sat, 24 Feb 2024 04:08:09 GMT",
+      "comments": {
+        "none": [
+          {
+            "comment": "Improve terminal user interface"
+          },
+          {
+            "comment": "Add \"sparo init-profile --profile <name>\" command"
+          },
+          {
+            "comment": "Support checkout uncommitted sparo profiles"
+          },
+          {
+            "comment": "add remote and branch arguments for sparo fetch & cr fix"
+          },
+          {
+            "comment": "fix load path in sparo profile service"
+          },
+          {
+            "comment": "Fix log format"
+          },
+          {
+            "comment": "Add a startup banner display version infos"
+          }
+        ]
+      }
+    },
+    {
       "version": "0.0.2",
       "tag": "sparo_v0.0.2",
       "date": "Thu, 22 Feb 2024 01:51:44 GMT",
