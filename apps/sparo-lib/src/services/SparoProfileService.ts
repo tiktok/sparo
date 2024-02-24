@@ -82,6 +82,11 @@ export class SparoProfileService {
     return sparoProfileFolder;
   }
 
+  /**
+   * Returns the absolute file path where the specified profile name would be stored.
+   * @remarks
+   * It is not guaranteed that the file actually exists.
+   */
   public getProfileFilepathByName(profileName: string): string {
     return path.resolve(this._sparoProfileFolder, `${profileName}.json`);
   }
