@@ -75,8 +75,20 @@ export class SparoProfileService {
 
   private get _sparoProfileFolder(): string {
     const repoRoot: string = this._gitService.getRepoInfo().root;
+    if (!repoRoot) {
+      throw new Error(`Failed to detect git repository. Please check running in a git repository folder.`);
+    }
     const sparoProfileFolder: string = path.resolve(repoRoot, defaultSparoProfileFolder);
     return sparoProfileFolder;
+  }
+
+  /**
+   * Returns the absolute file path where the specified profile name would be stored.
+   * @remarks
+   * It is not guaranteed that the file actually exists.
+   */
+  public getProfileFilepathByName(profileName: string): string {
+    return path.resolve(this._sparoProfileFolder, `${profileName}.json`);
   }
 
   private static _getProfileName(profilePath: string): string {

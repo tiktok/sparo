@@ -23,6 +23,7 @@ Sparo has four kinds of subcommands:
 4. **Auxiliary subcommands** are new subcommands that provide Sparo-specific functionality.  They are:
   - `sparo purge`
   - `sparo list-profiles`
+  - `sparo init-profile`
 
 ## Mirrored commands
 
