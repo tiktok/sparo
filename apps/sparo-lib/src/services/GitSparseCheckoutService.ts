@@ -40,6 +40,8 @@ export class GitSparseCheckoutService {
   private _packageNames: Set<string> = new Set<string>();
 
   public initializeRepository(): void {
+    this._terminalService.terminal.writeLine('Checking out core files...');
+
     if ('true' !== this._gitService.getGitConfig('core.sparsecheckout')?.trim()) {
       throw new Error('Sparse checkout is not enabled in this repo.');
     }
@@ -99,9 +101,9 @@ ${availableProfiles.join(',')}
     };
   }
 
-  public async checkoutSkeletonAsync(): Promise<void> {
+  public checkoutSkeletonAsync = async (): Promise<void> => {
     await this._rushSparseCheckoutAsync({ checkoutAction: 'skeleton' });
-  }
+  };
 
   public async checkoutAsync({
     to,
@@ -153,7 +155,7 @@ ${availableProfiles.join(',')}
     {
       const stopwatch: Stopwatch = Stopwatch.start();
       this.initializeRepository();
-      terminal.writeLine(`Initialize repo sparse checkout. (${stopwatch.toString()})`);
+      terminal.writeVerboseLine(`Initialize repo sparse checkout. (${stopwatch.toString()})`);
       stopwatch.stop();
     }
 
@@ -239,7 +241,7 @@ ${availableProfiles.join(',')}
           });
         }
       }
-      terminal.writeLine(`Sparse checkout target folders. (${stopwatch.toString()})`);
+      terminal.writeLine(`Sparse checkout completed in ${stopwatch.toString()}`);
       stopwatch.stop();
     }
   }
@@ -279,7 +281,7 @@ ${availableProfiles.join(',')}
   private _prepareMonorepoSkeleton(options: { restore?: boolean } = {}): void {
     const { restore } = options;
     const finalSkeletonPaths: string[] = this._getSkeletonPaths();
-    this._terminalService.terminal.writeLine('Initializing skeleton folders, files of package.json');
+    this._terminalService.terminal.writeLine('Checking out skeleton...');
     this._sparseCheckoutPaths(finalSkeletonPaths, {
       action: restore ? 'set' : 'add'
     });

@@ -1,0 +1,10 @@
+{
+  "changes": [
+    {
+      "packageName": "sparo",
+      "comment": "Improve terminal user interface",
+      "type": "none"
+    }
+  ],
+  "packageName": "sparo"
+}

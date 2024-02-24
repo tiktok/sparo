@@ -202,6 +202,7 @@ export class GitService {
 
     const currentWorkingDirectory: string = workingDirectory || this.getRepoInfo().root;
 
+    this._terminalService.writeTaskHeader(`git ${args[0]}`);
     this._terminalService.terminal.writeDebugLine(`Invoking git command: ${gitPath} ${args.join(' ')}`);
     const stopwatch: Stopwatch = Stopwatch.start();
     const result: child_process.SpawnSyncReturns<string> = Executable.spawnSync(gitPath, args, {
@@ -209,6 +210,7 @@ export class GitService {
       stdio: 'inherit'
     });
     this._terminalService.terminal.writeDebugLine(`Invoked git command done (${stopwatch.toString()})`);
+    this._terminalService.writeTaskFooter();
     stopwatch.stop();
     this._telemetryService.collectTelemetry({
       commandName: args[0],
