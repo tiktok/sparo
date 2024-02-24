@@ -21,6 +21,8 @@ jobs:
         run: node common/scripts/install-run-rush.js build --verbose --production
       - name: Rush test
         run: node common/scripts/install-run-rush.js test --verbose
+      - name: 'Rush version (Policy: sparo)'
+        run: node common/scripts/install-run-rush.js version --bump --version-policy sparo --target-branch ${{ github.ref_name }}
       - name: Rush publish
         run: node common/scripts/install-run-rush.js publish --apply --publish --include-all --target-branch ${{ github.ref_name }}
         env:
