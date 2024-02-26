@@ -110,17 +110,16 @@ ${availableProfiles.join(',')}
     from,
     selections,
     includeFolders,
-    excludeFolders
-  }: Pick<
-    IRushSparseCheckoutOptions,
-    'to' | 'from' | 'selections' | 'includeFolders' | 'excludeFolders'
-  >): Promise<void> {
+    excludeFolders,
+    checkoutAction
+  }: IRushSparseCheckoutOptions): Promise<void> {
     await this._rushSparseCheckoutAsync({
       to,
       from,
       selections,
       includeFolders,
-      excludeFolders
+      excludeFolders,
+      checkoutAction
     });
   }
 
@@ -226,20 +225,30 @@ ${availableProfiles.join(',')}
 
     {
       const stopwatch: Stopwatch = Stopwatch.start();
-      if (checkoutAction === 'purge') {
-        // re-apply the initial paths for setting up sparse repo state
-        this._prepareMonorepoSkeleton({ restore: true });
-      }
-      // FIXME: too long CLI parameter
-      if (!(checkoutAction === 'purge' || checkoutAction === 'skeleton')) {
-        if (targetFolders.length === 0) {
-          terminal.writeDebugLine(`Skip sparse checkout regarding no target folders`);
-        } else {
-          terminal.writeLine(`Run sparse checkout for these folders: ${targetFolders.join(' ')}`);
-          this._sparseCheckoutPaths(targetFolders, {
-            action: 'add'
-          });
-        }
+      switch (checkoutAction) {
+        case 'purge':
+        case 'skeleton':
+          // re-apply the initial paths for setting up sparse repo state
+          this._prepareMonorepoSkeleton({ restore: checkoutAction === 'purge' });
+          break;
+        case 'add':
+        case 'set':
+          if (targetFolders.length === 0) {
+            terminal.writeDebugLine(`Skip sparse checkout regarding no target folders`);
+          } else {
+            terminal.writeLine(
+              `Run sparse checkout ${checkoutAction} for these folders: ${targetFolders.join(' ')}`
+            );
+            this._sparseCheckoutPaths(targetFolders, {
+              action: checkoutAction
+            });
+          }
+          break;
+        default:
+          terminal.writeDebugLine(
+            `Skip sparse checkout regarding unknown checkout action: ${checkoutAction}`
+          );
+          break;
       }
       terminal.writeLine(`Sparse checkout completed in ${stopwatch.toString()}`);
       stopwatch.stop();

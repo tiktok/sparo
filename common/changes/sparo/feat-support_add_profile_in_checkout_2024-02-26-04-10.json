@@ -1,0 +1,10 @@
+{
+  "changes": [
+    {
+      "packageName": "sparo",
+      "comment": "refactor sparo checkout profile logic",
+      "type": "none"
+    }
+  ],
+  "packageName": "sparo"
+}
