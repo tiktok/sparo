@@ -1,13 +1,15 @@
 import * as path from 'path';
-
 import { Sparo, type ILaunchOptions } from 'sparo-lib';
+import { SparoPackage } from './SparoPackage';
 
 type CommandName = 'sparo' | 'sparo-ci' | undefined;
 
 export class SparoCommandSelector {
   public static async executeAsync(): Promise<void> {
     const commandName: CommandName = SparoCommandSelector._getCommandName();
-    const launchOptions: ILaunchOptions = {};
+    const launchOptions: ILaunchOptions = {
+      callerPackageJson: SparoPackage._sparoPackageJson
+    };
     switch (commandName) {
       case 'sparo-ci': {
         await Sparo.launchSparoCIAsync(launchOptions);

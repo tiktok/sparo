@@ -6,3 +6,4 @@ export { GitService, type IExecuteGitCommandParams } from './services/GitService
 export { TerminalService, type ITerminal } from './services/TerminalService';
 
 export type { ICollectTelemetryFunction, ITelemetryData } from './services/TelemetryService';
+export type { ICallerPackageJson } from './cli/SparoStartupBanner';

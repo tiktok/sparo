@@ -24,6 +24,7 @@
     "inversify": "~6.0.2",
     "reflect-metadata": "~0.2.1",
     "semver": "~7.6.0",
+    "update-notifier": "~5.1.0",
     "yargs": "~17.7.2"
   },
   "devDependencies": {
@@ -32,6 +33,7 @@
     "@types/heft-jest": "1.0.6",
     "@types/node": "20.11.16",
     "@types/semver": "7.5.7",
+    "@types/update-notifier": "6.0.8",
     "@types/yargs": "17.0.32",
     "eslint": "8.56.0",
     "typescript": "~5.3.3"

@@ -56,6 +56,12 @@ export class GitService {
     }): void;
 }
 
+// @alpha
+export interface ICallerPackageJson {
+    name: string;
+    version: string;
+}
+
 // @alpha (undocumented)
 export type ICollectTelemetryFunction = (data: ITelemetryData) => Promise<void>;
 
@@ -69,6 +75,8 @@ export interface IExecuteGitCommandParams {
 
 // @public
 export interface ILaunchOptions {
+    // @internal
+    callerPackageJson?: ICallerPackageJson;
     // @internal
     collectTelemetryAsync?: ICollectTelemetryFunction;
 }

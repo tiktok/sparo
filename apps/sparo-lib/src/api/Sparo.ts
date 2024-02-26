@@ -1,6 +1,7 @@
 import { SparoCommandLine } from '../cli/SparoCommandLine';
 import { SparoCICommandLine } from '../cli/SparoCICommandLine';
 import type { ICollectTelemetryFunction } from '../services/TelemetryService';
+import type { ICallerPackageJson } from '../cli/SparoStartupBanner';
 
 /**
  * Options to pass to the sparo "launch" functions.
@@ -17,6 +18,15 @@ export interface ILaunchOptions {
    * Later, the API will be redesigned to meet more generic requirements.
    */
   collectTelemetryAsync?: ICollectTelemetryFunction;
+
+  /**
+   * Provide the caller package JSON info.
+   * @internal
+   *
+   * @remarks
+   * It is used to update notification.
+   */
+  callerPackageJson?: ICallerPackageJson;
 }
 
 /**

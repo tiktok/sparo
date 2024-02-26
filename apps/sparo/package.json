@@ -41,6 +41,7 @@
     "build": "heft build --clean"
   },
   "dependencies": {
+    "@rushstack/node-core-library": "~3.64.2",
     "sparo-lib": "workspace:*"
   },
   "devDependencies": {
