@@ -17,17 +17,22 @@
     "write-heading-ids": "docusaurus write-heading-ids"
   },
   "dependencies": {
+    "@algolia/client-search": "^4.22.1",
     "@docusaurus/core": "3.1.1",
     "@docusaurus/preset-classic": "3.1.1",
-    "@mdx-js/react": "^3.0.0",
-    "clsx": "^2.0.0",
-    "prism-react-renderer": "^2.3.0",
-    "react": "^18.0.0",
-    "react-dom": "^18.0.0"
+    "@mdx-js/react": "^3.0.1",
+    "clsx": "^2.1.0",
+    "prism-react-renderer": "^2.3.1",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "search-insights": "^2.13.0"
   },
   "devDependencies": {
     "@docusaurus/module-type-aliases": "3.1.1",
-    "@docusaurus/types": "3.1.1"
+    "@docusaurus/types": "3.1.1",
+    "@types/react": "~18.2.59",
+    "@types/react-dom": "~18.2.19",
+    "typescript": "~5.3.3"
   },
   "browserslist": {
     "production": [
