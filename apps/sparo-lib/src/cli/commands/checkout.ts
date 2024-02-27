@@ -288,7 +288,7 @@ export class CheckoutCommand implements ICommand<ICheckoutCommandOptions> {
 
     if (isNoProfile && (profiles.size || addProfiles.size)) {
       throw new Error(
-        `"--no-profile" can not be specified at the same time with "--profile" or "--add-profile"`
+        `The "--no-profile" parameter cannot be combined with "--profile" or "--add-profile"`
       );
     }
 

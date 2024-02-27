@@ -2,7 +2,7 @@
   "changes": [
     {
       "packageName": "sparo",
-      "comment": "feat: support --add-profile in sparo checkout",
+      "comment": "Improve \"sparo checkout\" to support the --add-profile parameter",
       "type": "none"
     }
   ],
