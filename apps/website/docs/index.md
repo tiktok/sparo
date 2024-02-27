@@ -8,6 +8,13 @@ custom_edit_url: null
   <img src="images/site/sparo-logo.svg" alt="Sparo" title="Sparo" style={{ width: '380px', paddingTop: '30px' }} />
 </div>
 
+> 🚧 UNDER CONSTRUCTION 🚧
+>
+> This is an early test release of the software.
+> It is not yet ready for general usage.
+> If you have questions about this project, let us know
+> using [GitHub discussions](https://github.com/tiktok/sparo/discussions).
+
 ## Clone faster!
 
 Sparo optimizes performance of Git operations for your large frontend monorepo.
