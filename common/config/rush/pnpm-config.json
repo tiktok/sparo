@@ -41,7 +41,7 @@
    * Possible values are: `highest`, `time-based`, and `lowest-direct`.
    * The default is `highest`.
    */
-  // "resolutionMode": "time-based",
+  "resolutionMode": "time-based",
 
   /**
    * This setting determines whether PNPM will automatically install (non-optional)
@@ -74,7 +74,7 @@
    * The default value is false to avoid legacy compatibility issues.
    * It is strongly recommended to set `strictPeerDependencies=true`.
    */
-  // "strictPeerDependencies": true,
+  "strictPeerDependencies": true,
 
   /**
    * Environment variables that will be provided to PNPM.
@@ -214,7 +214,6 @@
     // "request": "*"
   },
 
-
   /**
    * (THIS FIELD IS MACHINE GENERATED)  The "globalPatchedDependencies" field is updated automatically
    * by the `rush-pnpm patch-commit` command.  It is a dictionary, where the key is an NPM package name
@@ -222,7 +221,7 @@
    *
    * PNPM documentation: https://pnpm.io/package_json#pnpmpatcheddependencies
    */
-  "globalPatchedDependencies": { },
+  "globalPatchedDependencies": {},
 
   /**
    * (USE AT YOUR OWN RISK)  This is a free-form property bag that will be copied into
