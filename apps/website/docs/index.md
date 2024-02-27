@@ -4,8 +4,16 @@ hide_title: true
 custom_edit_url: null
 ---
 
+import { ThemedImage } from '@site/src/components/ThemedImage';
+
 <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-  <img src="images/site/sparo-logo.svg" alt="Sparo" title="Sparo" style={{ width: '380px', paddingTop: '30px' }} />
+  <ThemedImage
+    srcLight="images/site/sparo-logo.svg"
+    srcDark="images/site/sparo-logo-dark.svg"
+    alt="Sparo"
+    title="Sparo"
+    style={{ width: '380px', paddingTop: '30px' }}
+    />
 </div>
 
 > 🚧 UNDER CONSTRUCTION 🚧
