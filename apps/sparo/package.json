@@ -23,6 +23,12 @@
     "VFS for Git",
     "workspace"
   ],
+  "homepage": "https://tiktok.github.io/sparo/",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/tiktok/sparo.git",
+    "directory": "apps/sparo"
+  },
   "license": "MIT",
   "bin": {
     "sparo": "./bin/sparo",

@@ -13,7 +13,10 @@ export class SparoStartupBanner {
     const { terminal } = getFromContainer(TerminalService);
 
     terminal.writeLine();
-    terminal.writeLine(Colorize.bold(`Sparo accelerator for Git ${sparoVersion}`));
+    terminal.writeLine(
+      Colorize.bold(`Sparo accelerator for Git ${sparoVersion} -`) +
+        Colorize.cyan(' https://tiktok.github.io/sparo/')
+    );
     terminal.writeLine(`Node.js version is ${nodeVersion}`);
     terminal.writeLine(`Git version is ${gitVersion}`);
     terminal.writeLine();
