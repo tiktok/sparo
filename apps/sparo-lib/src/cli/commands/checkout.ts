@@ -173,10 +173,10 @@ export class CheckoutCommand implements ICommand<ICheckoutCommandOptions> {
       await this._gitSparseCheckoutService.purgeAsync();
     } else if (targetProfileNames.size) {
       // TODO: policy #1: Can not sparse checkout with uncommitted changes in the cone.
-      for (const p of profiles) {
+      for (const profile of profiles) {
         // Since we have run localState.reset() before, for each profile we just add it to local state.
         const { selections, includeFolders, excludeFolders } =
-          await this._gitSparseCheckoutService.resolveSparoProfileAsync(p, {
+          await this._gitSparseCheckoutService.resolveSparoProfileAsync(profile, {
             localStateUpdateAction: 'add'
           });
         // for profiles, we use sparse checkout set
@@ -187,10 +187,10 @@ export class CheckoutCommand implements ICommand<ICheckoutCommandOptions> {
           checkoutAction: 'set'
         });
       }
-      for (const p of addProfiles) {
+      for (const profile of addProfiles) {
         // For each add profile we add it to local state.
         const { selections, includeFolders, excludeFolders } =
-          await this._gitSparseCheckoutService.resolveSparoProfileAsync(p, {
+          await this._gitSparseCheckoutService.resolveSparoProfileAsync(profile, {
             localStateUpdateAction: 'add'
           });
         // for add profiles, we use sparse checkout add
@@ -287,9 +287,7 @@ export class CheckoutCommand implements ICommand<ICheckoutCommandOptions> {
     const addProfiles: Set<string> = new Set(addProfilesFromArg.filter((p) => typeof p === 'string'));
 
     if (isNoProfile && (profiles.size || addProfiles.size)) {
-      throw new Error(
-        `The "--no-profile" parameter cannot be combined with "--profile" or "--add-profile"`
-      );
+      throw new Error(`The "--no-profile" parameter cannot be combined with "--profile" or "--add-profile"`);
     }
 
     return {

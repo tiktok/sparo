@@ -237,7 +237,7 @@ ${availableProfiles.join(',')}
             terminal.writeDebugLine(`Skip sparse checkout regarding no target folders`);
           } else {
             terminal.writeLine(
-              `Performing sparse checkout ${checkoutAction} for these folders: ${targetFolders.join(' ')}`
+              `Performing sparse checkout ${checkoutAction} for these folders: \n${targetFolders.join('\n ')}`
             );
             this._sparseCheckoutPaths(targetFolders, {
               action: checkoutAction
