@@ -23,7 +23,9 @@ export class SparoCICommandLine {
     }
 
     GitVersionCompatibility.ensureGitVersion();
-    SparoStartupBanner.logBanner();
+    SparoStartupBanner.logBanner({
+      callerPackageJson: launchOptions.callerPackageJson
+    });
 
     const sparoCI: SparoCICommandLine = new SparoCICommandLine();
     await sparoCI.prepareCommandAsync();

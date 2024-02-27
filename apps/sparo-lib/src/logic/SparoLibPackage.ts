@@ -1,7 +1,7 @@
 import * as path from 'path';
 import { type IPackageJson, PackageJsonLookup } from '@rushstack/node-core-library';
 
-export class SparoVersion {
+export class SparoLibPackage {
   private static __sparoLibPackageJson: IPackageJson | undefined = undefined;
   private static __sparoLibPackageFolder: string | undefined = undefined;
 
@@ -19,24 +19,24 @@ export class SparoVersion {
    * @internal
    */
   public static get _sparoLibPackageJson(): IPackageJson {
-    SparoVersion._ensureOwnPackageJsonIsLoaded();
-    return SparoVersion.__sparoLibPackageJson!;
+    SparoLibPackage._ensureOwnPackageJsonIsLoaded();
+    return SparoLibPackage.__sparoLibPackageJson!;
   }
 
   public static get _sparoLibPackageFolder(): string {
-    SparoVersion._ensureOwnPackageJsonIsLoaded();
-    return SparoVersion.__sparoLibPackageFolder!;
+    SparoLibPackage._ensureOwnPackageJsonIsLoaded();
+    return SparoLibPackage.__sparoLibPackageFolder!;
   }
 
   private static _ensureOwnPackageJsonIsLoaded(): void {
-    if (!SparoVersion.__sparoLibPackageJson) {
+    if (!SparoLibPackage.__sparoLibPackageJson) {
       const packageJsonFilePath: string | undefined =
         PackageJsonLookup.instance.tryGetPackageJsonFilePathFor(__dirname);
       if (!packageJsonFilePath) {
         throw new Error('Unable to locate the package.json file for this module');
       }
-      SparoVersion.__sparoLibPackageFolder = path.dirname(packageJsonFilePath);
-      SparoVersion.__sparoLibPackageJson = PackageJsonLookup.instance.loadPackageJson(packageJsonFilePath);
+      SparoLibPackage.__sparoLibPackageFolder = path.dirname(packageJsonFilePath);
+      SparoLibPackage.__sparoLibPackageJson = PackageJsonLookup.instance.loadPackageJson(packageJsonFilePath);
     }
   }
 }
