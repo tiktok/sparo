@@ -93,6 +93,9 @@ importers:
       '@docusaurus/preset-classic':
         specifier: 3.1.1
         version: 3.1.1(@algolia/client-search@4.22.1)(@types/react@18.2.59)(react-dom@18.2.0)(react@18.2.0)(search-insights@2.13.0)(typescript@5.3.3)
+      '@docusaurus/theme-common':
+        specifier: 3.1.1
+        version: 3.1.1(@docusaurus/types@3.1.1)(react-dom@18.2.0)(react@18.2.0)(typescript@5.3.3)
       '@mdx-js/react':
         specifier: ^3.0.1
         version: 3.0.1(@types/react@18.2.59)(react@18.2.0)
@@ -11932,6 +11935,7 @@ time:
   /@docusaurus/core@3.1.1: '2024-01-26T12:52:02.277Z'
   /@docusaurus/module-type-aliases@3.1.1: '2024-01-26T12:51:46.849Z'
   /@docusaurus/preset-classic@3.1.1: '2024-01-26T12:52:48.070Z'
+  /@docusaurus/theme-common@3.1.1: '2024-01-26T12:52:31.593Z'
   /@docusaurus/types@3.1.1: '2024-01-26T12:51:42.114Z'
   /@mdx-js/react@3.0.1: '2024-02-12T10:50:27.073Z'
   /@rushstack/heft-node-rig@2.4.5: '2024-01-25T23:04:47.299Z'

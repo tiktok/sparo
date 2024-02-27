@@ -82,7 +82,8 @@ const config = {
         title: '',
         logo: {
           alt: 'Sparo',
-          src: 'images/site/sparo-title.svg'
+          src: 'images/site/sparo-title.svg',
+          srcDark: 'images/site/sparo-title-dark.svg'
         },
         items: [
           {
