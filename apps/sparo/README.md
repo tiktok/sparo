@@ -1,6 +1,12 @@
 # Sparo
 
-<img width="380" src="../../common/assets/sparo-380.png" alt="Sparo" />
+<div>
+  <br />
+  <a href="https://tiktok.github.io/sparo/">
+    <img width="380" src="../../common/assets/sparo-380.png" alt="Sparo" />
+  </a>
+  <p />
+</div>
 
 > 🚧 UNDER CONSTRUCTION 🚧
 >
