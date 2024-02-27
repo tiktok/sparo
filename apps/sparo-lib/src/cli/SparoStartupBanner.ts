@@ -44,11 +44,18 @@ export class SparoStartupBanner {
     if (options.callerPackageJson && options.callerPackageJson.name && options.callerPackageJson.version) {
       // CLI parameter has not been processed yet, so directly go through parameters here.
       const isDebug: boolean = process.argv.includes('--debug');
+
+      // Normally update-notifier waits a day or so before it starts displaying upgrade notices.
+      // In debug mode, show the notice right away.
+      const updateCheckInterval: number | undefined = isDebug ? 0 : undefined;
+
+      // For development, uncomment these lines to force the updater to print a notice:
+      //const updateCheckInterval: number = 0;
+      //options.callerPackageJson = { ...options.callerPackageJson!, version: '0.0.1' };
+
       const notifier: UpdateNotifier = updateNotifier({
         pkg: options.callerPackageJson,
-        // Normally update-notifier waits a day or so before it starts displaying upgrade notices.
-        // In debug mode, show the notice right away.
-        updateCheckInterval: isDebug ? 0 : undefined
+        updateCheckInterval
       });
       notifier.notify({
         // Make sure it says "-g" in the "npm install" example command line
