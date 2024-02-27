@@ -1,0 +1,10 @@
+{
+  "changes": [
+    {
+      "packageName": "sparo",
+      "comment": "Add website links to README.md and package.json",
+      "type": "none"
+    }
+  ],
+  "packageName": "sparo"
+}
