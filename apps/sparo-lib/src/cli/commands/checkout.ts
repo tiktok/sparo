@@ -15,6 +15,7 @@ export interface ICheckoutCommandOptions {
   b?: boolean;
   B?: boolean;
   startPoint?: string;
+  addProfile?: string[];
 }
 
 @Command()
@@ -59,7 +60,9 @@ export class CheckoutCommand implements ICommand<ICheckoutCommandOptions> {
       .string('branch')
       .string('startPoint')
       .array('profile')
-      .default('profile', []);
+      .default('profile', [])
+      .array('add-profile')
+      .default('add-profile', []);
   }
 
   public handler = async (
@@ -69,7 +72,10 @@ export class CheckoutCommand implements ICommand<ICheckoutCommandOptions> {
     const { _gitService: gitService, _localState: localState } = this;
     const { b, B, branch, startPoint } = args;
 
-    const { isNoProfile, profiles } = this._processProfilesFromArg(args.profile);
+    const { isNoProfile, profiles, addProfiles } = this._processProfilesFromArg({
+      addProfilesFromArg: args.addProfile ?? [],
+      profilesFromArg: args.profile
+    });
 
     /**
      * Since we set up single branch by default and branch can be missing in local, we are going to fetch the branch from remote server here.
@@ -93,19 +99,22 @@ export class CheckoutCommand implements ICommand<ICheckoutCommandOptions> {
       }
     }
 
-    let targetProfileNames: string[] = [];
+    const targetProfileNames: Set<string> = new Set();
     if (!isNoProfile) {
       // Get target profile.
-      // 1. Read from existing profile from local state.
-      // 2. If profile specified from CLI parameter, it takes over.
+      // 1. If profile specified from CLI parameter, preferential use it.
+      // 2. If none profile specified, read from existing profile from local state as default.
+      // 3. If add profile was specified from CLI parameter, add them to result of 1 or 2.
       const localStateProfiles: ILocalStateProfiles | undefined = await localState.getProfiles();
 
-      if (localStateProfiles) {
-        targetProfileNames = Object.keys(localStateProfiles);
+      if (profiles.size) {
+        profiles.forEach((p) => targetProfileNames.add(p));
+      } else if (localStateProfiles) {
+        Object.keys(localStateProfiles).forEach((p) => targetProfileNames.add(p));
       }
 
-      if (profiles.length) {
-        targetProfileNames = profiles;
+      if (addProfiles.size) {
+        addProfiles.forEach((p) => targetProfileNames.add(p));
       }
 
       const nonExistProfileNames: string[] = [];
@@ -127,9 +136,9 @@ export class CheckoutCommand implements ICommand<ICheckoutCommandOptions> {
 
       if (nonExistProfileNames.length) {
         throw new Error(
-          `Checkout failed. The following profile(s) are missing in the branch "${operationBranch}": ${targetProfileNames.join(
-            ', '
-          )}`
+          `Checkout failed. The following profile(s) are missing in the branch "${operationBranch}": ${Array.from(
+            targetProfileNames
+          ).join(', ')}`
         );
       }
     }
@@ -158,22 +167,40 @@ export class CheckoutCommand implements ICommand<ICheckoutCommandOptions> {
 
     // checkout profiles
     localState.reset();
-    if (targetProfileNames.length) {
-      for (const p of targetProfileNames) {
+
+    if (isNoProfile) {
+      // if no profile specified, purge to skeleton
+      await this._gitSparseCheckoutService.purgeAsync();
+    } else if (targetProfileNames.size) {
+      // TODO: policy #1: Can not sparse checkout with uncommitted changes in the cone.
+      for (const profile of profiles) {
+        // Since we have run localState.reset() before, for each profile we just add it to local state.
         const { selections, includeFolders, excludeFolders } =
-          await this._gitSparseCheckoutService.resolveSparoProfileAsync(p, {
+          await this._gitSparseCheckoutService.resolveSparoProfileAsync(profile, {
             localStateUpdateAction: 'add'
           });
-        // TODO: policy #1: Can not sparse checkout with uncommitted changes in the cone.
-
+        // for profiles, we use sparse checkout set
         await this._gitSparseCheckoutService.checkoutAsync({
           selections,
           includeFolders,
-          excludeFolders
+          excludeFolders,
+          checkoutAction: 'set'
         });
       }
-    } else {
-      await this._gitSparseCheckoutService.purgeAsync();
+      for (const profile of addProfiles) {
+        // For each add profile we add it to local state.
+        const { selections, includeFolders, excludeFolders } =
+          await this._gitSparseCheckoutService.resolveSparoProfileAsync(profile, {
+            localStateUpdateAction: 'add'
+          });
+        // for add profiles, we use sparse checkout add
+        await this._gitSparseCheckoutService.checkoutAsync({
+          selections,
+          includeFolders,
+          excludeFolders,
+          checkoutAction: 'add'
+        });
+      }
     }
   };
 
@@ -221,7 +248,17 @@ export class CheckoutCommand implements ICommand<ICheckoutCommandOptions> {
     return currentBranch;
   }
 
-  private _processProfilesFromArg(profilesFromArg: string[]): { isNoProfile: boolean; profiles: string[] } {
+  private _processProfilesFromArg({
+    profilesFromArg,
+    addProfilesFromArg
+  }: {
+    profilesFromArg: string[];
+    addProfilesFromArg: string[];
+  }): {
+    isNoProfile: boolean;
+    profiles: Set<string>;
+    addProfiles: Set<string>;
+  } {
     /**
      * --profile is defined as array type parameter, specifying --no-profile is resolved to false by yargs.
      *
@@ -230,7 +267,7 @@ export class CheckoutCommand implements ICommand<ICheckoutCommandOptions> {
      * @example --profile foo --no-profile -> ["foo", false]
      */
     let isNoProfile: boolean = false;
-    const profiles: string[] = [];
+    const profiles: Set<string> = new Set();
 
     for (const profile of profilesFromArg) {
       if (typeof profile === 'boolean' && profile === false) {
@@ -238,16 +275,25 @@ export class CheckoutCommand implements ICommand<ICheckoutCommandOptions> {
         continue;
       }
 
-      profiles.push(profile);
+      profiles.add(profile);
     }
 
-    if (isNoProfile && profiles.length) {
-      throw new Error(`"--no-profile" and "--profile" can not be specified at the same time`);
+    /**
+     * --add-profile is defined as array type parameter
+     * @example --no-profile --add-profile foo -> throw error
+     * @example --profile bar --add-profile foo -> current profiles = bar + foo
+     * @example --add-profile foo -> current profiles = current profiles + foo
+     */
+    const addProfiles: Set<string> = new Set(addProfilesFromArg.filter((p) => typeof p === 'string'));
+
+    if (isNoProfile && (profiles.size || addProfiles.size)) {
+      throw new Error(`The "--no-profile" parameter cannot be combined with "--profile" or "--add-profile"`);
     }
 
     return {
       isNoProfile,
-      profiles
+      profiles,
+      addProfiles
     };
   }
 }
