@@ -45,6 +45,11 @@ export class CloneCommand implements ICommand<ICloneCommandOptions> {
         default: false,
         type: 'boolean'
       })
+      .option('branch', {
+        alias: 'b',
+        describe: 'Specify a branch to clone',
+        type: 'string'
+      })
       .check((argv) => {
         if (!argv.repository) {
           return 'You must specify a repository to clone.';

@@ -9,6 +9,7 @@ import { TerminalService } from './TerminalService';
 export interface ICloneOptions {
   repository: string;
   directory: string;
+  branch?: string;
 }
 
 @Service()
@@ -64,7 +65,7 @@ an empty directory.`);
     terminal.writeDebugLine('full clone done');
   }
 
-  public bloblessClone({ repository, directory }: ICloneOptions): void {
+  public bloblessClone({ repository, directory, branch }: ICloneOptions): void {
     const { terminal } = this._terminalService;
 
     terminal.writeDebugLine('blobless clone start...');
@@ -73,6 +74,7 @@ an empty directory.`);
       '--filter=blob:none',
       '--sparse',
       '--single-branch',
+      ...(branch ? ['--branch', branch] : []),
       repository,
       directory
     ];
@@ -85,7 +87,7 @@ an empty directory.`);
     terminal.writeDebugLine('blobless clone done');
   }
 
-  public treelessClone({ repository, directory }: ICloneOptions): void {
+  public treelessClone({ repository, directory, branch }: ICloneOptions): void {
     const { terminal } = this._terminalService;
 
     terminal.writeDebugLine('treeless clone start...');
@@ -94,6 +96,7 @@ an empty directory.`);
       '--filter=tree:0',
       '--sparse',
       '--single-branch',
+      ...(branch ? ['--branch', branch] : []),
       repository,
       directory
     ];
