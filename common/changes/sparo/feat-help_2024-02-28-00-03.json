@@ -1,0 +1,10 @@
+{
+  "changes": [
+    {
+      "packageName": "sparo",
+      "comment": "--help and help shows basic help text",
+      "type": "none"
+    }
+  ],
+  "packageName": "sparo"
+}

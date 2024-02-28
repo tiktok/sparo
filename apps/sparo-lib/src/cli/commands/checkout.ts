@@ -56,9 +56,17 @@ export class CheckoutCommand implements ICommand<ICheckoutCommandOptions> {
       .positional('start-point', {
         type: 'string'
       })
-      .boolean('b')
       .string('branch')
       .string('startPoint')
+      .option('b', {
+        type: 'boolean',
+        description: 'Create a new branch and start it at <start-point>'
+      })
+      .option('B', {
+        type: 'boolean',
+        description:
+          'Create a new branch and start it at <start-point>; if it already exists, reset it to <start-point>'
+      })
       .array('profile')
       .default('profile', [])
       .array('add-profile')
