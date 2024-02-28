@@ -5,7 +5,7 @@ import { ListProfilesCommand } from './list-profiles';
 import { AutoConfigCommand } from './auto-config';
 import { FetchCommand } from './fetch';
 import { CIHelpCommand } from './ci-help';
-import { CISparseCommand } from './ci-sparse';
+import { CICheckoutCommand } from './ci-checkout';
 import { CICloneCommand } from './ci-clone';
 import { CheckoutCommand } from './checkout';
 import { GitCloneCommand } from './git-clone';
@@ -33,4 +33,4 @@ export const COMMAND_LIST: Constructable[] = [
   GitPullCommand
 ];
 
-export const CI_COMMAND_LIST: Constructable[] = [CICloneCommand, CISparseCommand, CIHelpCommand];
+export const CI_COMMAND_LIST: Constructable[] = [CICloneCommand, CICheckoutCommand, CIHelpCommand];
