@@ -1,5 +1,5 @@
 import { Command } from '../../decorator';
-import { Argv } from 'yargs';
+import type { Argv } from 'yargs';
 import type { ICommand } from './base';
 
 export interface IHelpCommandOptions {}
@@ -8,22 +8,14 @@ export interface IHelpCommandOptions {}
 export class HelpCommand implements ICommand<IHelpCommandOptions> {
   public cmd: string = 'help';
   public description: string = '';
+  private _yargs: Argv<IHelpCommandOptions> | undefined;
 
-  public builder(yargs: Argv<IHelpCommandOptions>): void {
-    yargs.command(
-      'commands',
-      'commands',
-      () => {},
-      () => {
-        console.log('command help');
-      }
-    );
-  }
-  public async handler(): Promise<void> {
-    console.log(`Sparo
-usage: sparo COMMAND [OPTIONS]
-`);
-  }
+  public builder = (yargs: Argv<IHelpCommandOptions>): void => {
+    this._yargs = yargs;
+  };
+  public handler = async (): Promise<void> => {
+    this._yargs?.showHelp();
+  };
   public getHelp(): string {
     return '';
   }

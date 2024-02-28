@@ -18,14 +18,16 @@ export class InitProfileCommand implements ICommand<IInitProjectCommandOptions> 
   public cmd: string = 'init-profile';
   public description: string = 'Initialize a new profile.';
 
-  // template section name --> whether it should be commented out
-  private _commentedBySectionName: Map<string, boolean> = new Map<string, boolean>();
-
   @inject(SparoProfileService) private _sparoProfileService!: SparoProfileService;
   @inject(TerminalService) private _terminalService!: TerminalService;
 
   public builder(yargs: Argv<IInitProjectCommandOptions>): void {
-    yargs.string('profile').demandOption(['profile']);
+    yargs
+      .option('profile', {
+        type: 'string',
+        description: 'The name of the profile to initialize.'
+      })
+      .demandOption(['profile']);
   }
 
   public handler = async (

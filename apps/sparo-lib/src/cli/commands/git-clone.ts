@@ -12,7 +12,9 @@ export class GitCloneCommand implements ICommand<{}> {
   public description: string = 'original git clone command';
   @inject(GitService) private _gitService!: GitService;
 
-  public builder(yargs: Argv<{}>): void {}
+  public builder(yargs: Argv<{}>): void {
+    yargs.help(false);
+  }
 
   public handler = async (args: ArgumentsCamelCase<{}>, terminalService: TerminalService): Promise<void> => {
     const { _gitService: gitService } = this;

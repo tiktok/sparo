@@ -11,7 +11,11 @@ export class GitPullCommand implements ICommand<{}> {
   public cmd: string = 'git-pull';
   public description: string = 'original git pull command';
   @inject(GitService) public _gitService!: GitService;
-  public builder(yargs: Argv<{}>): void {}
+
+  public builder(yargs: Argv<{}>): void {
+    yargs.help(false);
+  }
+
   public handler = async (args: ArgumentsCamelCase<{}>, terminalService: TerminalService): Promise<void> => {
     const { _gitService: gitService } = this;
     const { terminal } = terminalService;
