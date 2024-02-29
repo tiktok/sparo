@@ -2,14 +2,12 @@ import * as path from 'path';
 import * as child_process from 'child_process';
 import { inject } from 'inversify';
 import { Service } from '../decorator';
-import { LocalState, LocalStateUpdateAction } from '../logic/LocalState';
-import { type ISelection, SparoProfile } from '../logic/SparoProfile';
 import { GitService } from './GitService';
-import { SparoProfileService } from './SparoProfileService';
 import { TerminalService } from './TerminalService';
 import { Executable, FileSystem, JsonFile, JsonSyntax } from '@rushstack/node-core-library';
 import { Stopwatch } from '../logic/Stopwatch';
 
+import type { ISelection } from '../logic/SparoProfile';
 export interface IRushSparseCheckoutOptions {
   selections?: ISelection[];
   includeFolders?: string[];
@@ -24,81 +22,42 @@ export interface IRushProject {
   projectFolder: string;
 }
 
-export interface IResolveSparoProfileOptions {
-  localStateUpdateAction: LocalStateUpdateAction;
-}
-
 @Service()
 export class GitSparseCheckoutService {
-  @inject(SparoProfileService) private _sparoProfileService!: SparoProfileService;
   @inject(GitService) private _gitService!: GitService;
-  @inject(LocalState) private _localState!: LocalState;
   @inject(TerminalService) private _terminalService!: TerminalService;
 
   private _rushConfigLoaded: boolean = false;
   private _rushProjects: IRushProject[] = [];
   private _packageNames: Set<string> = new Set<string>();
+  private _isSkeletonInitializedAndUpdated: boolean = false;
+  private _finalSkeletonPaths: string[] = [];
 
-  public initializeRepository(): void {
-    this._terminalService.terminal.writeLine('Checking out core files...');
+  public ensureSkeletonExistAndUpdated(): void {
+    /**
+     * Every time sparo cli was invoked, _isInitialized will be reset to false and try to local and update skeleton if needed.
+     * But it is not necessary to run initializeRepository() multiple times during a given command execution,
+     * because there is no code changes and the result will be the same each time.
+     *
+     * @todo
+     * Store isInitialized in local file, similar to LocalState, and check whether need to update skeleton
+     * by checking if there is any code changes in rush.json, autoinstaller, or projects' package json
+     */
+    if (this._isSkeletonInitializedAndUpdated) {
+      return;
+    }
 
     if ('true' !== this._gitService.getGitConfig('core.sparsecheckout')?.trim()) {
       throw new Error('Sparse checkout is not enabled in this repo.');
     }
-
-    this._loadRushConfiguration();
-    this._prepareMonorepoSkeleton();
+    this.initializeAndUpdateSkeleton();
   }
 
-  public async resolveSparoProfileAsync(
-    profile: string,
-    options: IResolveSparoProfileOptions
-  ): Promise<{
-    selections: ISelection[];
-    includeFolders: string[];
-    excludeFolders: string[];
-  }> {
-    this.initializeRepository();
-
-    const sparoProfile: SparoProfile | undefined = await this._sparoProfileService.getProfileAsync(profile);
-
-    if (!sparoProfile) {
-      const availableProfiles: string[] = Array.from(
-        (await this._sparoProfileService.getProfilesAsync()).keys()
-      );
-      throw new Error(
-        `Parse sparse profile "${profile}" error. ${
-          availableProfiles.length !== 0
-            ? `Available profiles are:
-${availableProfiles.join(',')}
-`
-            : 'No profiles now'
-        }`
-      );
-    }
-
-    const repositoryRoot: string | null = this._gitService.getRepoInfo().root;
-    if (!repositoryRoot) {
-      throw new Error(`Running outside of the git repository folder`);
-    }
-
-    const { selections, includeFolders, excludeFolders } = sparoProfile;
-    const { localStateUpdateAction } = options;
-    await this._localState.setProfiles(
-      {
-        [profile]: {
-          selections,
-          includeFolders,
-          excludeFolders
-        }
-      },
-      localStateUpdateAction
-    );
-    return {
-      selections,
-      includeFolders,
-      excludeFolders
-    };
+  public initializeAndUpdateSkeleton(): void {
+    this._terminalService.terminal.writeLine('Checking out and updating core files...');
+    this._loadRushConfiguration();
+    this._prepareMonorepoSkeleton();
+    this._isSkeletonInitializedAndUpdated = true;
   }
 
   public checkoutSkeletonAsync = async (): Promise<void> => {
@@ -151,12 +110,7 @@ ${availableProfiles.join(',')}
       throw new Error(`git repo not found. You should run this tool inside a git repo`);
     }
 
-    {
-      const stopwatch: Stopwatch = Stopwatch.start();
-      this.initializeRepository();
-      terminal.writeVerboseLine(`Initialize repo sparse checkout. (${stopwatch.toString()})`);
-      stopwatch.stop();
-    }
+    this.ensureSkeletonExistAndUpdated();
 
     const fromSelectors: Set<string> = new Set();
     const toSelectors: Set<string> = new Set();
@@ -210,7 +164,7 @@ ${availableProfiles.join(',')}
     if (toSelectors.size !== 0 || fromSelectors.size !== 0) {
       const stopwatch: Stopwatch = Stopwatch.start();
       targetFolders = this._getTargetFoldersByRushList({ toSelectors, fromSelectors });
-      terminal.writeLine(`Run rush list command. (${stopwatch.toString()})`);
+      terminal.writeVerboseLine(`Run rush list command. (${stopwatch.toString()})`);
       stopwatch.stop();
     } else {
       terminal.writeDebugLine('Skip rush list regarding the absence of from selectors and to selectors');
@@ -229,16 +183,23 @@ ${availableProfiles.join(',')}
         case 'purge':
         case 'skeleton':
           // re-apply the initial paths for setting up sparse repo state
-          this._prepareMonorepoSkeleton({ restore: checkoutAction === 'purge' });
+          this._prepareMonorepoSkeleton({
+            restore: checkoutAction === 'purge'
+          });
           break;
         case 'add':
         case 'set':
           if (targetFolders.length === 0) {
             terminal.writeDebugLine(`Skip sparse checkout regarding no target folders`);
           } else {
+            // if action is set, we need to combine targetFolder with _finalSkeletonPaths
+            if (checkoutAction === 'set') {
+              targetFolders.push(...this._finalSkeletonPaths);
+            }
             terminal.writeLine(
-              `Performing sparse checkout ${checkoutAction} for these folders: \n${targetFolders.join('\n ')}`
+              `Performing sparse checkout ${checkoutAction} for these folders: \n${targetFolders.join('\n')}`
             );
+
             this._sparseCheckoutPaths(targetFolders, {
               action: checkoutAction
             });
@@ -289,9 +250,9 @@ ${availableProfiles.join(',')}
 
   private _prepareMonorepoSkeleton(options: { restore?: boolean } = {}): void {
     const { restore } = options;
-    const finalSkeletonPaths: string[] = this._getSkeletonPaths();
-    this._terminalService.terminal.writeLine('Checking out skeleton...');
-    this._sparseCheckoutPaths(finalSkeletonPaths, {
+    this._finalSkeletonPaths = this._getSkeletonPaths();
+    this._terminalService.terminal.writeDebugLine(`Skeleton paths: ${this._finalSkeletonPaths.join(', ')}`);
+    this._sparseCheckoutPaths(this._finalSkeletonPaths, {
       action: restore ? 'set' : 'add'
     });
   }

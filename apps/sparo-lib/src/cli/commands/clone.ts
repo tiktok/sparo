@@ -7,6 +7,7 @@ import { GitService } from '../../services/GitService';
 import { GitSparseCheckoutService } from '../../services/GitSparseCheckoutService';
 import { GitCloneService, ICloneOptions } from '../../services/GitCloneService';
 import { Stopwatch } from '../../logic/Stopwatch';
+import { SparoProfileService } from '../../services/SparoProfileService';
 import type { ICommand } from './base';
 import type { TerminalService } from '../../services/TerminalService';
 
@@ -15,6 +16,8 @@ export interface ICloneCommandOptions {
   repository: string;
   directory?: string;
   skipGitConfig?: boolean;
+  profile?: string[];
+  addProfile?: string[];
 }
 
 @Command()
@@ -24,6 +27,8 @@ export class CloneCommand implements ICommand<ICloneCommandOptions> {
 
   @inject(GitService) private _gitService!: GitService;
   @inject(GitCloneService) private _gitCloneService!: GitCloneService;
+  @inject(SparoProfileService) private _sparoProfileService!: SparoProfileService;
+
   @inject(GitSparseCheckoutService) private _GitSparseCheckoutService!: GitSparseCheckoutService;
 
   public builder(yargs: Argv<{}>): void {
@@ -50,6 +55,10 @@ export class CloneCommand implements ICommand<ICloneCommandOptions> {
         describe: 'Specify a branch to clone',
         type: 'string'
       })
+      .array('profile')
+      .default('profile', [])
+      .array('add-profile')
+      .default('add-profile', [])
       .check((argv) => {
         if (!argv.repository) {
           return 'You must specify a repository to clone.';
@@ -83,7 +92,37 @@ export class CloneCommand implements ICommand<ICloneCommandOptions> {
 
     process.chdir(directory);
 
-    await this._GitSparseCheckoutService.checkoutSkeletonAsync();
+    const { profiles, addProfiles, isNoProfile } = await this._sparoProfileService.preprocessProfileArgs({
+      profilesFromArg: args.profile ?? [],
+      addProfilesFromArg: args.addProfile ?? []
+    });
+
+    await this._GitSparseCheckoutService.ensureSkeletonExistAndUpdated();
+
+    // check whether profile exist in local branch
+    if (!isNoProfile) {
+      const targetProfileNames: Set<string> = new Set([...profiles, ...addProfiles]);
+      const nonExistProfileNames: string[] = [];
+      for (const targetProfileName of targetProfileNames) {
+        if (!this._sparoProfileService.hasProfileInFS(targetProfileName)) {
+          nonExistProfileNames.push(targetProfileName);
+        }
+      }
+
+      if (nonExistProfileNames.length) {
+        throw new Error(
+          `Clone failed. The following profile(s) are missing in cloned repo: ${Array.from(
+            targetProfileNames
+          ).join(', ')}`
+        );
+      }
+    }
+
+    // sync local sparse checkout state with given profiles.
+    await this._sparoProfileService.syncProfileState({
+      profiles: isNoProfile ? undefined : profiles,
+      addProfiles
+    });
 
     // set recommended git config
     if (!args.skipGitConfig) {
@@ -100,13 +139,18 @@ export class CloneCommand implements ICommand<ICloneCommandOptions> {
     terminal.writeLine(`Don't forget to change your shell path:`);
     terminal.writeLine('   ' + Colorize.cyan(`cd ${directory}`));
     terminal.writeLine();
-    terminal.writeLine('Your next step is to choose a Sparo profile for checkout.');
-    terminal.writeLine('To see available profiles in this repo:');
-    terminal.writeLine('   ' + Colorize.cyan('sparo list-profiles'));
-    terminal.writeLine('To checkout a profile:');
-    terminal.writeLine('   ' + Colorize.cyan('sparo checkout --profile <profile_name>'));
-    terminal.writeLine('To create a new profile:');
-    terminal.writeLine('   ' + Colorize.cyan('sparo init-profile --profile <profile_name>'));
+
+    if (isNoProfile || (profiles.size === 0 && addProfiles.size === 0)) {
+      terminal.writeLine('Your next step is to choose a Sparo profile for checkout.');
+      terminal.writeLine('To see available profiles in this repo:');
+      terminal.writeLine('   ' + Colorize.cyan('sparo list-profiles'));
+      terminal.writeLine('To checkout and set profile:');
+      terminal.writeLine('   ' + Colorize.cyan('sparo checkout --profile <profile_name>'));
+      terminal.writeLine('To checkout and add profile:');
+      terminal.writeLine('   ' + Colorize.cyan('sparo checkout --add-profile <profile_name>'));
+      terminal.writeLine('To create a new profile:');
+      terminal.writeLine('   ' + Colorize.cyan('sparo init-profile --profile <profile_name>'));
+    }
   };
 
   public getHelp(): string {

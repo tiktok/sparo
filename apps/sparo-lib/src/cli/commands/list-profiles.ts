@@ -40,7 +40,7 @@ export class ListProfilesCommand implements ICommand<IListProfilesCommandOptions
     terminalService.terminal.writeLine();
 
     // ensure sparse profiles folder
-    this._gitSparseCheckoutService.initializeRepository();
+    this._gitSparseCheckoutService.ensureSkeletonExistAndUpdated();
 
     const sparoProfiles: Map<string, SparoProfile> = await this._sparoProfileService.getProfilesAsync();
 

@@ -2,14 +2,21 @@ import { FileSystem, Async } from '@rushstack/node-core-library';
 import path from 'path';
 import { inject } from 'inversify';
 import { Service } from '../decorator';
-import { SparoProfile } from '../logic/SparoProfile';
+import { SparoProfile, ISelection } from '../logic/SparoProfile';
 import { TerminalService } from './TerminalService';
 import { GitService } from './GitService';
+import { GitSparseCheckoutService } from './GitSparseCheckoutService';
+import { LocalState, ILocalStateProfiles, type LocalStateUpdateAction } from '../logic/LocalState';
 
 export interface ISparoProfileServiceParams {
   terminalService: TerminalService;
   sparoProfileFolder: string;
 }
+
+export interface IResolveSparoProfileOptions {
+  localStateUpdateAction: LocalStateUpdateAction;
+}
+
 const defaultSparoProfileFolder: string = 'common/sparo-profiles';
 
 @Service()
@@ -19,6 +26,8 @@ export class SparoProfileService {
 
   @inject(GitService) private _gitService!: GitService;
   @inject(TerminalService) private _terminalService!: TerminalService;
+  @inject(LocalState) private _localState!: LocalState;
+  @inject(GitSparseCheckoutService) private _gitSparseCheckoutService!: GitSparseCheckoutService;
 
   public async loadProfilesAsync(): Promise<void> {
     if (!this._loadPromise) {
@@ -104,5 +113,193 @@ export class SparoProfileService {
       return last.slice(0, -5);
     }
     return last;
+  }
+
+  public async resolveSparoProfileAsync(
+    profile: string,
+    options: IResolveSparoProfileOptions
+  ): Promise<{
+    selections: ISelection[];
+    includeFolders: string[];
+    excludeFolders: string[];
+  }> {
+    this._gitSparseCheckoutService.ensureSkeletonExistAndUpdated();
+    const sparoProfile: SparoProfile | undefined = await this.getProfileAsync(profile);
+
+    if (!sparoProfile) {
+      const availableProfiles: string[] = Array.from((await this.getProfilesAsync()).keys());
+      throw new Error(
+        `Parse sparse profile "${profile}" error. ${
+          availableProfiles.length !== 0
+            ? `Available profiles are:
+${availableProfiles.join(',')}
+`
+            : 'No profiles now'
+        }`
+      );
+    }
+
+    const repositoryRoot: string | null = this._gitService.getRepoInfo().root;
+    if (!repositoryRoot) {
+      throw new Error(`Running outside of the git repository folder`);
+    }
+
+    const { selections, includeFolders, excludeFolders } = sparoProfile;
+    const { localStateUpdateAction } = options;
+    await this._localState.setProfiles(
+      {
+        [profile]: {
+          selections,
+          includeFolders,
+          excludeFolders
+        }
+      },
+      localStateUpdateAction
+    );
+    return {
+      selections,
+      includeFolders,
+      excludeFolders
+    };
+  }
+
+  /**
+   * preprocess profile related args from CLI parameter
+   */
+  public async preprocessProfileArgs({
+    profilesFromArg,
+    addProfilesFromArg
+  }: {
+    profilesFromArg: string[];
+    addProfilesFromArg: string[];
+  }): Promise<{
+    isNoProfile: boolean;
+    profiles: Set<string>;
+    addProfiles: Set<string>;
+  }> {
+    let isNoProfile: boolean = false;
+    /**
+     * --profile is defined as array type parameter, specifying --no-profile is resolved to false by yargs.
+     *
+     * @example --no-profile -> [false]
+     * @example --no-profile --profile foo -> [false, "foo"]
+     * @example --profile foo --no-profile -> ["foo", false]
+     */
+    const profiles: Set<string> = new Set();
+
+    for (const profile of profilesFromArg) {
+      if (typeof profile === 'boolean' && profile === false) {
+        isNoProfile = true;
+        continue;
+      }
+
+      profiles.add(profile);
+    }
+
+    /**
+     * --add-profile is defined as array type parameter
+     * @example --no-profile --add-profile foo -> throw error
+     * @example --profile bar --add-profile foo -> current profiles = bar + foo
+     * @example --add-profile foo -> current profiles = current profiles + foo
+     */
+    const addProfiles: Set<string> = new Set(addProfilesFromArg.filter((p) => typeof p === 'string'));
+
+    if (isNoProfile && (profiles.size || addProfiles.size)) {
+      throw new Error(`The "--no-profile" parameter cannot be combined with "--profile" or "--add-profile"`);
+    }
+
+    //
+    if (!isNoProfile && profiles.size === 0) {
+      // Get target profile.
+      // 1. If profile specified from CLI parameter, preferential use it.
+      // 2. If none profile specified, read from existing profile from local state as default.
+      const localStateProfiles: ILocalStateProfiles | undefined = await this._localState.getProfiles();
+
+      if (localStateProfiles) {
+        Object.keys(localStateProfiles).forEach((p) => profiles.add(p));
+      }
+    }
+    return {
+      isNoProfile,
+      profiles,
+      addProfiles
+    };
+  }
+
+  /**
+   * sync local sparse checkout state with specified profiles
+   */
+  public async syncProfileState({
+    profiles,
+    addProfiles
+  }: {
+    profiles?: Set<string>;
+    addProfiles?: Set<string>;
+  }): Promise<void> {
+    /*
+     * 2. If profile array is specified, using `git sparse-checkout set` to set sparse checkout folders in profiles.
+     * 3. If add profiles is specified, using `git sparse-checkout add` to add folders in add profiles
+     */
+
+    this._localState.reset();
+    this._terminalService.terminal.writeLine(
+      `Syncing local sparse checkout state with following specified profiles:\n${Array.from([
+        ...(profiles ?? []),
+        ...(addProfiles ?? [])
+      ]).join('\n')}`
+    );
+    this._terminalService.terminal.writeLine();
+    if (!profiles || profiles.size === 0) {
+      // If no profile was specified, purge local state to skeleton
+      await this._gitSparseCheckoutService.purgeAsync();
+    } else {
+      const allProfilesIncludeFolders: string[] = [],
+        allProfilesExcludeFolders: string[] = [],
+        allProfilesSelections: ISelection[] = [];
+      for (const profile of profiles) {
+        // Since we have run localState.reset() before, for each profile we just add it to local state.
+        const { selections, includeFolders, excludeFolders } = await this.resolveSparoProfileAsync(profile, {
+          localStateUpdateAction: 'add'
+        });
+        // combine all profiles' selections and include/exclude folder
+        allProfilesSelections.push(...selections);
+        allProfilesIncludeFolders.push(...includeFolders);
+        allProfilesExcludeFolders.push(...excludeFolders);
+      }
+      // sparse-checkout set once for all profiles together
+      await this._gitSparseCheckoutService.checkoutAsync({
+        selections: allProfilesSelections,
+        includeFolders: allProfilesIncludeFolders,
+        excludeFolders: allProfilesExcludeFolders,
+        checkoutAction: 'set'
+      });
+    }
+    if (addProfiles?.size) {
+      // If add profiles is specified, using `git sparse-checkout add` to add folders in add profiles
+      const allAddProfilesSelections: ISelection[] = [],
+        allAddProfilesIncludeFolders: string[] = [],
+        allAddProfilesExcludeFolders: string[] = [];
+      for (const profile of addProfiles) {
+        // For each add profile we add it to local state.
+        const { selections, includeFolders, excludeFolders } = await this.resolveSparoProfileAsync(profile, {
+          localStateUpdateAction: 'add'
+        });
+        // combine all add profiles' selections and include/exclude folder
+        allAddProfilesSelections.push(...selections);
+        allAddProfilesIncludeFolders.push(...includeFolders);
+        allAddProfilesExcludeFolders.push(...excludeFolders);
+      }
+      /**
+       * Note:
+       * Although we could run sparse-checkout add multiple times,
+       * we combine all add operations and execute once for better performance.
+       */
+      await this._gitSparseCheckoutService.checkoutAsync({
+        selections: allAddProfilesSelections,
+        includeFolders: allAddProfilesIncludeFolders,
+        excludeFolders: allAddProfilesExcludeFolders,
+        checkoutAction: 'add'
+      });
+    }
   }
 }
