@@ -13,7 +13,7 @@ export interface ICICheckoutCommandOptions {
 export class CICheckoutCommand implements ICommand<ICICheckoutCommandOptions> {
   public cmd: string = 'checkout';
   public description: string =
-    'Special checkout command for CI. It only accepts project selector such as --to and --from now.';
+    'Special checkout command for CI. It only accepts project selector suchs as --to and --from now.';
   @inject(GitSparseCheckoutService) private _gitSparseCheckoutService!: GitSparseCheckoutService;
   public builder(yargs: Argv<ICICheckoutCommandOptions>): void {
     yargs
@@ -32,7 +32,7 @@ export class CICheckoutCommand implements ICommand<ICICheckoutCommandOptions> {
         const toNum: number = (to || []).length;
         const fromNum: number = (from || []).length;
         if (toNum === 0 && fromNum === 0) {
-          throw new Error('At least one --to, --from must be specified');
+          throw new Error('At least one of "--to" or "--from" must be specified');
         }
         return true;
       });
