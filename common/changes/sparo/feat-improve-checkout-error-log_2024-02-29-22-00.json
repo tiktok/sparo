@@ -1,0 +1,10 @@
+{
+  "changes": [
+    {
+      "packageName": "sparo",
+      "comment": "Improve error logs when get projects from selection failed",
+      "type": "none"
+    }
+  ],
+  "packageName": "sparo"
+}
