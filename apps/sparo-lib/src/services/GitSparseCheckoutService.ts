@@ -304,7 +304,13 @@ ${availableProfiles.join(',')}
     // prepare all package.json for cone mode
     const packageJSON: string[] = [];
     for (const project of this._rushProjects) {
-      const curPath: string = `${project.projectFolder}/_`;
+      /**
+       * Example: git sparse checkout add apps/foo/subspace
+       * Change to a sparse checkout with all files(at any depth)
+       * under apps/foo/subspace plus all files immediately
+       * under apps/ and apps/foo/ and the toplevel directory.
+       */
+      const curPath: string = `${project.projectFolder}/subspace`;
       packageJSON.push(curPath);
     }
     return basicFolders.concat(pluginPaths, packageJSON);
