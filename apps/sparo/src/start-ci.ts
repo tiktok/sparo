@@ -7,7 +7,7 @@ const launchOptions: ILaunchOptions = {
   callerPackageJson: SparoPackage._sparoPackageJson
 };
 
-Sparo.launchSparoAsync(launchOptions)
+Sparo.launchSparoCIAsync(launchOptions)
   .then(() => {
     process.exitCode = 0;
   })
