@@ -67,7 +67,7 @@ You an add JSON comments to your profile config files.  In a large shared codeba
 
 The simple way to combine profiles is to specify `--profile` multiple times.  For example:
 
-```bash
+```sh
 # Check out the union of profiles team-a.json, team-b.json, team-c.json
 # NOTE: This will replace whatever profile selection was already checked out.
 sparo checkout --profile team-a --profile team-b --profile team-c
@@ -75,7 +75,7 @@ sparo checkout --profile team-a --profile team-b --profile team-c
 
 You can also use `--add-profile` to incrementally combine them.  For example:
 
-```bash
+```shell
 # These three commands are equivalent to the above command.
 sparo checkout --profile team-a
 sparo checkout --add-profile team-b
@@ -84,7 +84,7 @@ sparo checkout --add-profile team-c
 
 How to checkout no profile at all? That is, how to return to the initial state of a clean `sparo clone` that only includes the [skeleton](../reference/skeleton_folders.md) folders?  If `--profile` is entirely omitted, then `sparo checkout` will preserve the existing profile selection.  Instead, the `--no-profile` parameter is needed:
 
-```bash
+```shell
 # NOT IMPLEMENTED YET - check out just the skeleton folders
 # without applying any profiles
 sparo checkout --no-profile
@@ -95,7 +95,7 @@ sparo checkout --no-profile
 
 Users can discover available profiles in the current branch by invoking the [sparo list-profiles](../commands/sparo_list-profiles) command.  The `--project` parameter enables you to query relevant profiles for a given project.  For example:
 
-```bash
+```shell
 # Suppose you need to make a fix for the "example-app" project.
 
 # Which sparse checkout profiles include the "example-app" project?

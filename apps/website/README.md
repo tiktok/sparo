@@ -6,14 +6,14 @@ This is the [Docusaurus](https://docusaurus.io/) project for the Sparo website.
 
 1. Install the monorepo dependencies using [RushJS](https://rushjs.io/):
 
-   ```bash
+   ```shell
    rush install
    rush build
    ```
 
 2. Launch the local development server:
 
-   ```bash
+   ```shell
    cd apps/website
    rushx start
    ```
@@ -33,14 +33,14 @@ Notes:
 
 1. If you will manually copy the files to a server, you can build the **apps/sparo/build** folder like this:
 
-   ```bash
+   ```shell
    cd apps/website
    rushx build
    ```
 
 2. To automatically deploy to GitHub Pages (as an administrator):
 
-   ```bash
+   ```shell
    # If you are using HTTPS authentication for GitHub:
    cd apps/website
    GIT_USER=<Your GitHub username> rushx deploy

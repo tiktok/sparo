@@ -48,7 +48,7 @@ And of course, if an explicit target folder is specified using `git clone https:
 
 Shell interpreters commonly transform expressions involving special characters such as `$`, `%`, `(`, etc.  For example:
 
-```bash
+```shell
 # Problem: Bash would replace "$project" with the value of
 # the environment variable whose name is "project".
 git clone https://github.com/example/project.git $project
@@ -56,7 +56,7 @@ git clone https://github.com/example/project.git $project
 
 This requires escaping:
 
-```bash
+```shell
 # This backslash escape ensures that a literal dollar sign
 # is included in the created folder name:
 git clone https://github.com/example/project.git \$project
