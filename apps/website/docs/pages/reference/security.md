@@ -5,7 +5,7 @@ title: Security
 Because the Sparo tool acts as a wrapper for Git, our goal is to provide comparable security expectations as the `git` command.
 
 > ⚠️ **This is a goal not a guarantee.** ⚠️
-> 
+>
 > The software is still in its early stages of development, and not all security
 > requirements have been identified or implemented yet.  Efforts to improve Sparo
 > security should not be interpreted to contradict the terms of the MIT license:
@@ -48,15 +48,15 @@ And of course, if an explicit target folder is specified using `git clone https:
 
 Shell interpreters commonly transform expressions involving special characters such as `$`, `%`, `(`, etc.  For example:
 
-```shell
-# Problem: Bash would replace "$project" with the value of 
+```bash
+# Problem: Bash would replace "$project" with the value of
 # the environment variable whose name is "project".
 git clone https://github.com/example/project.git $project
 ```
 
 This requires escaping:
 
-```shell
+```bash
 # This backslash escape ensures that a literal dollar sign
 # is included in the created folder name:
 git clone https://github.com/example/project.git \$project

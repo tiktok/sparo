@@ -19,7 +19,7 @@ Many Git optimizations are relatively new and not available in older versions of
 
 Clone your [RushJS](https://rushjs.io/) monorepo:
 
-```shell
+```bash
 sparo clone https://github.com/my-company/my-monorepo.git
 ```
 
@@ -64,7 +64,7 @@ The `--to` [project selector](https://rushjs.io/pages/developer/selecting_subset
 The `--profile` parameter can be included with `sparo checkout` (and in the future also `sparo clone` and `sparo pull`).  This parameter specifies the name of the JSON file to be selected.  You can also combine multiple profiles (`sparo checkout --profile p1 --profile p2`), in which case the union of their selections will be used.  (Combining profiles is an advanced scenario, but useful for example if your pull request will impact sets of projects belonging to multiple teams.)
 
 **Sparse checkout based on common/sparo-profiles/my-team.json**
-```shell
+```bash
 sparo checkout --profile my-team
 ```
 
@@ -75,7 +75,7 @@ sparo checkout --profile my-team
 - To checkout just the skeleton (returning to the initial state from Step 1 where no profile is chosen yet), specify `--no-profile` instead of `--profile NAME`.
 
 - To add more profiles, combining with your existing selection, use `--add-profile NAME` instead of `--profile NAME`.  For example, these two commands produce the same result as `sparo checkout --profile p1 --profile p2`:
-  ```shell
+  ```bash
   sparo checkout --profile p1
   sparo checkout --add-profile p2
   ```
@@ -86,7 +86,7 @@ For everyday work, consider choosing [mirrored subcommands](../commands/overview
 
 Examples:
 
-```shell
+```bash
 sparo pull
 
 sparo commit -m "Example command"

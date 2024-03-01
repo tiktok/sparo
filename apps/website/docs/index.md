@@ -48,7 +48,7 @@ Try out Sparo in 5 easy steps:
 
 2. Clone your [RushJS](https://rushjs.io/) monorepo:
 
-   ```shell
+   ```bash
    sparo clone https://github.com/my-company/my-monorepo.git
    ```
 
@@ -76,7 +76,7 @@ Try out Sparo in 5 easy steps:
 
 4. Check out your Sparo profile:
 
-   ```shell
+   ```bash
    sparo checkout --profile my-team
    ```
 
@@ -84,7 +84,7 @@ Try out Sparo in 5 easy steps:
 
    Examples:
 
-   ```shell
+   ```bash
    sparo pull
 
    sparo commit -m "Example command"
