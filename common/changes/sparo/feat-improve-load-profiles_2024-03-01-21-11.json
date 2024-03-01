@@ -1,0 +1,10 @@
+{
+  "changes": [
+    {
+      "packageName": "sparo",
+      "comment": "Allow other configuration files under sparo files folder",
+      "type": "none"
+    }
+  ],
+  "packageName": "sparo"
+}
