@@ -1,0 +1,10 @@
+{
+  "changes": [
+    {
+      "packageName": "sparo",
+      "comment": "Add subspace folders under all project folders into skeleton",
+      "type": "none"
+    }
+  ],
+  "packageName": "sparo"
+}
