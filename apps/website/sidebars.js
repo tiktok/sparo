@@ -56,7 +56,28 @@ const sidebars = {
       type: 'category',
       label: 'Commands',
       collapsible: false,
-      items: ['pages/commands/overview']
+      items: [
+        'pages/commands/overview',
+        'pages/commands/sparo_auto-config',
+        'pages/commands/sparo_checkout',
+        'pages/commands/sparo_clone',
+        'pages/commands/sparo_fetch',
+        'pages/commands/sparo_git-checkout',
+        'pages/commands/sparo_git-clone',
+        'pages/commands/sparo_git-fetch',
+        'pages/commands/sparo_init-profile',
+        'pages/commands/sparo_list-profiles'
+      ]
+    },
+    {
+      type: 'category',
+      label: 'CI Commands',
+      collapsible: false,
+      items: [
+        'pages/ci_commands/overview',
+        'pages/ci_commands/sparo-ci_checkout',
+        'pages/ci_commands/sparo-ci_clone'
+      ]
     },
     {
       type: 'category',

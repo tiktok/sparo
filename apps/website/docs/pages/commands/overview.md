@@ -9,25 +9,27 @@ Sparo has four kinds of subcommands:
 1. **Mirrored subcommands** such as `sparo branch` and `sparo revert` directly invoke the corresponding `git` version of that subcommand.  The motivation for using mirrored subcommands is to enable Sparo to provide advice about parameters that may cause performance issues.  Additionally, you can optionally configure Sparo to collect anonymized usage metrics to help you measure the experience in your repository.  (Collected data is sent to your own service. It is not accessible by any other party.)
 
 2. **Enhanced subcommands** follow the same basic design as their `git` counterparts, but with adaptations for sparse checkout profiles and more efficient defaults.  There are four enhanced commands:
-   - `sparo clone`
    - `sparo checkout`
+   - `sparo clone`
    - `sparo fetch`
-   - `sparo pull`
+   - `sparo pull` _(not implemented yet; currently mirrors `git pull`)_
 
 3. **Renamed subcommands** are the mirrored versions of the four enhanced subcommands. They are renamed to add a `git-` prefix:
-  - `sparo git-clone`
   - `sparo git-checkout`
+  - `sparo git-clone`
   - `sparo git-fetch`
-  - `sparo git-pull`.
+  - `sparo git-pull` _(not implemented yet)_
 
 4. **Auxiliary subcommands** are new subcommands that provide Sparo-specific functionality.  They are:
-  - `sparo purge`
-  - `sparo list-profiles`
+  - `sparo auto-config`
   - `sparo init-profile`
+  - `sparo list-profiles`
+  - `sparo inspect` _(not implemented yet, will report working directory status and diagnostics)_
+  - `sparo reclone` _(not implemented yet, will efficiently revert to a clean clone)_
 
 ## Mirrored commands
 
-Each subcommand has its own page in this documentation, except for the mirrored commands which are already covered by the Git documentation.  For convenience, their names are listed in the table below.
+Each subcommand has its own page in this documentation, except for the mirrored commands which are already covered by the Git documentation.  For convenience, the most essential ["porcelain"](https://git-scm.com/book/en/v2/Git-Internals-Plumbing-and-Porcelain) subcommands are listed in the table below, however every Git subcommand is supported.
 
 | Subcommand | Summary |
 | --- | --- |
@@ -71,4 +73,8 @@ Each subcommand has its own page in this documentation, except for the mirrored 
 | [git stash](https://git-scm.com/docs/git-stash) | Stash the changes in a dirty working directory away |
 | [git status](https://git-scm.com/docs/git-status) | Show the working tree status |
 | [git submodule](https://git-scm.com/docs/git-submodule) | Initialize, update or inspect submodules |
-| [git switch](https://git-scm.com/docs/git-switch) |
+| [git switch](https://git-scm.com/docs/git-switch) | Switch branches |
+| [git tag](https://git-scm.com/docs/git-tag) | Create, list, delete or verify a tag object signed with GPG |
+| [git worktree](https://git-scm.com/docs/git-worktree) | Manage multiple working trees |
+| . . . | _...and many other subcommands including any custom commands found in the shell `PATH`_ |
+

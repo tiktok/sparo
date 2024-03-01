@@ -119,7 +119,10 @@ const config = {
       },
       prism: {
         theme: prismThemes.github,
-        darkTheme: prismThemes.dracula
+        darkTheme: prismThemes.dracula,
+        // Docusaurus's small set of Markdown syntax highlighting languages:
+        // https://docusaurus.io/docs/markdown-features/code-blocks#supported-languages
+        additionalLanguages: ['bash', 'batch', 'javascript', 'json', 'powershell', 'typescript']
       }
     })
 };

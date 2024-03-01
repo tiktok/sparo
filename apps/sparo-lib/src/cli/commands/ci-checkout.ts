@@ -13,7 +13,7 @@ export interface ICICheckoutCommandOptions {
 export class CICheckoutCommand implements ICommand<ICICheckoutCommandOptions> {
   public cmd: string = 'checkout';
   public description: string =
-    'Special checkout command for CI. It only accepts project selector suchs as --to and --from now.';
+    'Special checkout command for CI. It only accepts project selector such as --to and --from now.';
   @inject(GitSparseCheckoutService) private _gitSparseCheckoutService!: GitSparseCheckoutService;
   public builder(yargs: Argv<ICICheckoutCommandOptions>): void {
     yargs
