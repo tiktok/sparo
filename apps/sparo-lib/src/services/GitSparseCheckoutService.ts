@@ -417,7 +417,7 @@ ${availableProfiles.join(',')}
     });
 
     if (result.status !== 0) {
-      throw new Error(`Get projects from selections failed: ${result.stderr}`);
+      throw new Error(`Failed to evaluate the Sparo profile's project selectors: ${result.stderr}`);
     }
 
     const processedResult: string = this._processListResult(result.stdout.toString());
