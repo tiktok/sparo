@@ -17,7 +17,7 @@ export interface IPullCommandOptions {
 @Command()
 export class PullCommand implements ICommand<IPullCommandOptions> {
   public cmd: string = 'pull [remote] [branch]';
-  public description: string = 'pull changes from remote branch to local';
+  public description: string = 'Incorporates changes from a remote repository into the current branch.';
 
   @inject(GitService) private _gitService!: GitService;
   @inject(SparoProfileService) private _sparoProfileService!: SparoProfileService;

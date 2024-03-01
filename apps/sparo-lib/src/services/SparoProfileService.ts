@@ -236,11 +236,6 @@ ${availableProfiles.join(',')}
     profiles?: Set<string>;
     addProfiles?: Set<string>;
   }): Promise<void> {
-    /*
-     * 2. If profile array is specified, using `git sparse-checkout set` to set sparse checkout folders in profiles.
-     * 3. If add profiles is specified, using `git sparse-checkout add` to add folders in add profiles
-     */
-
     this._localState.reset();
     this._terminalService.terminal.writeLine(
       `Syncing local sparse checkout state with following specified profiles:\n${Array.from([
