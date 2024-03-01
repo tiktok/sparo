@@ -26,7 +26,6 @@ export class ArgvService {
       .boolean('verbose')
       .middleware([this._terminalMiddleware])
       .alias('help', 'h')
-      .strict()
       .parseAsync();
   }
 
