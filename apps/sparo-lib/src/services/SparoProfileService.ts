@@ -33,12 +33,18 @@ export class SparoProfileService {
         });
 
         await Async.forEachAsync(sparoProfilePaths, async (sparoProfilePath: string) => {
+          if (path.extname(sparoProfilePath) !== '.json') {
+            // No need to handle non-JSON files.
+            return;
+          }
           let sparoProfile: SparoProfile | undefined;
           try {
             sparoProfile = await SparoProfile.loadFromFileAsync(this._terminalService, sparoProfilePath);
           } catch (e) {
-            // TODO: more error handling
-            this._terminalService.terminal.writeErrorLine((e as Error).message);
+            this._terminalService.terminal.writeErrorLine(
+              `Failed to load sparo profile from ${sparoProfilePath}`
+            );
+            this._terminalService.terminal.writeDebugLine((e as Error).message);
           }
 
           if (sparoProfile) {
