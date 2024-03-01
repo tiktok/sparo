@@ -25,6 +25,8 @@ export class ArgvService {
       // --verbose
       .boolean('verbose')
       .middleware([this._terminalMiddleware])
+      .alias('help', 'h')
+      .strict()
       .parseAsync();
   }
 

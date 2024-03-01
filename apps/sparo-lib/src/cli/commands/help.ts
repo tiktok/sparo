@@ -1,6 +1,8 @@
 import { Command } from '../../decorator';
 import type { Argv } from 'yargs';
 import type { ICommand } from './base';
+import { ArgvService } from '../../services/ArgvService';
+import { inject } from 'inversify';
 
 export interface IHelpCommandOptions {}
 
@@ -8,14 +10,17 @@ export interface IHelpCommandOptions {}
 export class HelpCommand implements ICommand<IHelpCommandOptions> {
   public cmd: string = 'help';
   public description: string = '';
-  private _yargs: Argv<IHelpCommandOptions> | undefined;
 
-  public builder = (yargs: Argv<IHelpCommandOptions>): void => {
-    this._yargs = yargs;
-  };
+  @inject(ArgvService) private _yargs!: ArgvService;
+
+  public builder(yargs: Argv<{}>): void {
+    yargs.help(false);
+  }
+
   public handler = async (): Promise<void> => {
-    this._yargs?.showHelp();
+    this._yargs.yargsArgv.showHelp();
   };
+
   public getHelp(): string {
     return '';
   }

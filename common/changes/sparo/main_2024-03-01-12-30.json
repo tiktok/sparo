@@ -1,0 +1,10 @@
+{
+  "changes": [
+    {
+      "packageName": "sparo",
+      "comment": "Add help alias and enable strict mode",
+      "type": "none"
+    }
+  ],
+  "packageName": "sparo"
+}
