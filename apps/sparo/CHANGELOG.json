@@ -2,6 +2,36 @@
   "name": "sparo",
   "entries": [
     {
+      "version": "0.0.4",
+      "tag": "sparo_v0.0.4",
+      "date": "Fri, 01 Mar 2024 09:03:08 GMT",
+      "comments": {
+        "none": [
+          {
+            "comment": "--help and help shows basic help text"
+          },
+          {
+            "comment": "List all available profiles when no --project specified"
+          },
+          {
+            "comment": "Improve \"sparo checkout\" to support the --add-profile parameter"
+          },
+          {
+            "comment": "Add update notifier"
+          },
+          {
+            "comment": "Support checkout --to or --from in sparo-ci, replacing sparo-ci sparse"
+          },
+          {
+            "comment": "support for cloning a specify branch"
+          },
+          {
+            "comment": "Add website links to README.md and package.json"
+          }
+        ]
+      }
+    },
+    {
       "version": "0.0.3",
       "tag": "sparo_v0.0.3",
       "date": "Sat, 24 Feb 2024 04:08:09 GMT",

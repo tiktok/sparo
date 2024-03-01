@@ -1,6 +1,19 @@
 # Change Log - sparo
 
-This log was last generated on Sat, 24 Feb 2024 04:08:09 GMT and should not be manually modified.
+This log was last generated on Fri, 01 Mar 2024 09:03:08 GMT and should not be manually modified.
+
+## 0.0.4
+Fri, 01 Mar 2024 09:03:08 GMT
+
+### Updates
+
+- --help and help shows basic help text
+- List all available profiles when no --project specified
+- Improve "sparo checkout" to support the --add-profile parameter
+- Add update notifier
+- Support checkout --to or --from in sparo-ci, replacing sparo-ci sparse
+- support for cloning a specify branch
+- Add website links to README.md and package.json
 
 ## 0.0.3
 Sat, 24 Feb 2024 04:08:09 GMT
