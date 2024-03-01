@@ -1,0 +1,10 @@
+{
+  "changes": [
+    {
+      "packageName": "sparo",
+      "comment": "List all available profiles when no --project specified",
+      "type": "none"
+    }
+  ],
+  "packageName": "sparo"
+}
