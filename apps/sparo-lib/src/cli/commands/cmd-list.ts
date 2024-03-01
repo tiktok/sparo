@@ -1,10 +1,8 @@
 import { Constructable } from '../../di/types';
 import { CloneCommand } from './clone';
-import { HelpCommand } from './help';
 import { ListProfilesCommand } from './list-profiles';
 import { AutoConfigCommand } from './auto-config';
 import { FetchCommand } from './fetch';
-import { CIHelpCommand } from './ci-help';
 import { CICheckoutCommand } from './ci-checkout';
 import { CICloneCommand } from './ci-clone';
 import { CheckoutCommand } from './checkout';
@@ -17,7 +15,6 @@ import { InitProfileCommand } from './init-profile';
 // When adding new Sparo subcommands, remember to update this doc page:
 // https://github.com/tiktok/sparo/blob/main/apps/website/docs/pages/commands/overview.md
 export const COMMAND_LIST: Constructable[] = [
-  HelpCommand,
   AutoConfigCommand,
   ListProfilesCommand,
   InitProfileCommand,
@@ -33,4 +30,4 @@ export const COMMAND_LIST: Constructable[] = [
   GitPullCommand
 ];
 
-export const CI_COMMAND_LIST: Constructable[] = [CICloneCommand, CICheckoutCommand, CIHelpCommand];
+export const CI_COMMAND_LIST: Constructable[] = [CICloneCommand, CICheckoutCommand];

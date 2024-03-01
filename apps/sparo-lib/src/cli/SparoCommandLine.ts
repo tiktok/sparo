@@ -4,7 +4,6 @@ import { GitService } from '../services/GitService';
 import { CommandService } from '../services/CommandService';
 import { ArgvService } from '../services/ArgvService';
 import { COMMAND_LIST } from './commands/cmd-list';
-import { HelpCommand } from './commands/help';
 import { ICommand } from './commands/base';
 import { GitVersionCompatibility } from '../logic/GitVersionCompatibility';
 import { TelemetryService } from '../services/TelemetryService';
@@ -51,8 +50,8 @@ export class SparoCommandLine {
     await argv.parseArgvAsync();
     const userInputCmdName: string = argv.getUserCommand();
     if (!userInputCmdName) {
-      const helpCommand: HelpCommand = await getFromContainerAsync(HelpCommand);
-      return helpCommand.handler();
+      argv.yargsArgv.showHelp();
+      return;
     }
 
     // proxy to gitService

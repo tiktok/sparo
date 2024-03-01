@@ -4,7 +4,6 @@ import { CommandService } from '../services/CommandService';
 import { CI_COMMAND_LIST } from './commands/cmd-list';
 import { ICommand } from './commands/base';
 import { ArgvService } from '../services/ArgvService';
-import { CIHelpCommand } from './commands/ci-help';
 import { GitVersionCompatibility } from '../logic/GitVersionCompatibility';
 import { TelemetryService } from '../services/TelemetryService';
 import { getCommandName } from './commands/util';
@@ -51,8 +50,8 @@ export class SparoCICommandLine {
 
     const userInputCmdName: string = argv.getUserCommand();
     if (!userInputCmdName || !this._supportedCommand(userInputCmdName)) {
-      const helpCommand: CIHelpCommand = await getFromContainerAsync(CIHelpCommand);
-      return helpCommand.handler();
+      argv.yargsArgv.showHelp();
+      return;
     }
   }
 
