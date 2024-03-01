@@ -1,6 +1,16 @@
 # Change Log - sparo
 
-This log was last generated on Fri, 01 Mar 2024 09:03:08 GMT and should not be manually modified.
+This log was last generated on Fri, 01 Mar 2024 23:21:32 GMT and should not be manually modified.
+
+## 0.0.5
+Fri, 01 Mar 2024 23:21:32 GMT
+
+### Updates
+
+- Improve error logs when get projects from selection failed
+- Allow other configuration files under sparo files folder
+- Add subspace folders under all project folders into skeleton
+- Add help alias and enable strict mode
 
 ## 0.0.4
 Fri, 01 Mar 2024 09:03:08 GMT

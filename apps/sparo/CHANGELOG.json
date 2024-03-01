@@ -2,6 +2,27 @@
   "name": "sparo",
   "entries": [
     {
+      "version": "0.0.5",
+      "tag": "sparo_v0.0.5",
+      "date": "Fri, 01 Mar 2024 23:21:32 GMT",
+      "comments": {
+        "none": [
+          {
+            "comment": "Improve error logs when get projects from selection failed"
+          },
+          {
+            "comment": "Allow other configuration files under sparo files folder"
+          },
+          {
+            "comment": "Add subspace folders under all project folders into skeleton"
+          },
+          {
+            "comment": "Add help alias and enable strict mode"
+          }
+        ]
+      }
+    },
+    {
       "version": "0.0.4",
       "tag": "sparo_v0.0.4",
       "date": "Fri, 01 Mar 2024 09:03:08 GMT",
