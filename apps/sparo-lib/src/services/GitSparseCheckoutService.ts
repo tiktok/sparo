@@ -416,6 +416,10 @@ ${availableProfiles.join(',')}
       stdio: ['pipe', 'pipe', 'pipe']
     });
 
+    if (result.status !== 0) {
+      throw new Error(`Get projects from selections failed: ${result.stderr}`);
+    }
+
     const processedResult: string = this._processListResult(result.stdout.toString());
 
     terminal.writeVerboseLine(processedResult);
