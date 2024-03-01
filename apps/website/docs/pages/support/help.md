@@ -2,6 +2,6 @@
 title: Getting help
 ---
 
-If you encounter questions or problems, please [create a GitHub issue](https://github.com/tiktok/sparo/issues/new/choose).
+Please [create a GitHub issue](https://github.com/tiktok/sparo/issues/new/choose) to report any problems or feature requests.
 
-Additional support channels are coming soon.
+For general questions, please use our [GitHub Discussions](https://github.com/tiktok/sparo/discussions) forum.
