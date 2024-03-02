@@ -2,8 +2,8 @@
   "changes": [
     {
       "packageName": "sparo",
-      "comment": "",
-      "type": "none"
+      "comment": "Fix a regression in sparo checkout",
+      "type": "patch"
     }
   ],
   "packageName": "sparo"
