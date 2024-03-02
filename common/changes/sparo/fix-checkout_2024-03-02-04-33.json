@@ -1,0 +1,10 @@
+{
+  "changes": [
+    {
+      "packageName": "sparo",
+      "comment": "Fix a regression in sparo checkout",
+      "type": "patch"
+    }
+  ],
+  "packageName": "sparo"
+}

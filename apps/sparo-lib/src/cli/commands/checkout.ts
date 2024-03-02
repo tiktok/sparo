@@ -108,6 +108,7 @@ export class CheckoutCommand implements ICommand<ICheckoutCommandOptions> {
     }
 
     const targetProfileNames: Set<string> = new Set();
+    const currentProfileNames: Set<string> = new Set();
     if (!isNoProfile) {
       // Get target profile.
       // 1. If profile specified from CLI parameter, preferential use it.
@@ -118,7 +119,10 @@ export class CheckoutCommand implements ICommand<ICheckoutCommandOptions> {
       if (profiles.size) {
         profiles.forEach((p) => targetProfileNames.add(p));
       } else if (localStateProfiles) {
-        Object.keys(localStateProfiles).forEach((p) => targetProfileNames.add(p));
+        Object.keys(localStateProfiles).forEach((p) => {
+          targetProfileNames.add(p);
+          currentProfileNames.add(p);
+        });
       }
 
       if (addProfiles.size) {
@@ -180,28 +184,27 @@ export class CheckoutCommand implements ICommand<ICheckoutCommandOptions> {
       // if no profile specified, purge to skeleton
       await this._gitSparseCheckoutService.purgeAsync();
     } else if (targetProfileNames.size) {
+      let isCurrentSubsetOfTarget: boolean = true;
+      for (const currentProfileName of currentProfileNames) {
+        if (!targetProfileNames.has(currentProfileName)) {
+          isCurrentSubsetOfTarget = false;
+          break;
+        }
+      }
+
+      // In most case, sparo need to reset the sparse checkout cone.
+      // Only when the current profiles are subset of target profiles, we can skip this step.
+      if (!isCurrentSubsetOfTarget) {
+        await this._gitSparseCheckoutService.purgeAsync();
+      }
+
       // TODO: policy #1: Can not sparse checkout with uncommitted changes in the cone.
-      for (const profile of profiles) {
+      for (const profile of targetProfileNames) {
         // Since we have run localState.reset() before, for each profile we just add it to local state.
         const { selections, includeFolders, excludeFolders } =
           await this._gitSparseCheckoutService.resolveSparoProfileAsync(profile, {
             localStateUpdateAction: 'add'
           });
-        // for profiles, we use sparse checkout set
-        await this._gitSparseCheckoutService.checkoutAsync({
-          selections,
-          includeFolders,
-          excludeFolders,
-          checkoutAction: 'set'
-        });
-      }
-      for (const profile of addProfiles) {
-        // For each add profile we add it to local state.
-        const { selections, includeFolders, excludeFolders } =
-          await this._gitSparseCheckoutService.resolveSparoProfileAsync(profile, {
-            localStateUpdateAction: 'add'
-          });
-        // for add profiles, we use sparse checkout add
         await this._gitSparseCheckoutService.checkoutAsync({
           selections,
           includeFolders,
