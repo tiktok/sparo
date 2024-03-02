@@ -2,6 +2,18 @@
   "name": "sparo",
   "entries": [
     {
+      "version": "0.0.6",
+      "tag": "sparo_v0.0.6",
+      "date": "Sat, 02 Mar 2024 06:30:17 GMT",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Fix a regression in sparo checkout"
+          }
+        ]
+      }
+    },
+    {
       "version": "0.0.5",
       "tag": "sparo_v0.0.5",
       "date": "Fri, 01 Mar 2024 23:21:32 GMT",

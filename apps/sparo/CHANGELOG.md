@@ -1,6 +1,13 @@
 # Change Log - sparo
 
-This log was last generated on Fri, 01 Mar 2024 23:21:32 GMT and should not be manually modified.
+This log was last generated on Sat, 02 Mar 2024 06:30:17 GMT and should not be manually modified.
+
+## 0.0.6
+Sat, 02 Mar 2024 06:30:17 GMT
+
+### Patches
+
+- Fix a regression in sparo checkout
 
 ## 0.0.5
 Fri, 01 Mar 2024 23:21:32 GMT
