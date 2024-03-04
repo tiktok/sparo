@@ -107,7 +107,7 @@ export class CheckoutCommand implements ICommand<ICheckoutCommandOptions> {
       }
     }
 
-    const targetProfileNames: Set<string> = new Set();
+    let targetProfileNames: Set<string> = new Set();
     const currentProfileNames: Set<string> = new Set();
     if (!isNoProfile) {
       // Get target profile.
@@ -116,13 +116,16 @@ export class CheckoutCommand implements ICommand<ICheckoutCommandOptions> {
       // 3. If add profile was specified from CLI parameter, add them to result of 1 or 2.
       const localStateProfiles: ILocalStateProfiles | undefined = await localState.getProfiles();
 
-      if (profiles.size) {
-        profiles.forEach((p) => targetProfileNames.add(p));
-      } else if (localStateProfiles) {
+      if (localStateProfiles) {
         Object.keys(localStateProfiles).forEach((p) => {
           targetProfileNames.add(p);
           currentProfileNames.add(p);
         });
+      }
+
+      if (profiles.size) {
+        targetProfileNames = new Set();
+        profiles.forEach((p) => targetProfileNames.add(p));
       }
 
       if (addProfiles.size) {
