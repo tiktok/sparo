@@ -1,0 +1,10 @@
+{
+  "changes": [
+    {
+      "packageName": "sparo",
+      "comment": "fix sparse checkout paths status after checkout to a specific --profile",
+      "type": "none"
+    }
+  ],
+  "packageName": "sparo"
+}
