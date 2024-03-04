@@ -1,0 +1,10 @@
+{
+  "changes": [
+    {
+      "packageName": "sparo",
+      "comment": "Compatible with Windows",
+      "type": "none"
+    }
+  ],
+  "packageName": "sparo"
+}
