@@ -1,6 +1,14 @@
 # Change Log - sparo
 
-This log was last generated on Sat, 02 Mar 2024 06:30:17 GMT and should not be manually modified.
+This log was last generated on Tue, 05 Mar 2024 04:37:22 GMT and should not be manually modified.
+
+## 0.0.7
+Tue, 05 Mar 2024 04:37:22 GMT
+
+### Updates
+
+- Support --profile parameter in clone command
+- Fix a compatibility issue when getting profile name on Windows OS
 
 ## 0.0.6
 Sat, 02 Mar 2024 06:30:17 GMT
