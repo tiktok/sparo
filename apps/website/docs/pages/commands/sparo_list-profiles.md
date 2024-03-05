@@ -9,6 +9,6 @@ List all available profiles or query profiles that contain the specified project
 name
 
 Options:
-  --help     Show help                                                 [boolean]
-  --project  List all profiles contains this specified project name     [string]
+  -h, --help     Show help                                             [boolean]
+      --project  List all profiles contains this specified project name [string]
 ```

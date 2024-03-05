@@ -2,7 +2,9 @@
 title: Sparo profiles
 ---
 
-Git's sparse checkout feature normally relies on a collection of glob patterns that are stored in the `.git/info/sparse-checkout` config file.  Normal glob syntax proved to be too inefficient, so Git instead uses a ["cone mode"](https://git-scm.com/docs/git-sparse-checkout#_internalsnon_cone_problems) glob interpretation that ignores file-matching patterns and only matches directories.
+## Background
+
+Git's sparse checkout feature normally relies on a collection of glob patterns that are stored in the `.git/info/sparse-checkout` config file.  The Git maintainers found that regular glob syntax was too inefficient, so they introduced a ["cone mode"](https://git-scm.com/docs/git-sparse-checkout#_internalsnon_cone_problems) glob interpretation that ignores file-matching patterns and only matches directories.
 
 The syntax looks something like this:
 
@@ -17,7 +19,9 @@ The syntax looks something like this:
 /apps/my-app/_/
 ```
 
-To simplify management, the `git sparse-checkout` command line provides convenient ways to add/remove patterns from this file.  However, in a large monorepo with hundreds of projects, managing these globs would nonetheless be confusing and error-prone.
+To simplify management, Git also provides a `git sparse-checkout` command that simplifies the syntax for adding/removing patterns from this file.  However, in a large monorepo with hundreds of projects, managing these globs would nonetheless be confusing and error-prone.
+
+## Sparo improves sparse checkout
 
 Sparo makes life easier by generating the `.git/info/sparse-checkout` configuration automatically from config files called **profiles.**  This offers many benefits:
 
@@ -82,13 +86,15 @@ sparo checkout --add-profile team-b
 sparo checkout --add-profile team-c
 ```
 
-How to checkout no profile at all? That is, how to return to the initial state of a clean `sparo clone` that only includes the [skeleton](../reference/skeleton_folders.md) folders?  If `--profile` is entirely omitted, then `sparo checkout` will preserve the existing profile selection.  Instead, the `--no-profile` parameter is needed:
+How to checkout no profile at all? That is, how to return to the initial state of a clean `sparo clone` that only includes the [skeleton](../reference/skeleton_folders.md) folders?  The answer is to use the `--no-profile` parameter:
 
 ```shell
 # NOT IMPLEMENTED YET - check out just the skeleton folders
 # without applying any profiles
 sparo checkout --no-profile
 ```
+
+If `sparo checkout` without `--profile` or `--add-profile` or `--no-profile`, then the existing profile selection is preserved.  In other words, your profile choices are generally "sticky" across commands.
 
 
 ## Querying profiles
@@ -105,3 +111,7 @@ sparo list-profiles --project example-app
 # (combining it with the existing profile).
 sparo checkout --add-profile example-profile
 ```
+
+## See also
+
+- [&lt;profile-name&gt;.json](../configs/profile_json.md) config file

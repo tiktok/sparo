@@ -14,11 +14,12 @@ Positionals:
               only allowed if the directory is empty                    [string]
 
 Options:
-      --help             Show help                                     [boolean]
+  -h, --help             Show help                                     [boolean]
   -s, --skip-git-config  By default, Sparo automatically configures the
                          recommended git settings for the repository you are
                          about to clone. If you prefer not to include this step,
                          you can use the input parameter --skip-git-config
                                                       [boolean] [default: false]
   -b, --branch           Specify a branch to clone                      [string]
+      --profile                                            [array] [default: []]
 ```

@@ -28,8 +28,8 @@ Sparo optimizes performance of Git operations for your large frontend monorepo.
 ## Key features
 
 - **Familiar interface:** The `sparo` command-line interface (CLI) wrapper offers **better defaults** and **performance suggestions** without altering the familiar `git` syntax. (The native `git` CLI is also supported.)
-- **A proven solution:** Git provides [quite a lot of ingredients](./pages/reference/git_optimization.md) for optimizing very large repos; Sparo is your recipe for combining these features intelligently.
-- **Simplified sparse checkout:** Work with sparse checkout [profiles](./pages/guide/sparo_profiles.md) instead of confusing "cones" and globs
+- **A proven solution:** Git provides [quite a lot of ingredients](https://tiktok.github.io/sparo/pages/reference/git_optimization/) for optimizing very large repos; Sparo is your recipe for combining these features intelligently.
+- **Simplified sparse checkout:** Work with sparse checkout [profiles](https://tiktok.github.io/sparo/pages/guide/sparo_profiles/) instead of confusing "cones" and globs
 - **Frontend integration:** Sparo leverages [Rush](https://rushjs.io/) and [PNPM](https://pnpm.io/) workspace configurations, including the ability to automatically checkout project dependencies
 - **Dual workflows:** The `sparo-ci` tool implements a specialized checkout model optimized for continuous integration (CI) pipelines
 - **Extra safeguards**: Avoid common Git mistakes such as checkouts with staged files outside the active view
@@ -44,40 +44,58 @@ Sparo optimizes performance of Git operations for your large frontend monorepo.
 
 Try out Sparo in 5 easy steps:
 
-1. Ensure you are using the latest Git version. For macOS, we recommend to use [brew install git](https://git-scm.com/download/mac).  For other operating systems, see the [Git documentation](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git) for instructions.
+1. _**Upgrade to the latest Git version!**_ For macOS, we recommend to use [brew install git](https://git-scm.com/download/mac).  For other operating systems, see the [Git documentation](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git) for instructions.
 
-2. Clone your [RushJS](https://rushjs.io/) monorepo:
+2. For this demo, we'll use the Azure SDK which is a large public [RushJS](https://rushjs.io/) monorepo from GitHub.  The following command will check out the [skeleton folders](./pages/reference/skeleton_folders.md) but not the source code:
 
    ```shell
-   sparo clone https://github.com/my-company/my-monorepo.git
-   ```
+   sparo clone https://github.com/Azure/azure-sdk-for-js.git
 
-   👉 _For a real world demo, try this repo:_
-   [https://github.com/Azure/azure-sdk-for-js.git](https://github.com/Azure/azure-sdk-for-js.git)
+   cd azure-sdk-for-js
+   ```
 
    > 💡 Support for PNPM and Yarn workspaces is planned but not implemented yet. Contributions welcome!
 
-3. Define a [Sparo profile](./pages/configs/profile_json.md) describing the subset of repository folders for Git sparse checkout.  Here is a basic example:
+3. Define a [Sparo profile](./pages/configs/profile_json.md) describing the subset of repository folders for Git sparse checkout.
+
+   ```shell
+   # Writes a template to common/sparo-profiles/my-team.json
+   sparo init-profile --profile my-team
+   ```
+
+   Edit the created **my-team.json** file to add this selector:
 
    **common/sparo-profiles/my-team.json**
    ```json
    {
      "selections": [
         {
+          // This demo profile will check out the "@azure/arm-commerce" project
+          // and all of its dependencies:
           "selector": "--to",
-          "argument": "my-rush-project"
+          "argument": "@azure/arm-commerce"
         }
      ]
    }
    ```
    The `--to` [project selector](https://rushjs.io/pages/developer/selecting_subsets/#--to) instructs Sparo to checkout all dependencies in the workspace that are required to build `my-rush-project`.
 
-   👉 _If you're demoing **azure-sdk-for-js**, replace `my-rush-project` with `@azure/arm-commerce`._
 
-4. Check out your Sparo profile:
+
+4. After saving your changes to **my-team.json**, now it's time to apply it:
 
    ```shell
    sparo checkout --profile my-team
+   ```
+
+   Try it out!  For example:
+
+   ```shell
+   rush install
+
+   # The build should succeed because Sparo ensured that dependency projects
+   # were included in the sparse checkout:
+   rush build --to @azure/arm-commerce
    ```
 
 5. For everyday work, consider choosing [mirrored subcommands](./pages/commands/overview.md) such as `sparo revert` instead of `git revert`. The Sparo wrapper provides (1) better defaults, (2) suggestions for better performance, and (3) optional anonymized performance metrics.
@@ -90,3 +108,4 @@ Try out Sparo in 5 easy steps:
    sparo commit -m "Example command"
    ```
 
+👍👍 This concludes the **Quick Demo.**  For a more detailed walkthrough, proceed to [Getting Started](./pages/guide/getting_started.md).
