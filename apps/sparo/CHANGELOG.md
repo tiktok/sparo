@@ -1,6 +1,11 @@
 # Change Log - sparo
 
-This log was last generated on Tue, 05 Mar 2024 17:01:33 GMT and should not be manually modified.
+This log was last generated on Tue, 05 Mar 2024 17:04:18 GMT and should not be manually modified.
+
+## 1.0.1
+Tue, 05 Mar 2024 17:04:18 GMT
+
+_Version update only_
 
 ## 1.0.0
 Tue, 05 Mar 2024 17:01:33 GMT
