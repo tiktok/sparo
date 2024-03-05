@@ -2,6 +2,18 @@
   "name": "sparo",
   "entries": [
     {
+      "version": "1.0.2",
+      "tag": "sparo_v1.0.2",
+      "date": "Tue, 05 Mar 2024 17:16:25 GMT",
+      "comments": {
+        "none": [
+          {
+            "comment": "Set mininal supported git version to 2.43.0"
+          }
+        ]
+      }
+    },
+    {
       "version": "1.0.1",
       "tag": "sparo_v1.0.1",
       "date": "Tue, 05 Mar 2024 17:04:18 GMT",
