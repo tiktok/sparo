@@ -12,5 +12,5 @@ Positionals:
   branch                                                                [string]
 
 Options:
-  --help  Show help                                                    [boolean]
+  -h, --help  Show help                                                [boolean]
 ```

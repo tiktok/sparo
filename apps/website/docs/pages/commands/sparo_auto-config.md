@@ -8,8 +8,8 @@ sparo auto-config
 Automatic setup optimized git config
 
 Options:
-  --help       Show help                                               [boolean]
-  --overwrite                                         [boolean] [default: false]
+  -h, --help       Show help                                           [boolean]
+      --overwrite                                     [boolean] [default: false]
 ```
 
 You do not normally need to invoke `sparo auto-config`.  As the name implies, it is automatically applied by `sparo clone`.  This command is provided for reapplying the configuration in a situation where the user may have manually altered Sparo's configuration.  It is a good first step when investigating problems.

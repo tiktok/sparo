@@ -14,7 +14,7 @@ Positionals:
   start-point                                                           [string]
 
 Options:
-      --help         Show help                                         [boolean]
+  -h, --help         Show help                                         [boolean]
   -b                 Create a new branch and start it at <start-point> [boolean]
   -B                 Create a new branch and start it at <start-point>; if it
                      already exists, reset it to <start-point>         [boolean]
