@@ -93,7 +93,7 @@ sparo checkout --no-profile
 
 ## Querying profiles
 
-Users can discover available profiles in the current branch by invoking the [sparo list-profiles](../commands/sparo_list-profiles) command.  The `--project` parameter enables you to query relevant profiles for a given project.  For example:
+Users can discover available profiles in the current branch by invoking the [sparo list-profiles](../commands/sparo_list-profiles.md) command.  The `--project` parameter enables you to query relevant profiles for a given project.  For example:
 
 ```shell
 # Suppose you need to make a fix for the "example-app" project.
