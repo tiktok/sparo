@@ -1,0 +1,52 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "title": "Profile for Sparo tool.",
+  "description": "For use with the sparo tool, this file provides the scope of folders in the sparse checkout cone",
+
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "$schema": {
+      "description": "Part of the JSON Schema standard, this optional keyword declares the URL of the schema that the file conforms to. Editors may download the schema and use it to perform syntax highlighting.",
+      "type": "string"
+    },
+
+    "selections": {
+      "description": "A list of project selection definition",
+      "type": "array",
+      "items": {
+        "description": "A definition of project selector parameter. See https://rushjs.io/pages/developer/selecting_subsets/",
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "selector": {
+            "description": "The selector",
+            "type": "string"
+          },
+          "argument": {
+            "description": "The argument of selector, it can be one project name, tagged projects prefixes with tag:, and modified projects prefixes with git:",
+            "type": "string"
+          }
+        }
+      }
+    },
+
+    "includeFolders": {
+      "description": "A list of folders expand the sparse checkout cone, adding more include folders.",
+      "type": "array",
+      "items": {
+        "description": "A relative path from the root of monorepo",
+        "type": "string"
+      }
+    },
+
+    "excludeFolders": {
+      "description": "A list of folders will be excluded in the sparse checkout cone. The exclude folders overrides include folders and the result of selection",
+      "type": "array",
+      "items": {
+        "description": "A relative path from the root of monorepo",
+        "type": "string"
+      }
+    }
+  }
+}
