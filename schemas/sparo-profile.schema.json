@@ -1,7 +1,7 @@
 {
   "$schema": "http://json-schema.org/draft-04/schema#",
-  "title": "Profile for Sparo tool.",
-  "description": "For use with the sparo tool, this file provides the scope of folders in the sparse checkout cone",
+  "title": "A sparse checkout profile for use with the Sparo tool",
+  "description": "This config file is used by the Sparo tool that optimizes performance of Git operations for a large frontend monorepo.\n\nhttps://tiktok.github.io/sparo/",
 
   "type": "object",
   "additionalProperties": false,
@@ -12,19 +12,18 @@
     },
 
     "selections": {
-      "description": "A list of project selection definition",
+      "description": "A list of Rush project selectors indicating the project folders to be included for sparse checkout.  The selectors will be combined to make the union superset of projects.\n\nSee the Rush selector documentation for details:\nhttps://rushjs.io/pages/developer/selecting_subsets/",
       "type": "array",
       "items": {
-        "description": "A definition of project selector parameter. See https://rushjs.io/pages/developer/selecting_subsets/",
         "type": "object",
         "additionalProperties": false,
         "properties": {
           "selector": {
-            "description": "The selector",
+            "description": "A RushJS project selector such as \"--to\", \"--from\", \"--impacted-by\".\n\nSee the Rush selector documentation for details:\nhttps://rushjs.io/pages/developer/selecting_subsets/",
             "type": "string"
           },
           "argument": {
-            "description": "The argument of selector, it can be one project name, tagged projects prefixes with tag:, and modified projects prefixes with git:",
+            "description": "The selector argument, for example a project name or an expression such as \"tag:my-tag\".",
             "type": "string"
           }
         }
@@ -32,19 +31,17 @@
     },
 
     "includeFolders": {
-      "description": "A list of folders expand the sparse checkout cone, adding more include folders.",
+      "description": "A list of arbitrary additional folders to be included, not necessarily corresponding to any workspace project.",
       "type": "array",
       "items": {
-        "description": "A relative path from the root of monorepo",
         "type": "string"
       }
     },
 
     "excludeFolders": {
-      "description": "A list of folders will be excluded in the sparse checkout cone. The exclude folders overrides include folders and the result of selection",
+      "description": "A list of folders to be excluded.  This field takes precedence over the \"includeFolders\" and \"selections\" fields, guaranteeing that the specified path will definitely not be included.",
       "type": "array",
       "items": {
-        "description": "A relative path from the root of monorepo",
         "type": "string"
       }
     }
