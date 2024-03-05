@@ -216,7 +216,8 @@ export class GitSparseCheckoutService {
             if (checkoutAction === 'set') {
               targetFolders.push(...this._finalSkeletonPaths);
             }
-            terminal.writeLine(
+            terminal.writeLine(`Checking out ${targetFolders.length} folders...`);
+            terminal.writeDebugLine(
               `Performing sparse checkout ${checkoutAction} for these folders: \n${targetFolders.join('\n')}`
             );
 
