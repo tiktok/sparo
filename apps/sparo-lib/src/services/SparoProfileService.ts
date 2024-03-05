@@ -238,12 +238,16 @@ ${availableProfiles.join(',')}
   }): Promise<void> {
     this._localState.reset();
     const allProfiles: string[] = Array.from([...(profiles ?? []), ...(addProfiles ?? [])]);
-    if (allProfiles.length) {
+    if (allProfiles.length > 1) {
       this._terminalService.terminal.writeLine(
-        `Syncing local sparse checkout state with following specified profiles:\n${allProfiles.join('\n')}`
+        `Syncing checkout with these Sparo profiles:\n${allProfiles.join(', ')}`
+      );
+    } else if (allProfiles.length === 1) {
+      this._terminalService.terminal.writeLine(
+        `Syncing checkout with the Sparo profile: ${allProfiles[0]}`
       );
     } else {
-      this._terminalService.terminal.writeLine('Syncing local sparse checkout state with no profile');
+      this._terminalService.terminal.writeLine('Syncing checkout with the Sparo skeleton (no profile selection)');
     }
     this._terminalService.terminal.writeLine();
     if (!profiles || profiles.size === 0) {
