@@ -1,0 +1,10 @@
+{
+  "changes": [
+    {
+      "packageName": "sparo",
+      "comment": "support profile related parameters in pull & clone command",
+      "type": "none"
+    }
+  ],
+  "packageName": "sparo"
+}
