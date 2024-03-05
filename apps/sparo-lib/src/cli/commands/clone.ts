@@ -57,8 +57,6 @@ export class CloneCommand implements ICommand<ICloneCommandOptions> {
       })
       .array('profile')
       .default('profile', [])
-      .array('add-profile')
-      .default('add-profile', [])
       .check((argv) => {
         if (!argv.repository) {
           return 'You must specify a repository to clone.';
@@ -94,7 +92,7 @@ export class CloneCommand implements ICommand<ICloneCommandOptions> {
 
     const { profiles, addProfiles, isNoProfile } = await this._sparoProfileService.preprocessProfileArgs({
       profilesFromArg: args.profile ?? [],
-      addProfilesFromArg: args.addProfile ?? []
+      addProfilesFromArg: []
     });
 
     await this._GitSparseCheckoutService.ensureSkeletonExistAndUpdated();
