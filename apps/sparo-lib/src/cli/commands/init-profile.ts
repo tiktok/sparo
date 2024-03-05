@@ -27,7 +27,8 @@ export class InitProfileCommand implements ICommand<IInitProjectCommandOptions> 
         type: 'string',
         description: 'The name of the profile to initialize.'
       })
-      .demandOption(['profile']);
+      .demandOption(['profile'])
+      .usage('Usage: $0 init-profile --profile <profile>');
   }
 
   public handler = async (
