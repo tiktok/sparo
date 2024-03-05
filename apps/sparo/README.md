@@ -34,17 +34,10 @@ Sparo optimizes performance of Git operations for your large frontend monorepo.
 <!-- ------------------------------------------------------------------ -->
 <!-- Text above this line should stay in sync with the website index.md -->
 
-## Getting started
-
-Install the Sparo command-line
-```bash
-npm install -g sparo
-```
-
-<!-- more to come later -->
-
 ## Links
 
+- [Quick demo](https://tiktok.github.io/sparo/#quick-demo): See for yourself in 3 minutes!
+- [Getting Started](https://tiktok.github.io/sparo/pages/guide/getting_started/): Step by step instructions
 - [CHANGELOG.md](
-  https://github.com/tiktok/sparo/blob/main/apps/sparo/CHANGELOG.md) - Find
+  https://github.com/tiktok/sparo/blob/main/apps/sparo/CHANGELOG.md): Find
   out what's new in the latest version
