@@ -31,7 +31,7 @@
     },
 
     "includeFolders": {
-      "description": "A list of arbitrary additional folders to be included, not necessarily corresponding to any workspace project.",
+      "description": "A list of arbitrary additional folders to be included for checkout, not necessarily corresponding to any workspace project.",
       "type": "array",
       "items": {
         "type": "string"
@@ -39,7 +39,7 @@
     },
 
     "excludeFolders": {
-      "description": "A list of folders to be excluded.  This field takes precedence over the \"includeFolders\" and \"selections\" fields, guaranteeing that the specified path will definitely not be included.",
+      "description": "A list of folders to be excluded from the checkout.  This field takes precedence over the \"includeFolders\" and \"selections\" fields, guaranteeing that the specified path will definitely not be included.",
       "type": "array",
       "items": {
         "type": "string"
