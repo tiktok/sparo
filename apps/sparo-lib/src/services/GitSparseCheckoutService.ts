@@ -86,6 +86,10 @@ export class GitSparseCheckoutService {
     await this._rushSparseCheckoutAsync({ checkoutAction: 'purge' });
   }
 
+  /**
+   *
+   * @param options
+   */
   private async _rushSparseCheckoutAsync(options: IRushSparseCheckoutOptions): Promise<void> {
     const {
       to,
@@ -179,6 +183,17 @@ export class GitSparseCheckoutService {
 
     {
       const stopwatch: Stopwatch = Stopwatch.start();
+      /**
+       * Perform different logic based on checkoutAction
+       *
+       *   "purge"  : reset repo to skeleton, will remove other paths in checkout paths list
+       *
+       * "skeleton" : checkout skeleton in repo, will only add skeleton paths to checkout paths list
+       *
+       *    "set"   : set checkout paths list by invoking "git sparse-checkout set", will implicitly add skeleton paths to this list.
+       *
+       *    "add"   : add a list of paths to checkout list by invoking "git sparse-checkout add"
+       */
       switch (checkoutAction) {
         case 'purge':
         case 'skeleton':
