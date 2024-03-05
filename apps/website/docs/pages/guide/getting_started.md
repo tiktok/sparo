@@ -1,41 +1,53 @@
 ---
-title: Getting Started
+title: Getting started
 ---
 
-## Everyday workflow
+In this tutorial we'll revisit the [Quick Demo](../../index.md#quick-demo) steps, but this time examining the Sparo workflow in more detail.
 
-### Step 1: Upgrade Git
+## Step 1: Upgrade Git
 
-Many Git optimizations are relatively new and not available in older versions of the software.  For macOS, we recommend to use [brew install git](https://git-scm.com/download/mac).  For other operating systems, see the [Git documentation](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git) for instructions.
+Remember to upgrade to the latest Git version! Many Git optimizations are relatively new and not available in older versions of the software.
 
-### Step 2: Clone your Rush monorepo
+For macOS, we recommend to use [brew install git](https://git-scm.com/download/mac).  For other operating systems, see the [Git documentation](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git) for instructions.
+
+## Step 2: Clone your Rush monorepo
 
 Clone your [RushJS](https://rushjs.io/) monorepo:
 
 ```shell
 sparo clone https://github.com/my-company/my-monorepo.git
+
+cd my-monorepo
 ```
 
-👉 _For a real world demo, try this repo:_
+👉 _For a real world demo, try cloning this repo:_
 [https://github.com/Azure/azure-sdk-for-js.git](https://github.com/Azure/azure-sdk-for-js.git)
 
-> 💡 Support for PNPM and Yarn workspaces is planned but not implemented yet. Contributions welcome!
 
-**Behind the scenes:**
+**How "sparo clone" optimizes:**
 
-- Only the default branch (usually `main`) is fetched.
+- Only the default branch is fetched (typically the `main` branch).  This significantly reduces the download size.
 
 - Git blobless [partial clone](../reference/git_optimization.md) is enabled to postpone downloading file contents.
 
-- Git [sparse checkout](../reference/git_optimization.md) is used to clone only the ["skeleton" folders](../reference/skeleton_folders.md), which includes all workspace **package.json** files, but excludes the source code subfolders.
+- Git [sparse checkout](https://git-scm.com/docs/git-sparse-checkout) is used to clone only the ["skeleton" folders](../reference/skeleton_folders.md), which includes all workspace **package.json** files, but excludes the source code subfolders.
 
-- Sparse checkout is configured for the more efficient "cone mode".
+- Sparse checkout is configured for the more efficient ["cone mode"](https://git-scm.com/docs/git-sparse-checkout#_internalsnon_cone_problems).
 
-- To understand exactly what actions and Git operations are being performed, invoke `sparo --debug clone` instead of `sparo clone`.
+**Tip:** To inspect what actions and Git operations are being performed, invoke `sparo --debug clone` instead of `sparo clone`.
 
-### Step 3: Create a sparse profile
+> 💡 Support for PNPM and Yarn workspaces is planned but not implemented yet. Contributions welcome!
 
-Define a [Sparo profile](../configs/profile_json.md) describing the subset of repository folders for Git sparse checkout.  Here is a basic example:
+## Step 3: Create a sparse profile
+
+Define a [Sparo profile](../configs/profile_json.md) describing the subset of repository folders for Git sparse checkout.
+
+```shell
+# Writes a template to common/sparo-profiles/my-team.json
+sparo init-profile --profile my-team
+```
+
+Edit the created **my-team.json** file to add a selector. For example:
 
 **common/sparo-profiles/my-team.json**
 ```json
@@ -48,22 +60,31 @@ Define a [Sparo profile](../configs/profile_json.md) describing the subset of re
   ]
 }
 ```
-The `--to` [project selector](https://rushjs.io/pages/developer/selecting_subsets/#--to) instructs Sparo to checkout all dependencies in the workspace that are required to build `my-rush-project`.
-
 👉 _If you're demoing **azure-sdk-for-js**, replace `my-rush-project` with `@azure/arm-commerce`._
 
-### Step 4: Check out your Sparo profile
+In the above example, the `--to` [project selector](https://rushjs.io/pages/developer/selecting_subsets/#--to) instructs Sparo to checkout all dependencies in the workspace that are required to build `my-rush-project`.
 
-The `--profile` parameter can be included with `sparo checkout` (and in the future also `sparo clone` and `sparo pull`).  This parameter specifies the name of the JSON file to be selected.  You can also combine multiple profiles (`sparo checkout --profile p1 --profile p2`), in which case the union of their selections will be used.  (Combining profiles is an advanced scenario, but useful for example if your pull request will impact sets of projects belonging to multiple teams.)
+```shell
+# Commit your profile to Git.  (This step was skipped in the Quick Demo.)
+# Sparo profiles should generally be stored in Git, since this enables
+# you to move between branches without worrying about which projects
+# exist in a given branch.
+sparo add .
+sparo commit -m "Created a new Sparo profile"
+```
+
+## Step 4: Check out your Sparo profile
+
+The `--profile` parameter can be included with `sparo checkout` (and in the future also `sparo clone` and `sparo pull`).  This parameter specifies the name of the JSON file to be selected.  You can also combine multiple profiles (`sparo checkout --profile p1 --profile p2`), in which case the union of their selections will be used.  Combining profiles is an advanced scenario, but useful for example if your pull request will impact sets of projects belonging to multiple teams.
 
 **Sparse checkout based on common/sparo-profiles/my-team.json**
 ```shell
 sparo checkout --profile my-team
 ```
 
-**Behind the scenes:**
+**More about "sparo checkout":**
 
-- Sparo automatically generates the `$GIT_DIR/info/sparse-checkout` configuration automatically based on your profile selections.  To avoid conflicts, while using Sparo do not edit this file directly or rewrite it using other tools such as `git sparse-checkout`.
+- Sparo automatically generates Git's `$GIT_DIR/info/sparse-checkout` [config file](https://git-scm.com/docs/git-sparse-checkout#_internalssparse_checkout) based on your profile selections.  To avoid conflicts, do not edit this file directly or rewrite it using other tools such as `git sparse-checkout`.  (Doing so won't break anything, but it may interfere with Sparo operations.)
 
 - To checkout just the skeleton (returning to the initial state from Step 1 where no profile is chosen yet), specify `--no-profile` instead of `--profile NAME`.
 
@@ -73,7 +94,7 @@ sparo checkout --profile my-team
   sparo checkout --add-profile p2
   ```
 
-### Step 5: Use the mirrored subcommands
+## Step 5: Use the mirrored subcommands
 
 For everyday work, consider choosing [mirrored subcommands](../commands/overview.md) such as `sparo revert` instead of `git revert`. The Sparo wrapper provides (1) better defaults, (2) suggestions for better performance, and (3) optional anonymized performance metrics.
 
