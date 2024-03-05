@@ -50,10 +50,13 @@ export class GitSparseCheckoutService {
     if ('true' !== this._gitService.getGitConfig('core.sparsecheckout')?.trim()) {
       throw new Error('Sparse checkout is not enabled in this repo.');
     }
-    this.initializeAndUpdateSkeleton();
+    this._initializeAndUpdateSkeleton();
   }
 
-  public initializeAndUpdateSkeleton(): void {
+  /**
+   * Other services should call ensureSkeletonExistAndUpdated
+   */
+  private _initializeAndUpdateSkeleton(): void {
     this._terminalService.terminal.writeLine('Checking out and updating core files...');
     this._loadRushConfiguration();
     this._prepareMonorepoSkeleton();
@@ -196,11 +199,13 @@ export class GitSparseCheckoutService {
        */
       switch (checkoutAction) {
         case 'purge':
-        case 'skeleton':
           // re-apply the initial paths for setting up sparse repo state
           this._prepareMonorepoSkeleton({
             restore: checkoutAction === 'purge'
           });
+          break;
+        case 'skeleton':
+          // Skeleton should be always prepared in the beginning of the function
           break;
         case 'add':
         case 'set':
@@ -266,6 +271,7 @@ export class GitSparseCheckoutService {
   private _prepareMonorepoSkeleton(options: { restore?: boolean } = {}): void {
     const { restore } = options;
     this._finalSkeletonPaths = this._getSkeletonPaths();
+    this._terminalService.terminal.writeLine('Checking out skeleton...');
     this._terminalService.terminal.writeDebugLine(`Skeleton paths: ${this._finalSkeletonPaths.join(', ')}`);
     this._sparseCheckoutPaths(this._finalSkeletonPaths, {
       action: restore ? 'set' : 'add'

@@ -2,7 +2,7 @@
   "changes": [
     {
       "packageName": "sparo",
-      "comment": "support profile related parameters in pull & clone command",
+      "comment": "Support --profile parameter in clone command",
       "type": "none"
     }
   ],

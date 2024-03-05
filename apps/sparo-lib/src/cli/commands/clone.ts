@@ -17,7 +17,6 @@ export interface ICloneCommandOptions {
   directory?: string;
   skipGitConfig?: boolean;
   profile?: string[];
-  addProfile?: string[];
 }
 
 @Command()
@@ -57,8 +56,6 @@ export class CloneCommand implements ICommand<ICloneCommandOptions> {
       })
       .array('profile')
       .default('profile', [])
-      .array('add-profile')
-      .default('add-profile', [])
       .check((argv) => {
         if (!argv.repository) {
           return 'You must specify a repository to clone.';
@@ -92,16 +89,16 @@ export class CloneCommand implements ICommand<ICloneCommandOptions> {
 
     process.chdir(directory);
 
-    const { profiles, addProfiles, isNoProfile } = await this._sparoProfileService.preprocessProfileArgs({
+    const { profiles, isNoProfile } = await this._sparoProfileService.preprocessProfileArgs({
       profilesFromArg: args.profile ?? [],
-      addProfilesFromArg: args.addProfile ?? []
+      addProfilesFromArg: []
     });
 
     await this._GitSparseCheckoutService.ensureSkeletonExistAndUpdated();
 
     // check whether profile exist in local branch
     if (!isNoProfile) {
-      const targetProfileNames: Set<string> = new Set([...profiles, ...addProfiles]);
+      const targetProfileNames: Set<string> = new Set(profiles);
       const nonExistProfileNames: string[] = [];
       for (const targetProfileName of targetProfileNames) {
         if (!this._sparoProfileService.hasProfileInFS(targetProfileName)) {
@@ -118,11 +115,13 @@ export class CloneCommand implements ICommand<ICloneCommandOptions> {
       }
     }
 
-    // sync local sparse checkout state with given profiles.
-    await this._sparoProfileService.syncProfileState({
-      profiles: isNoProfile ? undefined : profiles,
-      addProfiles
-    });
+    // Avoid redundant sync if no profile is given
+    if (!isNoProfile && profiles.size) {
+      // sync local sparse checkout state with given profiles.
+      await this._sparoProfileService.syncProfileState({
+        profiles: isNoProfile ? undefined : profiles
+      });
+    }
 
     // set recommended git config
     if (!args.skipGitConfig) {
@@ -140,7 +139,7 @@ export class CloneCommand implements ICommand<ICloneCommandOptions> {
     terminal.writeLine('   ' + Colorize.cyan(`cd ${directory}`));
     terminal.writeLine();
 
-    if (isNoProfile || (profiles.size === 0 && addProfiles.size === 0)) {
+    if (isNoProfile || profiles.size === 0) {
       terminal.writeLine('Your next step is to choose a Sparo profile for checkout.');
       terminal.writeLine('To see available profiles in this repo:');
       terminal.writeLine('   ' + Colorize.cyan('sparo list-profiles'));
