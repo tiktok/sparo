@@ -2,7 +2,7 @@
   "changes": [
     {
       "packageName": "sparo",
-      "comment": "Compatible with Windows",
+      "comment": "Fix a compatibility issue when getting profile name on Windows OS",
       "type": "none"
     }
   ],
