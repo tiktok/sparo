@@ -21,7 +21,9 @@ export class SparoCICommandLine {
       telemetryService.setCollectTelemetryFunction(launchOptions.collectTelemetryAsync);
     }
 
-    GitVersionCompatibility.ensureGitVersion();
+    if (GitVersionCompatibility.reportGitRequiredVersion()) {
+      process.exit(1);
+    }
     SparoStartupBanner.logBanner({
       callerPackageJson: launchOptions.callerPackageJson
     });
