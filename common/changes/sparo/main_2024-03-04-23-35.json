@@ -1,0 +1,10 @@
+{
+  "changes": [
+    {
+      "packageName": "sparo",
+      "comment": "Fix a compatibility issue when getting profile name on Windows OS",
+      "type": "none"
+    }
+  ],
+  "packageName": "sparo"
+}

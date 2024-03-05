@@ -98,7 +98,7 @@ export class SparoProfileService {
   }
 
   private static _getProfileName(profilePath: string): string {
-    const pathArr: string[] = profilePath.split('/');
+    const pathArr: string[] = profilePath.split(path.sep);
     const last: string = pathArr[pathArr.length - 1];
     if (last.endsWith('.json')) {
       return last.slice(0, -5);
