@@ -1,6 +1,14 @@
 # Change Log - sparo
 
-This log was last generated on Tue, 05 Mar 2024 04:37:22 GMT and should not be manually modified.
+This log was last generated on Tue, 05 Mar 2024 17:01:33 GMT and should not be manually modified.
+
+## 1.0.0
+Tue, 05 Mar 2024 17:01:33 GMT
+
+### Updates
+
+- Update the minimal git supported version to 2.44.0
+- Improve the "sparo init-profile" template comments
 
 ## 0.0.7
 Tue, 05 Mar 2024 04:37:22 GMT
