@@ -1,0 +1,10 @@
+{
+  "changes": [
+    {
+      "packageName": "sparo",
+      "comment": "Improve the \"sparo init-profile\" template comments",
+      "type": "none"
+    }
+  ],
+  "packageName": "sparo"
+}

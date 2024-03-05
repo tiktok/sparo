@@ -3,7 +3,7 @@
 <div>
   <br />
   <a href="https://tiktok.github.io/sparo/">
-    <img width="380" src="../../common/assets/sparo-380.png" alt="Sparo" />
+    <img width="380" src="https://tiktok.github.io/sparo/images/site/sparo-logo.svg" alt="Sparo" />
   </a>
   <p />
 </div>

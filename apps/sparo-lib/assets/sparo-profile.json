@@ -1,3 +1,7 @@
+/**
+ * OWNER:   <your team name>
+ * PURPOSE: <what you use this profile for>
+ */
 {
   "$schema": "https://tiktok.github.io/sparo/schemas/sparo-profile.schema.json",
 
@@ -28,16 +32,16 @@
   ],
 
   /**
-   * A list of arbitrary additional folders to be included, not necessarily
-   * corresponding to any workspace project.
+   * A list of arbitrary additional folders to be included for checkout,
+   * not necessarily corresponding to any workspace project.
    */
   "includeFolders": [
     // "path/to/include"
   ],
 
   /**
-   * A list of folders to be excluded.  This field takes precedence over
-   * the "includeFolders" and "selections" fields, guaranteeing that the
+   * A list of folders to be excluded from the checkout.  This field takes precedence
+   * over the "includeFolders" and "selections" fields, guaranteeing that the
    * specified path will definitely not be included.
    */
   "excludeFolders": [
