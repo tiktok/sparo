@@ -8,13 +8,6 @@
   <p />
 </div>
 
-> 🚧 UNDER CONSTRUCTION 🚧
->
-> This is an early test release of the software.
-> It is not yet ready for general usage.
-> If you have questions about this project, let us know
-> using [GitHub discussions](https://github.com/tiktok/sparo/discussions).
-
 ## Is Git too slow in your frontend monorepo?
 
 By default `git clone` will download every file in your Git repository, as well as the complete history of every file. For small repositories, that's no big deal. But as your monorepo accumulates projects and years of history, Git operations become slower and slower, until one day `git status` is taking 10 seconds or more. What to do?
