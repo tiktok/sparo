@@ -6,6 +6,10 @@ To initialize a new Sparo profile, you can copy and paste the contents of this t
 
 **common/sparo-profiles/&lt;profile-name&gt;.json**
 ```js
+/**
+ * OWNER:   <your team name>
+ * PURPOSE: <what you use this profile for>
+ */
 {
   "$schema": "https://tiktok.github.io/sparo/schemas/sparo-profile.schema.json",
 
@@ -24,7 +28,6 @@ To initialize a new Sparo profile, you can copy and paste the contents of this t
     //   "selector": "--to",
     //   "argument": "tag:my-team"
     // },
-
     /**
      * For example, include the project called "my-library", as well as all
      * projects that are impacted by changes to it, as well as the dependency
@@ -37,16 +40,16 @@ To initialize a new Sparo profile, you can copy and paste the contents of this t
   ],
 
   /**
-   * A list of arbitrary additional folders to be included, not necessarily
-   * corresponding to any workspace project.
+   * A list of arbitrary additional folders to be included for checkout,
+   * not necessarily corresponding to any workspace project.
    */
   "includeFolders": [
     // "path/to/include"
   ],
-  
+
   /**
-   * A list of folders to be excluded.  This field takes precedence over
-   * the "includeFolders" and "selections" fields, guaranteeing that the
+   * A list of folders to be excluded from the checkout.  This field takes precedence
+   * over the "includeFolders" and "selections" fields, guaranteeing that the
    * specified path will definitely not be included.
    */
   "excludeFolders": [
