@@ -65,9 +65,9 @@ export async function runAsync(runScriptOptions: IRunScriptOptions): Promise<voi
     const { name, args } = scenario;
     const result: SpawnSyncReturns<string> = Executable.spawnSync(binPath, args, {
       environment: {
-        ...process.env
+        ...process.env,
         // Always use color for the output
-        // FORCE_COLOR: 'true'
+        FORCE_COLOR: 'true'
       }
     });
 
