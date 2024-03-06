@@ -434,6 +434,14 @@
     //   "reviewCategory": "tools",
     //   "tags": [ "tools" ]
     // }
+
+    // Build tests
+    {
+      "packageName": "sparo-outputs",
+      "projectFolder": "build-tests/sparo-outputs"
+    },
+
+    // Sparo
     {
       "packageName": "sparo",
       "projectFolder": "apps/sparo",
@@ -446,6 +454,8 @@
       "versionPolicyName": "sparo",
       "shouldPublish": true
     },
+
+    // Document site
     {
       "packageName": "website",
       "projectFolder": "apps/website"
