@@ -27,7 +27,7 @@ export interface ILogBannerOptions {
 
 export class SparoStartupBanner {
   public static logBanner(options: ILogBannerOptions = {}): void {
-    const sparoVersion: string = SparoLibPackage.version;
+    const sparoVersion: string = options.callerPackageJson?.version || SparoLibPackage.version;
     const gitVersion: string = GitVersionCompatibility.getGitVersion().join('.');
     const nodeVersion: string = this._formatNodeVersion();
     const { terminal } = getFromContainer(TerminalService);

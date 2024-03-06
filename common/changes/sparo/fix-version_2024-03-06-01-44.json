@@ -1,0 +1,10 @@
+{
+  "changes": [
+    {
+      "packageName": "sparo",
+      "comment": "Specified version takes over the sparo-lib version",
+      "type": "none"
+    }
+  ],
+  "packageName": "sparo"
+}
