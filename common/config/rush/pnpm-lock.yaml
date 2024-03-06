@@ -149,6 +149,37 @@ importers:
         specifier: ~5.3.3
         version: 5.3.3
 
+  ../../build-tests/sparo-output-test:
+    dependencies:
+      '@rushstack/node-core-library':
+        specifier: ~3.64.2
+        version: 3.64.2(@types/node@20.11.16)
+      jest-diff:
+        specifier: ~29.7.0
+        version: 29.7.0
+      sparo:
+        specifier: workspace:*
+        version: link:../../apps/sparo
+    devDependencies:
+      '@rushstack/heft':
+        specifier: 0.64.3
+        version: 0.64.3(@types/node@20.11.16)
+      '@rushstack/heft-node-rig':
+        specifier: 2.4.5
+        version: 2.4.5(@rushstack/heft@0.64.3)(@types/node@20.11.16)
+      '@types/heft-jest':
+        specifier: 1.0.6
+        version: 1.0.6
+      '@types/node':
+        specifier: 20.11.16
+        version: 20.11.16
+      eslint:
+        specifier: 8.56.0
+        version: 8.56.0
+      typescript:
+        specifier: ~5.3.3
+        version: 5.3.3
+
 packages:
 
   /@aashutoshrathi/word-wrap@1.2.6:
@@ -2548,7 +2579,7 @@ packages:
       '@jest/console': 29.7.0
       '@jest/reporters': 29.5.0
       '@jest/test-result': 29.7.0
-      '@jest/transform': 29.5.0
+      '@jest/transform': 29.7.0
       '@jest/types': 29.6.3
       '@types/node': 20.11.16
       ansi-escapes: 4.3.2
@@ -2561,11 +2592,11 @@ packages:
       jest-haste-map: 29.7.0
       jest-message-util: 29.7.0
       jest-regex-util: 29.6.3
-      jest-resolve: 29.5.0
+      jest-resolve: 29.7.0
       jest-resolve-dependencies: 29.7.0
       jest-runner: 29.7.0
       jest-runtime: 29.7.0
-      jest-snapshot: 29.5.0
+      jest-snapshot: 29.7.0
       jest-util: 29.7.0
       jest-validate: 29.7.0
       jest-watcher: 29.7.0
@@ -2642,7 +2673,7 @@ packages:
       '@bcoe/v8-coverage': 0.2.3
       '@jest/console': 29.7.0
       '@jest/test-result': 29.7.0
-      '@jest/transform': 29.5.0
+      '@jest/transform': 29.7.0
       '@jest/types': 29.6.3
       '@jridgewell/trace-mapping': 0.3.23
       '@types/node': 20.11.16
@@ -4177,7 +4208,6 @@ packages:
   /ansi-styles@5.2.0:
     resolution: {integrity: sha512-Cxwpt2SfTzTtXcfOlzGEee8O+c+MmUgGrNiBcXnuWxuFJHe6a5Hz7qwhwe5OgaSYI0IJvkLqWX1ASG+cJOkEiA==}
     engines: {node: '>=10'}
-    dev: true
 
   /ansi-styles@6.2.1:
     resolution: {integrity: sha512-bN798gFfQX+viw3R7yrGWRqnrN2oRkEkUjjl4JNn4E8GxxbjtG3FbrEIIY3l8/hrwUwIeCZvi4QuOTP4MErVug==}
@@ -5484,7 +5514,6 @@ packages:
   /diff-sequences@29.6.3:
     resolution: {integrity: sha512-EjePK1srD3P08o2j4f0ExnylqRs5B9tJjcp9t1krH2qRi8CCdsYfwe9JgSLurFBWwq4uOlipzfk5fHNvwFKr8Q==}
     engines: {node: ^14.15.0 || ^16.10.0 || >=18.0.0}
-    dev: true
 
   /dir-glob@3.0.1:
     resolution: {integrity: sha512-WkrWp9GR4KXfKGYzOLmTuGVi1UWFfws377n9cc55/tb6DuqyF6pcQ5AbiHEshaDpY9v6oaSr2XCDidGmMwdzIA==}
@@ -7722,10 +7751,10 @@ packages:
       glob: 7.2.3
       graceful-fs: 4.2.11
       jest-circus: 29.7.0
-      jest-environment-node: 29.5.0
+      jest-environment-node: 29.7.0
       jest-get-type: 29.6.3
       jest-regex-util: 29.6.3
-      jest-resolve: 29.5.0
+      jest-resolve: 29.7.0
       jest-runner: 29.7.0
       jest-util: 29.7.0
       jest-validate: 29.7.0
@@ -7747,7 +7776,6 @@ packages:
       diff-sequences: 29.6.3
       jest-get-type: 29.6.3
       pretty-format: 29.7.0
-    dev: true
 
   /jest-docblock@29.7.0:
     resolution: {integrity: sha512-q617Auw3A612guyaFgsbFeYpNP5t2aoUNLwBUbc/0kD1R4t9ixDbyFTHd1nok4epoVFpr7PmeWHrhvuV3XaJ4g==}
@@ -7794,7 +7822,6 @@ packages:
   /jest-get-type@29.6.3:
     resolution: {integrity: sha512-zrteXnqYxfQh7l5FHyL38jL39di8H8rHoecLH3JNxH3BwOrBsNeabdap5e0I23lD4HHI8W5VFBZqG4Eaq5LNcw==}
     engines: {node: ^14.15.0 || ^16.10.0 || >=18.0.0}
-    dev: true
 
   /jest-haste-map@29.7.0:
     resolution: {integrity: sha512-fP8u2pyfqx0K1rGn1R9pyE0/KTn+G7PxktWidOBTqFPLYX0b9ksaMFkhK5vrS3DVun09pckLdlx90QthlW7AmA==}
@@ -7996,7 +8023,7 @@ packages:
       '@babel/traverse': 7.23.9
       '@babel/types': 7.23.9
       '@jest/expect-utils': 29.7.0
-      '@jest/transform': 29.5.0
+      '@jest/transform': 29.7.0
       '@jest/types': 29.6.3
       '@types/babel__traverse': 7.20.5
       '@types/prettier': 2.7.3
@@ -10003,7 +10030,6 @@ packages:
       '@jest/schemas': 29.6.3
       ansi-styles: 5.2.0
       react-is: 18.2.0
-    dev: true
 
   /pretty-time@1.1.0:
     resolution: {integrity: sha512-28iF6xPQrP8Oa6uxE6a1biz+lWeTOAPKggvjB8HAs6nVMKZwf5bG++632Dx614hIWgUPkgivRfG+a8uAXGTIbA==}
@@ -10235,7 +10261,6 @@ packages:
 
   /react-is@18.2.0:
     resolution: {integrity: sha512-xWGDIW6x921xtzPkhiULtthJHoJvBbF3q26fzloPCK0hsvxtPVelvftw3zjbHWSkR2km9Z+4uxbDDK/6Zw9B8w==}
-    dev: true
 
   /react-json-view-lite@1.2.1(react@18.2.0):
     resolution: {integrity: sha512-Itc0g86fytOmKZoIoJyGgvNqohWSbh3NXIKNgH6W6FT9PC1ck4xas1tT3Rr/b3UlFXyA9Jjaw9QSXdZy2JwGMQ==}
@@ -12275,6 +12300,7 @@ time:
   /eslint@8.56.0: '2023-12-15T22:55:11.833Z'
   /git-repo-info@2.1.1: '2019-10-18T15:12:09.674Z'
   /inversify@6.0.2: '2023-10-20T23:35:39.918Z'
+  /jest-diff@29.7.0: '2023-09-12T06:43:43.883Z'
   /lunr@2.3.9: '2020-08-19T20:30:07.948Z'
   /prism-react-renderer@2.3.1: '2023-12-18T14:23:38.265Z'
   /prismjs@1.29.0: '2022-08-23T10:42:14.395Z'

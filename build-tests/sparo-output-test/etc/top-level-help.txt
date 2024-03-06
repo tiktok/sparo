@@ -1,0 +1,30 @@
+Running "sparo --help":
+
+[1mSparo accelerator for Git __VERSION__ -[22m[36m https://tiktok.github.io/sparo/[39m
+Node.js version is __VERSION__ (LTS)
+Git version is __VERSION__
+
+sparo [command]
+
+Commands:
+  sparo auto-config                      Automatic setup optimized git config
+  sparo list-profiles                    List all available profiles or query
+                                         profiles that contain the specified
+                                         project name
+  sparo init-profile                     Initialize a new profile.
+  sparo clone <repository> [directory]
+  sparo checkout [branch] [start-point]  Updates files in the working tree to
+                                         match the version in the index or the
+                                         specified tree. If no pathspec was
+                                         given, git checkout will also update
+                                         HEAD to set the specified branch as the
+                                         current branch.
+  sparo fetch [remote] [branch]          fetch remote branch to local
+  sparo git-clone                        original git clone command
+  sparo git-checkout                     original git checkout command
+  sparo git-fetch                        original git fetch command
+  sparo git-pull                         original git pull command
+
+Options:
+  -h, --help     Show help                                             [boolean]
+      --version  Show version number                                   [boolean]

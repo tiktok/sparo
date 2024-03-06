@@ -1,0 +1,10 @@
+Running "sparo nonexistent-command":
+
+[1mSparo accelerator for Git __VERSION__ -[22m[36m https://tiktok.github.io/sparo/[39m
+Node.js version is __VERSION__ (LTS)
+Git version is __VERSION__
+
+
+[90m--[[39m [1mgit nonexistent-command[22m [90m]--------------------------------------------------[39m
+[90m-------------------------------------------------------------------------------[39m
+

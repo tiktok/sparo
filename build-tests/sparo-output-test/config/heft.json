@@ -1,0 +1,24 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/heft/v0/heft.schema.json",
+
+  "extends": "@rushstack/heft-node-rig/profiles/default/config/heft.json",
+
+  "phasesByName": {
+    "build": {
+      "tasksByName": {
+        "post-compile": {
+          "taskDependencies": ["typescript"],
+
+          "taskPlugin": {
+            "pluginName": "run-script-plugin",
+            "pluginPackage": "@rushstack/heft",
+
+            "options": {
+              "scriptPath": "lib/start-test.js"
+            }
+          }
+        }
+      }
+    }
+  }
+}
