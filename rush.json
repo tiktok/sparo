@@ -437,8 +437,8 @@
 
     // Build tests
     {
-      "packageName": "sparo-outputs",
-      "projectFolder": "build-tests/sparo-outputs"
+      "packageName": "sparo-output-test",
+      "projectFolder": "build-tests/sparo-output-test"
     },
 
     // Sparo

@@ -14,7 +14,7 @@
             "pluginPackage": "@rushstack/heft",
 
             "options": {
-              "scriptPath": "lib/generateOutputs.js"
+              "scriptPath": "lib/start-test.js"
             }
           }
         }

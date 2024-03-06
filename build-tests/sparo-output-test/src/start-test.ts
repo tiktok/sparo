@@ -1,5 +1,6 @@
 import * as path from 'path';
 import { Async, Executable, FileSystem, type FolderItem, Text } from '@rushstack/node-core-library';
+import { diff } from 'jest-diff';
 import type { SpawnSyncReturns } from 'child_process';
 import type { IRunScriptOptions } from '@rushstack/heft';
 
@@ -57,33 +58,31 @@ export async function runAsync(runScriptOptions: IRunScriptOptions): Promise<voi
   ];
 
   /**
-   * Run each scenario and generate outputs in parallel
-   *
-   * NOTE: please make sure the commands can be run in parallel
+   * Run each scenario and generate outputs
    */
   await FileSystem.ensureEmptyFolderAsync(tempFolder);
-  await Async.forEachAsync(
-    scenarios,
-    async (scenario: IScenarioDefinition) => {
-      const { name, args } = scenario;
-      const result: SpawnSyncReturns<string> = Executable.spawnSync(binPath, args);
-
-      if (result.status !== 0) {
-        throw new Error(
-          `Failed to run "sparo ${args.join(' ')}" with exit code ${result.status}\n${result.stderr}`
-        );
+  for (const scenario of scenarios) {
+    const { name, args } = scenario;
+    const result: SpawnSyncReturns<string> = Executable.spawnSync(binPath, args, {
+      environment: {
+        ...process.env
+        // Always use color for the output
+        // FORCE_COLOR: 'true'
       }
+    });
 
-      const outputPath: string = path.join(tempFolder, `${name}.txt`);
-      FileSystem.writeFile(
-        outputPath,
-        `Running "sparo ${args.join(' ')}":\n${processVersionString(result.stdout)}`
+    if (result.status !== 0) {
+      throw new Error(
+        `Failed to run "sparo ${args.join(' ')}" with exit code ${result.status}\n${result.stderr}`
       );
-    },
-    {
-      concurrency: 10
     }
-  );
+
+    const outputPath: string = path.join(tempFolder, `${name}.txt`);
+    FileSystem.writeFile(
+      outputPath,
+      `Running "sparo ${args.join(' ')}":\n${processVersionString(result.stdout)}`
+    );
+  }
 
   /**
    * Files under outFolderPath are tracked by Git, files under inFolderPath are temporary files. During a local build,
@@ -106,6 +105,7 @@ export async function runAsync(runScriptOptions: IRunScriptOptions): Promise<voi
   }
 
   const nonMatchingFiles: string[] = [];
+  const nonMatchingFileErrorMessages: Map<string, string> = new Map<string, string>();
   await Async.forEachAsync(
     inFolderPaths,
     async (folderItemPath: string) => {
@@ -130,6 +130,13 @@ export async function runAsync(runScriptOptions: IRunScriptOptions): Promise<voi
 
       if (normalizedSourceFileContents !== normalizedOutFileContents) {
         nonMatchingFiles.push(outFilePath);
+        if (production) {
+          // Display diff only when running in production mode, mostly for CI build
+          nonMatchingFileErrorMessages.set(
+            outFilePath,
+            diff(normalizedOutFileContents, normalizedSourceFileContents) || ''
+          );
+        }
         if (!production) {
           await FileSystem.writeFileAsync(outFilePath, normalizedSourceFileContents, {
             ensureFolderExists: true
@@ -159,6 +166,10 @@ export async function runAsync(runScriptOptions: IRunScriptOptions): Promise<voi
     const errorLines: string[] = [];
     for (const nonMatchingFile of nonMatchingFiles.sort()) {
       errorLines.push(`  ${nonMatchingFile}`);
+      const errorMessage: string | undefined = nonMatchingFileErrorMessages.get(nonMatchingFile);
+      if (errorMessage) {
+        errorLines.push(`${errorMessage}`);
+      }
     }
 
     if (production) {

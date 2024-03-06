@@ -1,17 +1,16 @@
 {
-  "name": "sparo-outputs",
+  "name": "sparo-output-test",
   "description": "Building this project tests sparo command outputs",
   "version": "1.0.0",
   "private": true,
   "scripts": {
     "_phase:build": "heft run --only build -- --clean",
-    "_phase:test": "heft run --only test -- --clean",
-    "test": "heft test --clean",
     "build": "heft build --clean"
   },
   "dependencies": {
     "@rushstack/node-core-library": "~3.64.2",
-    "sparo": "workspace:*"
+    "sparo": "workspace:*",
+    "jest-diff": "~29.7.0"
   },
   "devDependencies": {
     "@rushstack/heft": "0.64.3",
