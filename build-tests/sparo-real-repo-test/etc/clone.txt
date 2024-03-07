@@ -1,4 +1,4 @@
-Running "sparo clone git@github.com:Azure/azure-sdk-for-js.git":
+Running "sparo clone git@github.com:tiktok/sparo.git --branch build-test":
 
 [1mSparo accelerator for Git __VERSION__ -[22m[36m https://tiktok.github.io/sparo/[39m
 Node.js version is __VERSION__ (LTS)
@@ -24,10 +24,10 @@ Applying recommended configuration...
 [90m--[[39m [1mgit maintenance[22m [90m]----------------------------------------------------------[39m
 [90m-------------------------------------------------------------------------------[39m
 
-[32mSuccess: Working directory "azure-sdk-for-js" was prepared in __DURATION__.[39m
+[32mSuccess: Working directory "sparo" was prepared in __DURATION__.[39m
 
 Don't forget to change your shell path:
-   [36mcd azure-sdk-for-js[39m
+   [36mcd sparo[39m
 
 Your next step is to choose a Sparo profile for checkout.
 To see available profiles in this repo:

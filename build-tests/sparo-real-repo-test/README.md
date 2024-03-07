@@ -1,6 +1,6 @@
 # sparo-real-repo-test
 
-Building this project tests sparo command outputs with a real GitHub repo
+Building this project tests sparo command outputs with a real GitHub repo, which is the "build-test" branch of "sparo" itself.
 
 # Details
 

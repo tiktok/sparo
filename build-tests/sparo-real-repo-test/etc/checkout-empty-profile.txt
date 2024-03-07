@@ -1,4 +1,4 @@
-Running "sparo checkout --profile my-team":
+Running "sparo checkout --profile my-build-test":
 
 [1mSparo accelerator for Git __VERSION__ -[22m[36m https://tiktok.github.io/sparo/[39m
 Node.js version is __VERSION__ (LTS)
@@ -6,10 +6,10 @@ Git version is __VERSION__
 
 
 [90m--[[39m [1mgit checkout[22m [90m]-------------------------------------------------------------[39m
-Your branch is up to date with 'origin/main'.
+Your branch is up to date with 'origin/build-test'.
 [90m-------------------------------------------------------------------------------[39m
 
-Syncing checkout with the Sparo profile: my-team
+Syncing checkout with the Sparo profile: my-build-test
 
 Checking out and updating core files...
 

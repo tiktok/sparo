@@ -20,47 +20,47 @@ export async function runAsync(runScriptOptions: IRunScriptOptions): Promise<voi
   } = runScriptOptions;
 
   const temporaryDirectory: string = path.resolve(buildFolderPath, 'temp');
-  const testRepoURL: string = 'git@github.com:Azure/azure-sdk-for-js.git';
-  const repoFolder: string = path.resolve(temporaryDirectory, 'azure-sdk-for-js');
+  const testRepoURL: string = 'git@github.com:tiktok/sparo.git';
+  const repoFolder: string = path.resolve(temporaryDirectory, 'sparo');
 
   await FileSystem.deleteFolderAsync(repoFolder);
 
   const commandDefinitions: ICommandDefinition[] = [
-    // sparo clone git@github.com:Azure/azure-sdk-for-js.git
+    // sparo clone git@github.com:tiktok/sparo.git --branch build-test
     {
       kind: 'sparo-command',
       name: 'clone',
-      args: ['clone', testRepoURL],
+      args: ['clone', testRepoURL, '--branch', 'build-test'],
       currentWorkingDirectory: temporaryDirectory
     },
-    // sparo init-profile --profile my-team
+    // sparo init-profile --profile my-build-test
     {
       kind: 'sparo-command',
       name: 'init-profile',
-      args: ['init-profile', '--profile', 'my-team'],
+      args: ['init-profile', '--profile', 'my-build-test'],
       currentWorkingDirectory: repoFolder
     },
-    // sparo checkout --profile my-team - extra step to checkout an empty profile
+    // sparo checkout --profile my-build-test - extra step to checkout an empty profile
     {
       kind: 'sparo-command',
       name: 'checkout-empty-profile',
-      args: ['checkout', '--profile', 'my-team'],
+      args: ['checkout', '--profile', 'my-build-test'],
       currentWorkingDirectory: repoFolder
     },
-    // Prepare my-team profile
+    // Prepare my-build-test profile
     {
       kind: 'custom-callback',
-      name: 'prepare-my-team-profile',
+      name: 'prepare-my-build-test-profile',
       callback: async () => {
         await FileSystem.writeFileAsync(
-          path.resolve(repoFolder, 'common/sparo-profiles/my-team.json'),
+          path.resolve(repoFolder, 'common/sparo-profiles/my-build-test.json'),
           JSON.stringify(
             {
               $schema: 'https://tiktok.github.io/sparo/schemas/sparo-profile.schema.json',
               selections: [
                 {
                   selector: '--to',
-                  argument: '@azure/arm-commerce'
+                  argument: 'sparo'
                 }
               ],
               includeFolders: [],
@@ -72,11 +72,11 @@ export async function runAsync(runScriptOptions: IRunScriptOptions): Promise<voi
         );
       }
     },
-    // sparo checkout --profile my-team
+    // sparo checkout --profile my-build-test
     {
       kind: 'sparo-command',
       name: 'checkout-profile',
-      args: ['checkout', '--profile', 'my-team'],
+      args: ['checkout', '--profile', 'my-build-test'],
       currentWorkingDirectory: repoFolder
     },
     // sparo list-profiles
@@ -86,11 +86,11 @@ export async function runAsync(runScriptOptions: IRunScriptOptions): Promise<voi
       args: ['list-profiles'],
       currentWorkingDirectory: repoFolder
     },
-    // sparo list-profiles --project @azure/core-auth
+    // sparo list-profiles --project sparo-lib
     {
       kind: 'sparo-command',
       name: 'list-profiles-with-project',
-      args: ['list-profiles', '--project', '@azure/core-auth'],
+      args: ['list-profiles', '--project', 'sparo-lib'],
       currentWorkingDirectory: repoFolder
     }
   ];

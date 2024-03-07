@@ -1,4 +1,4 @@
-Running "sparo list-profiles --project @azure/core-auth":
+Running "sparo list-profiles --project sparo-lib":
 
 [1mSparo accelerator for Git __VERSION__ -[22m[36m https://tiktok.github.io/sparo/[39m
 Node.js version is __VERSION__ (LTS)
@@ -16,5 +16,6 @@ Checking out skeleton...
 [90m--[[39m [1mgit sparse-checkout[22m [90m]------------------------------------------------------[39m
 [90m-------------------------------------------------------------------------------[39m
 
-@azure/core-auth was included in the below profiles:
- my-team
+sparo-lib was included in the below profiles:
+ my-build-test
+sparo-development

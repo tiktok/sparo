@@ -17,4 +17,6 @@ Checking out skeleton...
 [90m-------------------------------------------------------------------------------[39m
 
 All available profiles:
-my-team
+my-build-test
+sparo-website
+sparo-development
