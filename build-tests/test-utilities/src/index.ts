@@ -1,7 +1,7 @@
 import * as path from 'path';
 import { Async, Executable, FileSystem, Text, type FolderItem } from '@rushstack/node-core-library';
 import { diff } from 'jest-diff';
-import type { SpawnSyncReturns } from 'child_process';
+import type { ChildProcess } from 'child_process';
 import type { IScopedLogger } from '@rushstack/heft';
 
 export type ICommandDefinition = ISparoCommandDefinition | ICustomCallbackDefinition;
@@ -63,7 +63,8 @@ export async function executeCommandsAndCollectOutputs({
     switch (commandListDefinition.kind) {
       case 'sparo-command': {
         const { name, args, currentWorkingDirectory } = commandListDefinition;
-        const result: SpawnSyncReturns<string> = Executable.spawnSync(sparoBinPath, args, {
+        const subProcess: ChildProcess = Executable.spawn(sparoBinPath, args, {
+          stdio: 'pipe',
           currentWorkingDirectory,
           environment: {
             ...process.env,
@@ -72,17 +73,35 @@ export async function executeCommandsAndCollectOutputs({
           }
         });
 
-        if (result.status !== 0) {
-          throw new Error(
-            `Failed to run "sparo ${args.join(' ')}" with exit code ${result.status}\n${result.stderr}`
-          );
+        let stdout: string = '';
+        let stderr: string = '';
+        subProcess.stdout?.on('data', (data: Buffer) => {
+          const text: string = data.toString();
+          console.log(text);
+          stdout += text;
+        });
+
+        subProcess.stderr?.on('data', (data: Buffer) => {
+          const text: string = data.toString();
+          console.log(text);
+          stderr += text;
+        });
+
+        const status: number = await new Promise((resolve) => {
+          subProcess.on('close', (code: number) => {
+            resolve(code);
+          });
+        });
+
+        if (status !== 0) {
+          throw new Error(`Failed to run "sparo ${args.join(' ')}" with exit code ${status}\n${stderr}`);
         }
 
         const outputPath: string = path.join(tempFolder, `${name}.txt`);
         FileSystem.writeFile(
           outputPath,
           `Running "sparo ${args.join(' ')}":\n${processSparoOutput(
-            result.stdout,
+            stdout,
             currentWorkingDirectory || process.cwd()
           )}`
         );
