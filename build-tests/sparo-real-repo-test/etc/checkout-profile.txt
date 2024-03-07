@@ -1,0 +1,29 @@
+Running "sparo checkout --profile my-team":
+
+[1mSparo accelerator for Git __VERSION__ -[22m[36m https://tiktok.github.io/sparo/[39m
+Node.js version is __VERSION__ (LTS)
+Git version is __VERSION__
+
+
+[90m--[[39m [1mgit checkout[22m [90m]-------------------------------------------------------------[39m
+Your branch is up to date with 'origin/main'.
+[90m-------------------------------------------------------------------------------[39m
+
+Syncing checkout with the Sparo profile: my-team
+
+Checking out and updating core files...
+
+[90m--[[39m [1mgit sparse-checkout[22m [90m]------------------------------------------------------[39m
+[90m-------------------------------------------------------------------------------[39m
+
+Checking out skeleton...
+
+[90m--[[39m [1mgit sparse-checkout[22m [90m]------------------------------------------------------[39m
+[90m-------------------------------------------------------------------------------[39m
+
+Checking out __FOLDER_COUNT__ folders...
+
+[90m--[[39m [1mgit sparse-checkout[22m [90m]------------------------------------------------------[39m
+[90m-------------------------------------------------------------------------------[39m
+
+Sparse checkout completed in __DURATION__

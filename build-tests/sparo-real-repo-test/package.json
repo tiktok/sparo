@@ -1,6 +1,6 @@
 {
-  "name": "sparo-output-test",
-  "description": "Building this project tests sparo command outputs",
+  "name": "sparo-real-repo-test",
+  "description": "Building this project tests sparo in a real repository",
   "version": "1.0.0",
   "private": true,
   "scripts": {

@@ -1,0 +1,11 @@
+Running "sparo init-profile --profile my-team":
+
+[1mSparo accelerator for Git __VERSION__ -[22m[36m https://tiktok.github.io/sparo/[39m
+Node.js version is __VERSION__ (LTS)
+Git version is __VERSION__
+
+[32mSuccessfully initialized the "my-team" profile.[39m
+
+Next step: Open this file in your editor and configure the project selectors:
+
+  [36m__WORKING_DIRECTORY__/common/sparo-profiles/my-team.json[39m
