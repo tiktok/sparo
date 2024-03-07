@@ -87,14 +87,21 @@ export async function executeCommandsAndCollectOutputs({
           stderr += text;
         });
 
-        const status: number = await new Promise((resolve) => {
-          subProcess.on('close', (code: number) => {
-            resolve(code);
+        try {
+          const status: number = await new Promise((resolve, reject) => {
+            subProcess.on('close', (code: number) => {
+              resolve(code);
+            });
+            subProcess.on('error', (error: Error) => {
+              reject(error);
+            });
           });
-        });
 
-        if (status !== 0) {
-          throw new Error(`Failed to run "sparo ${args.join(' ')}" with exit code ${status}\n${stderr}`);
+          if (status !== 0) {
+            throw new Error(`Failed to run "sparo ${args.join(' ')}" with exit code ${status}\n${stderr}`);
+          }
+        } catch (e) {
+          throw new Error(`Failed to run "sparo ${args.join(' ')}":\n${e.message}`);
         }
 
         const outputPath: string = path.join(tempFolder, `${name}.txt`);
