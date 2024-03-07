@@ -1,6 +1,6 @@
-# sparo-output-test
+# sparo-real-repo-test
 
-Building this project tests sparo command outputs
+Building this project tests sparo command outputs with a real GitHub repo
 
 # Details
 
@@ -8,4 +8,4 @@ Building this project tests sparo command outputs
 
 # How to fix the build errors
 
-Run `rush build -t sparo-output-test` to regenerate files under `etc` folder and commit them into Git.
+Run `rush build -t sparo-real-repo-test` to regenerate files under `etc` folder and commit them into Git.

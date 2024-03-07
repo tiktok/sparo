@@ -1,11 +1,47 @@
-# sparo-output-test
+# build-test-utilities
 
-Building this project tests sparo command outputs
+The project contains several utility function for build tests.
 
-# Details
+# Test sparo output with Heft run-script plugin
 
-`lib/start-test.js` is run after building the project. This scripts generate the output text files under `temp/etc`. In local builds, those files are copied to `etc` folder. During a CI build, the files under these two folders are compared and the CI build fails if they are different. This ensures that files under `etc` folder must be up to date in the PR, and people who review the PR must approve any changes.
+```ts
+import {
+  ICommandDefinition,
+  executeCommandsAndCollectOutputs,
+  updateOrCompareOutputs
+} from 'build-test-utilities';
+import type { IRunScriptOptions } from '@rushstack/heft';
 
-# How to fix the build errors
+export async function runAsync(runScriptOptions: IRunScriptOptions): Promise<void> {
+  const {
+    heftTaskSession: {
+      logger,
+      parameters: { production }
+    },
+    heftConfiguration: { buildFolderPath }
+  } = runScriptOptions;
 
-Run `rush build -t sparo-output-test` to regenerate files under `etc` folder and commit them into Git.
+  const commandDefinitions: ICommandDefinition[] = [
+    {
+      kind: 'sparo-command',
+      name: 'clone-help',
+      args: ['clone', '--help']
+    }
+  ];
+
+  await executeCommandsAndCollectOutputs({
+    commandDefinitions,
+    buildFolderPath,
+  })
+
+  await updateOrCompareOutput({
+    buildFolderPath,
+    logger,
+    production,
+  }) 
+}
+```
+
+`executeCommandsAndCollectOutputs` runs the list of specified command definitions, it collects sparo command outputs and save them to `<buildFolderPath>/temp/etc`.
+
+`updateOrCompareOutput` copies the output text files from `<buildFolderPath>/temp/etc` to `<buildFolderPath>/etc`, this ensures the output text files are always up to date, and it must get reviewed in the PR. In CI builds, this function will compares the content between these two folders, and throw a error for unmatched content.
