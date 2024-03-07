@@ -178,7 +178,11 @@
     {
       "commandKind": "phased",
       "name": "build",
-      "phases": ["_phase:build"]
+      "phases": ["_phase:build"],
+      "watchOptions": {
+        "alwaysWatch": false,
+        "watchPhases": ["_phase:build"]
+      }
     },
 
     {
@@ -187,7 +191,11 @@
       "summary": "Builds all projects and runs their tests.",
       "phases": ["_phase:build", "_phase:test"],
       "enableParallelism": true,
-      "incremental": true
+      "incremental": true,
+      "watchOptions": {
+        "alwaysWatch": false,
+        "watchPhases": ["_phase:build", "_phase:test"]
+      }
     },
 
     {
