@@ -51,7 +51,7 @@ export async function executeCommandsAndCollectOutputs({
   commandDefinitions,
   buildFolderPath
 }: IExecuteCommandsAndCollectOutputsOptions): Promise<void> {
-  const sparoBinPath: string = path.join(buildFolderPath, 'node_modules', '.bin', 'sparo');
+  const sparoBinPath: string = path.join(__dirname, '..', 'node_modules', '.bin', 'sparo');
   const tempFolder: string = path.join(buildFolderPath, 'temp', 'etc');
 
   /**

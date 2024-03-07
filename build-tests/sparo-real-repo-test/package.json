@@ -9,8 +9,7 @@
   },
   "dependencies": {
     "@rushstack/node-core-library": "~3.64.2",
-    "build-test-utilities": "workspace:*",
-    "sparo": "workspace:*"
+    "build-test-utilities": "workspace:*"
   },
   "devDependencies": {
     "@rushstack/heft": "0.64.3",

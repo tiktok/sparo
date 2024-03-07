@@ -157,9 +157,6 @@ importers:
       build-test-utilities:
         specifier: workspace:*
         version: link:../test-utilities
-      sparo:
-        specifier: workspace:*
-        version: link:../../apps/sparo
     devDependencies:
       '@rushstack/heft':
         specifier: 0.64.3
@@ -188,9 +185,6 @@ importers:
       build-test-utilities:
         specifier: workspace:*
         version: link:../test-utilities
-      sparo:
-        specifier: workspace:*
-        version: link:../../apps/sparo
     devDependencies:
       '@rushstack/heft':
         specifier: 0.64.3
@@ -219,6 +213,9 @@ importers:
       jest-diff:
         specifier: ~29.7.0
         version: 29.7.0
+      sparo:
+        specifier: workspace:*
+        version: link:../../apps/sparo
     devDependencies:
       '@rushstack/heft':
         specifier: 0.64.3
