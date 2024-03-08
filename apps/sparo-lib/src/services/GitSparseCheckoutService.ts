@@ -250,8 +250,7 @@ export class GitSparseCheckoutService {
       return;
     }
 
-    const monorepoRoot: string = this._gitService.getRepoInfo().root;
-    const rushJsonPath: string = path.resolve(monorepoRoot, 'rush.json');
+    const rushJsonPath: string = path.resolve(this._monorepoRoot, 'rush.json');
 
     if (!FileSystem.exists(rushJsonPath)) {
       throw new Error('Missing rush.json. Do you work in a Rush.js monorepo?');
@@ -267,6 +266,11 @@ export class GitSparseCheckoutService {
       this._rushProjects.push(project);
       this._packageNames.add(project.packageName);
     });
+  }
+
+  private get _monorepoRoot(): string {
+    const monorepoRoot: string = this._gitService.getRepoInfo().root;
+    return monorepoRoot;
   }
 
   private _prepareMonorepoSkeleton(options: { restore?: boolean } = {}): void {
@@ -300,7 +304,7 @@ export class GitSparseCheckoutService {
   }
 
   private _findRushPluginsPaths(): string[] {
-    const autoInstallerPath: string = path.resolve('common', 'autoinstallers');
+    const autoInstallerPath: string = path.resolve(this._monorepoRoot, 'common', 'autoinstallers');
     const ignoreNames: Set<string> = new Set(['node_modules']);
     const rushPluginPaths: string[] = [];
 
