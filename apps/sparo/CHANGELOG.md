@@ -1,6 +1,14 @@
 # Change Log - sparo
 
-This log was last generated on Tue, 05 Mar 2024 17:16:25 GMT and should not be manually modified.
+This log was last generated on Fri, 08 Mar 2024 23:50:26 GMT and should not be manually modified.
+
+## 1.0.3
+Fri, 08 Mar 2024 23:50:26 GMT
+
+### Updates
+
+- Fix finding rush plugin paths issue in a subfolder of repository
+- Specified version takes over the sparo-lib version
 
 ## 1.0.2
 Tue, 05 Mar 2024 17:16:25 GMT
