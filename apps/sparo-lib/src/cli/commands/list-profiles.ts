@@ -1,10 +1,12 @@
 import childProcess from 'child_process';
-import type { Argv, ArgumentsCamelCase } from 'yargs';
+import { Sort } from '@rushstack/node-core-library';
+import { inject } from 'inversify';
 import { SparoProfileService } from '../../services/SparoProfileService';
 import { ICommand } from './base';
 import { Command } from '../../decorator';
-import { inject } from 'inversify';
 import { GitSparseCheckoutService } from '../../services/GitSparseCheckoutService';
+
+import type { Argv, ArgumentsCamelCase } from 'yargs';
 import type { TerminalService } from '../../services/TerminalService';
 import type { SparoProfile } from '../../logic/SparoProfile';
 
@@ -47,6 +49,8 @@ export class ListProfilesCommand implements ICommand<IListProfilesCommandOptions
     if (!project) {
       // List all available profiles
       terminalService.terminal.writeLine('All available profiles:');
+      // Ensure the stable order of the profiles
+      Sort.sortMapKeys(sparoProfiles);
       terminalService.terminal.writeLine(Array.from(sparoProfiles.keys()).join('\n'));
     } else {
       // Query all profiles that contain the specified project
