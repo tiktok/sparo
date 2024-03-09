@@ -19,13 +19,18 @@ export class ArgvService {
   }
 
   public async parseArgvAsync(): Promise<void> {
+    /**
+     * Do not add short name alias here, it confuses weird issue.
+     * For example, alias -h to --help
+     * Running `sparo commit -m"ath"` will be explained as `sparo commit -m -a -t -h`,
+     * which prints help text instead of proxy args to git commit.
+     */
     this._parsed = await this.yargsArgv
       // --debug
       .boolean('debug')
       // --verbose
       .boolean('verbose')
       .middleware([this._terminalMiddleware])
-      .alias('help', 'h')
       .parseAsync();
   }
 

@@ -26,5 +26,5 @@ Commands:
   sparo git-pull                         original git pull command
 
 Options:
-  -h, --help     Show help                                             [boolean]
-      --version  Show version number                                   [boolean]
+  --help     Show help                                                 [boolean]
+  --version  Show version number                                       [boolean]
