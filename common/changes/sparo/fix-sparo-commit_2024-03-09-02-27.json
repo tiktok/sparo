@@ -1,0 +1,10 @@
+{
+  "changes": [
+    {
+      "packageName": "sparo",
+      "comment": "Fix parse sparo commit -m issue",
+      "type": "none"
+    }
+  ],
+  "packageName": "sparo"
+}
