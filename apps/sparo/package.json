@@ -1,6 +1,6 @@
 {
   "name": "sparo",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "Improve Git performance in your large scale frontend monorepo by integrating sparse checkout with Rush and PNPM",
   "keywords": [
     "background prefetch",
