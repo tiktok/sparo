@@ -1,6 +1,13 @@
 # Change Log - sparo
 
-This log was last generated on Fri, 08 Mar 2024 23:50:26 GMT and should not be manually modified.
+This log was last generated on Sat, 09 Mar 2024 02:43:07 GMT and should not be manually modified.
+
+## 1.0.4
+Sat, 09 Mar 2024 02:43:07 GMT
+
+### Updates
+
+- Fix parse sparo commit -m issue
 
 ## 1.0.3
 Fri, 08 Mar 2024 23:50:26 GMT

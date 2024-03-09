@@ -2,6 +2,18 @@
   "name": "sparo",
   "entries": [
     {
+      "version": "1.0.4",
+      "tag": "sparo_v1.0.4",
+      "date": "Sat, 09 Mar 2024 02:43:07 GMT",
+      "comments": {
+        "none": [
+          {
+            "comment": "Fix parse sparo commit -m issue"
+          }
+        ]
+      }
+    },
+    {
       "version": "1.0.3",
       "tag": "sparo_v1.0.3",
       "date": "Fri, 08 Mar 2024 23:50:26 GMT",
