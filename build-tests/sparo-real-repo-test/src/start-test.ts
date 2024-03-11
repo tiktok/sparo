@@ -20,10 +20,7 @@ export async function runAsync(runScriptOptions: IRunScriptOptions): Promise<voi
   } = runScriptOptions;
 
   const temporaryDirectory: string = path.resolve(buildFolderPath, 'temp');
-  let testRepoURL: string = 'git@github.com:tiktok/sparo.git';
-  if (production) {
-    testRepoURL = 'https://github.com/tiktok/sparo.git';
-  }
+  const testRepoURL: string = 'https://github.com/tiktok/sparo.git';
   const repoFolder: string = path.resolve(temporaryDirectory, 'sparo');
 
   await FileSystem.deleteFolderAsync(repoFolder);
