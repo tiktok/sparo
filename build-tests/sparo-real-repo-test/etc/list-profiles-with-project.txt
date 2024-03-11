@@ -17,5 +17,5 @@ Checking out skeleton...
 [90m-------------------------------------------------------------------------------[39m
 
 sparo-lib was included in the below profiles:
- my-build-test
-sparo-development
+ sparo-development
+my-build-test

@@ -18,5 +18,5 @@ Checking out skeleton...
 
 All available profiles:
 my-build-test
-sparo-website
 sparo-development
+sparo-website
