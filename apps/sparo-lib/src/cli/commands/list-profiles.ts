@@ -73,9 +73,12 @@ export class ListProfilesCommand implements ICommand<IListProfilesCommandOptions
         }
       }
 
-      if (profileProjects.has(project)) {
+      const profilesContainProject: string[] | undefined = profileProjects.get(project);
+      if (profilesContainProject) {
+        // Ensure the stable order of the profiles
+        Sort.sortBy(profilesContainProject, (x) => x, Sort.compareByValue);
         terminalService.terminal.writeLine(
-          `${project} was included in the below profiles:\n ${profileProjects.get(project)?.join('\n')}`
+          `${project} was included in the below profiles:\n ${profilesContainProject.join('\n')}`
         );
       } else {
         terminalService.terminal.writeErrorLine(`${project} is not included in any pre-configured profile`);

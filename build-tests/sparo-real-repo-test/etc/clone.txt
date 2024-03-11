@@ -1,4 +1,4 @@
-Running "sparo clone git@github.com:tiktok/sparo.git --branch build-test":
+Running "sparo clone __GITHUB_HOSTNAME__:tiktok/sparo.git --branch build-test":
 
 [1mSparo accelerator for Git __VERSION__ -[22m[36m https://tiktok.github.io/sparo/[39m
 Node.js version is __VERSION__ (LTS)
