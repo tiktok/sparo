@@ -264,7 +264,7 @@ function processSparoOutput(text: string, workingDirectory: string): string {
     replaceDurationString,
     replaceWorkingDirectoryPath,
     replaceFolderCountString,
-    replaceGitHostname
+    replaceGitHubHostname
   ].reduce((text, fn) => fn(text, workingDirectory), text);
 }
 /**
@@ -292,10 +292,10 @@ function replaceFolderCountString(text: string): string {
   return text.replace(/Checking out \d+ folders/g, 'Checking out __FOLDER_COUNT__ folders');
 }
 /**
- * Replace "https://github.com" and "git@github.com" with "__GITHUB_HOSTNAME__".
+ * Replace "https://github.com/" and "git@github.com:" with "__GITHUB_HOSTNAME__".
  */
-function replaceGitHostname(text: string): string {
-  return text.replace(/(https?:\/\/|git\@)github\.com/g, '__GITHUB_HOSTNAME__');
+function replaceGitHubHostname(text: string): string {
+  return text.replace(/(https?:\/\/|git\@)github\.com[/:]/g, '__GITHUB_HOSTNAME__');
 }
 
 async function* enumerateFolderPaths(
