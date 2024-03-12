@@ -1,4 +1,5 @@
 import * as path from 'path';
+import * as os from 'os';
 import { Async, Executable, FileSystem, Text, type FolderItem } from '@rushstack/node-core-library';
 import { diff } from 'jest-diff';
 import type { ChildProcess } from 'child_process';
@@ -282,7 +283,14 @@ function replaceDurationString(text: string): string {
  * Replace all "<workingDirectory>" strings with "__WORKING_DIRECTORY__".
  */
 function replaceWorkingDirectoryPath(text: string, workingDirectory: string): string {
-  return text.replace(new RegExp(workingDirectory, 'g'), '__WORKING_DIRECTORY__');
+  let unifiedText: string = text;
+  let unifiedWorkingDirectory: string = workingDirectory;
+  if (os.platform() === 'win32') {
+    // On Windows, replace backslashes path with forward slashes
+    unifiedText = unifiedText.replace(/[A-Z]:\\([\w-]+\\)*([\w-])+/g, (match) => match.replace(/\\/g, '/'));
+    unifiedWorkingDirectory = workingDirectory.replace(/\\/g, '/');
+  }
+  return unifiedText.replace(new RegExp(unifiedWorkingDirectory, 'g'), '__WORKING_DIRECTORY__');
 }
 /**
  * Replace "Checking out x folders" with "Checking out __FOLDER_COUNT__ folders".
