@@ -1,6 +1,6 @@
 {
   "name": "build-test-utilities",
-  "description": "Utilities to do build test",
+  "description": "Code shared between the build test projects in this repository",
   "version": "1.0.0",
   "private": true,
   "main": "lib/index.js",
