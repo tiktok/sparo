@@ -79,6 +79,8 @@ export interface ILaunchOptions {
     callerPackageJson?: ICallerPackageJson;
     // @internal
     collectTelemetryAsync?: ICollectTelemetryFunction;
+    // @internal
+    extendedSkeletonFolders?: string[];
 }
 
 // @alpha (undocumented)

@@ -27,6 +27,12 @@ export interface ILaunchOptions {
    * It is used to update notification.
    */
   callerPackageJson?: ICallerPackageJson;
+
+  /**
+   * Provide the extended skeleton folders.
+   * @internal
+   */
+  extendedSkeletonFolders?: string[];
 }
 
 /**

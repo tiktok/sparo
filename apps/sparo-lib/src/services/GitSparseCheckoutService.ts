@@ -32,6 +32,7 @@ export class GitSparseCheckoutService {
   private _packageNames: Set<string> = new Set<string>();
   private _isSkeletonInitializedAndUpdated: boolean = false;
   private _finalSkeletonPaths: string[] = [];
+  private _extendedSkeletonFolders: string[] = [];
 
   public ensureSkeletonExistAndUpdated(): void {
     /**
@@ -87,6 +88,10 @@ export class GitSparseCheckoutService {
 
   public async purgeAsync(): Promise<void> {
     await this._rushSparseCheckoutAsync({ checkoutAction: 'purge' });
+  }
+
+  public setExtendedSkeletonFolders(extendedSkeletonFolders: string[]): void {
+    this._extendedSkeletonFolders = extendedSkeletonFolders;
   }
 
   /**
@@ -284,7 +289,13 @@ export class GitSparseCheckoutService {
   }
 
   private _getSkeletonPaths(): string[] {
-    const basicFolders: string[] = ['.vscode', 'common', 'common/sparse-profiles', 'scripts', 'plugins'];
+    const basicFolders: string[] = [
+      '.vscode',
+      'common',
+      'common/sparse-profiles',
+      'scripts',
+      'plugins'
+    ].concat(this._extendedSkeletonFolders);
     this._sparseCheckoutPaths(basicFolders, { action: 'add' });
 
     const pluginPaths: string[] = this._findRushPluginsPaths();
