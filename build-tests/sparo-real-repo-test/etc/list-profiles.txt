@@ -1,6 +1,6 @@
 Running "sparo list-profiles":
 
-[1mSparo accelerator for Git __VERSION__ -[22m[36m https://tiktok.github.io/sparo/[39m
+[bold]Sparo accelerator for Git __VERSION__ -[normal][cyan] https://tiktok.github.io/sparo/[default]
 Node.js version is __VERSION__ (LTS)
 Git version is __VERSION__
 
@@ -8,13 +8,13 @@ Listing profiles...
 
 Checking out and updating core files...
 
-[90m--[[39m [1mgit sparse-checkout[22m [90m]------------------------------------------------------[39m
-[90m-------------------------------------------------------------------------------[39m
+[gray]--[[default] [bold]git sparse-checkout[normal] [gray]]------------------------------------------------------[default]
+[gray]-------------------------------------------------------------------------------[default]
 
 Checking out skeleton...
 
-[90m--[[39m [1mgit sparse-checkout[22m [90m]------------------------------------------------------[39m
-[90m-------------------------------------------------------------------------------[39m
+[gray]--[[default] [bold]git sparse-checkout[normal] [gray]]------------------------------------------------------[default]
+[gray]-------------------------------------------------------------------------------[default]
 
 All available profiles:
 my-build-test

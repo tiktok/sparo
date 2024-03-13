@@ -1,40 +1,40 @@
-Running "sparo clone https://github.com/tiktok/sparo.git --branch build-test":
+Running "sparo clone https://github.com/tiktok/sparo.git --branch test-artifacts/sparo-real-repo-test":
 
-[1mSparo accelerator for Git __VERSION__ -[22m[36m https://tiktok.github.io/sparo/[39m
+[bold]Sparo accelerator for Git __VERSION__ -[normal][cyan] https://tiktok.github.io/sparo/[default]
 Node.js version is __VERSION__ (LTS)
 Git version is __VERSION__
 
 Initializing working directory...
 
-[90m--[[39m [1mgit clone[22m [90m]----------------------------------------------------------------[39m
-[90m-------------------------------------------------------------------------------[39m
+[gray]--[[default] [bold]git clone[normal] [gray]]----------------------------------------------------------------[default]
+[gray]-------------------------------------------------------------------------------[default]
 
 Checking out and updating core files...
 
-[90m--[[39m [1mgit sparse-checkout[22m [90m]------------------------------------------------------[39m
-[90m-------------------------------------------------------------------------------[39m
+[gray]--[[default] [bold]git sparse-checkout[normal] [gray]]------------------------------------------------------[default]
+[gray]-------------------------------------------------------------------------------[default]
 
 Checking out skeleton...
 
-[90m--[[39m [1mgit sparse-checkout[22m [90m]------------------------------------------------------[39m
-[90m-------------------------------------------------------------------------------[39m
+[gray]--[[default] [bold]git sparse-checkout[normal] [gray]]------------------------------------------------------[default]
+[gray]-------------------------------------------------------------------------------[default]
 
 Applying recommended configuration...
 
-[90m--[[39m [1mgit maintenance[22m [90m]----------------------------------------------------------[39m
-[90m-------------------------------------------------------------------------------[39m
+[gray]--[[default] [bold]git maintenance[normal] [gray]]----------------------------------------------------------[default]
+[gray]-------------------------------------------------------------------------------[default]
 
-[32mSuccess: Working directory "sparo" was prepared in __DURATION__.[39m
+[green]Success: Working directory "sparo" was prepared in __DURATION__.[default]
 
 Don't forget to change your shell path:
-   [36mcd sparo[39m
+   [cyan]cd sparo[default]
 
 Your next step is to choose a Sparo profile for checkout.
 To see available profiles in this repo:
-   [36msparo list-profiles[39m
+   [cyan]sparo list-profiles[default]
 To checkout and set profile:
-   [36msparo checkout --profile <profile_name>[39m
+   [cyan]sparo checkout --profile <profile_name>[default]
 To checkout and add profile:
-   [36msparo checkout --add-profile <profile_name>[39m
+   [cyan]sparo checkout --add-profile <profile_name>[default]
 To create a new profile:
-   [36msparo init-profile --profile <profile_name>[39m
+   [cyan]sparo init-profile --profile <profile_name>[default]

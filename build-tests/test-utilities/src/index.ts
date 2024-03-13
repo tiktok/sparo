@@ -1,6 +1,7 @@
 import * as path from 'path';
 import * as os from 'os';
 import { Async, Executable, FileSystem, Text, type FolderItem } from '@rushstack/node-core-library';
+import { AnsiEscape } from '@rushstack/terminal';
 import { diff } from 'jest-diff';
 import type { ChildProcess } from 'child_process';
 import type { IScopedLogger } from '@rushstack/heft';
@@ -264,7 +265,8 @@ function processSparoOutput(text: string, workingDirectory: string): string {
     replaceVersionString,
     replaceDurationString,
     replaceWorkingDirectoryPath,
-    replaceFolderCountString
+    replaceFolderCountString,
+    formatForTests
   ].reduce((text, fn) => fn(text, workingDirectory), text);
 }
 /**
@@ -297,6 +299,13 @@ function replaceWorkingDirectoryPath(text: string, workingDirectory: string): st
  */
 function replaceFolderCountString(text: string): string {
   return text.replace(/Checking out \d+ folders/g, 'Checking out __FOLDER_COUNT__ folders');
+}
+/**
+ * ANSI characters are a bit awkward and they are not well rendered in the website.
+ * So we replace them with a more readable format.
+ */
+function formatForTests(text: string): string {
+  return AnsiEscape.formatForTests(text);
 }
 
 async function* enumerateFolderPaths(

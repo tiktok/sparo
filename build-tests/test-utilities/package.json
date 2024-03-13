@@ -12,7 +12,8 @@
   "dependencies": {
     "@rushstack/node-core-library": "~3.64.2",
     "jest-diff": "~29.7.0",
-    "sparo": "workspace:*"
+    "sparo": "workspace:*",
+    "@rushstack/terminal": "~0.8.1"
   },
   "devDependencies": {
     "@rushstack/heft": "0.64.3",

@@ -210,6 +210,9 @@ importers:
       '@rushstack/node-core-library':
         specifier: ~3.64.2
         version: 3.64.2(@types/node@20.11.16)
+      '@rushstack/terminal':
+        specifier: ~0.8.1
+        version: 0.8.1(@types/node@20.11.16)
       jest-diff:
         specifier: ~29.7.0
         version: 29.7.0
