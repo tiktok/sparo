@@ -1,6 +1,6 @@
 {
-  "name": "sparo-output-test",
-  "description": "Building this project tests Sparo command-line outputs",
+  "name": "sparo-real-repo-test",
+  "description": "Building this project tests Sparo by cloning a real repository",
   "version": "1.0.0",
   "private": true,
   "scripts": {

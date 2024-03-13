@@ -44,6 +44,9 @@ For details, consult the [Sparo documentation](./apps/sparo/README.md).
 | Folder | Description |
 | ------ | -----------|
 | [/apps/website](./apps/website/) | The Sparo documentation website |
+| [/build-tests/sparo-output-test](./build-tests/sparo-output-test/) | Building this project tests Sparo command-line outputs |
+| [/build-tests/sparo-real-repo-test](./build-tests/sparo-real-repo-test/) | Building this project tests Sparo by cloning a real repository |
+| [/build-tests/test-utilities](./build-tests/test-utilities/) | Code shared between the build test projects in this repository |
 <!-- GENERATED PROJECT SUMMARY END -->
 
 ## Contributing

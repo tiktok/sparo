@@ -1,0 +1,21 @@
+Running "sparo list-profiles --project sparo-lib":
+
+[bold]Sparo accelerator for Git __VERSION__ -[normal][cyan] https://tiktok.github.io/sparo/[default]
+Node.js version is __VERSION__ (LTS)
+Git version is __VERSION__
+
+Listing profiles...
+
+Checking out and updating core files...
+
+[gray]--[[default] [bold]git sparse-checkout[normal] [gray]]------------------------------------------------------[default]
+[gray]-------------------------------------------------------------------------------[default]
+
+Checking out skeleton...
+
+[gray]--[[default] [bold]git sparse-checkout[normal] [gray]]------------------------------------------------------[default]
+[gray]-------------------------------------------------------------------------------[default]
+
+sparo-lib was included in the below profiles:
+ my-build-test
+sparo-development

@@ -154,6 +154,65 @@ importers:
       '@rushstack/node-core-library':
         specifier: ~3.64.2
         version: 3.64.2(@types/node@20.11.16)
+      build-test-utilities:
+        specifier: workspace:*
+        version: link:../test-utilities
+    devDependencies:
+      '@rushstack/heft':
+        specifier: 0.64.3
+        version: 0.64.3(@types/node@20.11.16)
+      '@rushstack/heft-node-rig':
+        specifier: 2.4.5
+        version: 2.4.5(@rushstack/heft@0.64.3)(@types/node@20.11.16)
+      '@types/heft-jest':
+        specifier: 1.0.6
+        version: 1.0.6
+      '@types/node':
+        specifier: 20.11.16
+        version: 20.11.16
+      eslint:
+        specifier: 8.56.0
+        version: 8.56.0
+      typescript:
+        specifier: ~5.3.3
+        version: 5.3.3
+
+  ../../build-tests/sparo-real-repo-test:
+    dependencies:
+      '@rushstack/node-core-library':
+        specifier: ~3.64.2
+        version: 3.64.2(@types/node@20.11.16)
+      build-test-utilities:
+        specifier: workspace:*
+        version: link:../test-utilities
+    devDependencies:
+      '@rushstack/heft':
+        specifier: 0.64.3
+        version: 0.64.3(@types/node@20.11.16)
+      '@rushstack/heft-node-rig':
+        specifier: 2.4.5
+        version: 2.4.5(@rushstack/heft@0.64.3)(@types/node@20.11.16)
+      '@types/heft-jest':
+        specifier: 1.0.6
+        version: 1.0.6
+      '@types/node':
+        specifier: 20.11.16
+        version: 20.11.16
+      eslint:
+        specifier: 8.56.0
+        version: 8.56.0
+      typescript:
+        specifier: ~5.3.3
+        version: 5.3.3
+
+  ../../build-tests/test-utilities:
+    dependencies:
+      '@rushstack/node-core-library':
+        specifier: ~3.64.2
+        version: 3.64.2(@types/node@20.11.16)
+      '@rushstack/terminal':
+        specifier: ~0.8.1
+        version: 0.8.1(@types/node@20.11.16)
       jest-diff:
         specifier: ~29.7.0
         version: 29.7.0

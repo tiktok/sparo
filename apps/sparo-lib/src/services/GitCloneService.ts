@@ -57,7 +57,9 @@ an empty directory.`);
     terminal.writeDebugLine('full clone start...');
     const cloneArgs: string[] = ['clone', repository, directory];
     const result: child_process.SpawnSyncReturns<string> = this._gitService.executeGitCommand({
-      args: cloneArgs
+      args: cloneArgs,
+      // This is clone command, no need to find git folder
+      workingDirectory: process.cwd()
     });
     if (result?.status) {
       throw new Error(`git clone failed with exit code ${result.status}`);
@@ -79,7 +81,9 @@ an empty directory.`);
       directory
     ];
     const result: child_process.SpawnSyncReturns<string> = this._gitService.executeGitCommand({
-      args: cloneArgs
+      args: cloneArgs,
+      // This is clone command, no need to find git folder
+      workingDirectory: process.cwd()
     });
     if (result?.status) {
       throw new Error(`git clone failed with exit code ${result.status}`);
@@ -101,7 +105,9 @@ an empty directory.`);
       directory
     ];
     const result: child_process.SpawnSyncReturns<string> = this._gitService.executeGitCommand({
-      args: cloneArgs
+      args: cloneArgs,
+      // This is clone command, no need to find git folder
+      workingDirectory: process.cwd()
     });
     if (result?.status) {
       throw new Error(`git clone failed with exit code ${result.status}`);

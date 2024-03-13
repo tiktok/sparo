@@ -440,6 +440,14 @@
       "packageName": "sparo-output-test",
       "projectFolder": "build-tests/sparo-output-test"
     },
+    {
+      "packageName": "sparo-real-repo-test",
+      "projectFolder": "build-tests/sparo-real-repo-test"
+    },
+    {
+      "packageName": "build-test-utilities",
+      "projectFolder": "build-tests/test-utilities"
+    },
 
     // Sparo
     {

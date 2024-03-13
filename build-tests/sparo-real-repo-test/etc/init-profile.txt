@@ -1,0 +1,11 @@
+Running "sparo init-profile --profile my-build-test":
+
+[bold]Sparo accelerator for Git __VERSION__ -[normal][cyan] https://tiktok.github.io/sparo/[default]
+Node.js version is __VERSION__ (LTS)
+Git version is __VERSION__
+
+[green]Successfully initialized the "my-build-test" profile.[default]
+
+Next step: Open this file in your editor and configure the project selectors:
+
+  [cyan]__WORKING_DIRECTORY__/common/sparo-profiles/my-build-test.json[default]

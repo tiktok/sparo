@@ -1,0 +1,40 @@
+Running "sparo clone https://github.com/tiktok/sparo.git --branch test-artifacts/sparo-real-repo-test":
+
+[bold]Sparo accelerator for Git __VERSION__ -[normal][cyan] https://tiktok.github.io/sparo/[default]
+Node.js version is __VERSION__ (LTS)
+Git version is __VERSION__
+
+Initializing working directory...
+
+[gray]--[[default] [bold]git clone[normal] [gray]]----------------------------------------------------------------[default]
+[gray]-------------------------------------------------------------------------------[default]
+
+Checking out and updating core files...
+
+[gray]--[[default] [bold]git sparse-checkout[normal] [gray]]------------------------------------------------------[default]
+[gray]-------------------------------------------------------------------------------[default]
+
+Checking out skeleton...
+
+[gray]--[[default] [bold]git sparse-checkout[normal] [gray]]------------------------------------------------------[default]
+[gray]-------------------------------------------------------------------------------[default]
+
+Applying recommended configuration...
+
+[gray]--[[default] [bold]git maintenance[normal] [gray]]----------------------------------------------------------[default]
+[gray]-------------------------------------------------------------------------------[default]
+
+[green]Success: Working directory "sparo" was prepared in __DURATION__.[default]
+
+Don't forget to change your shell path:
+   [cyan]cd sparo[default]
+
+Your next step is to choose a Sparo profile for checkout.
+To see available profiles in this repo:
+   [cyan]sparo list-profiles[default]
+To checkout and set profile:
+   [cyan]sparo checkout --profile <profile_name>[default]
+To checkout and add profile:
+   [cyan]sparo checkout --add-profile <profile_name>[default]
+To create a new profile:
+   [cyan]sparo init-profile --profile <profile_name>[default]

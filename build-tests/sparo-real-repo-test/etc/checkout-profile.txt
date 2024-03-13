@@ -1,0 +1,29 @@
+Running "sparo checkout --profile my-build-test":
+
+[bold]Sparo accelerator for Git __VERSION__ -[normal][cyan] https://tiktok.github.io/sparo/[default]
+Node.js version is __VERSION__ (LTS)
+Git version is __VERSION__
+
+
+[gray]--[[default] [bold]git checkout[normal] [gray]]-------------------------------------------------------------[default]
+Your branch is up to date with 'origin/test-artifacts/sparo-real-repo-test'.
+[gray]-------------------------------------------------------------------------------[default]
+
+Syncing checkout with the Sparo profile: my-build-test
+
+Checking out and updating core files...
+
+[gray]--[[default] [bold]git sparse-checkout[normal] [gray]]------------------------------------------------------[default]
+[gray]-------------------------------------------------------------------------------[default]
+
+Checking out skeleton...
+
+[gray]--[[default] [bold]git sparse-checkout[normal] [gray]]------------------------------------------------------[default]
+[gray]-------------------------------------------------------------------------------[default]
+
+Checking out __FOLDER_COUNT__ folders...
+
+[gray]--[[default] [bold]git sparse-checkout[normal] [gray]]------------------------------------------------------[default]
+[gray]-------------------------------------------------------------------------------[default]
+
+Sparse checkout completed in __DURATION__

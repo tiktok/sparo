@@ -1,15 +1,19 @@
 {
-  "name": "sparo-output-test",
-  "description": "Building this project tests Sparo command-line outputs",
+  "name": "build-test-utilities",
+  "description": "Code shared between the build test projects in this repository",
   "version": "1.0.0",
   "private": true,
+  "main": "lib/index.js",
+  "typings": "lib/index.d.ts",
   "scripts": {
     "_phase:build": "heft run --only build -- --clean",
     "build": "heft build --clean"
   },
   "dependencies": {
     "@rushstack/node-core-library": "~3.64.2",
-    "build-test-utilities": "workspace:*"
+    "jest-diff": "~29.7.0",
+    "sparo": "workspace:*",
+    "@rushstack/terminal": "~0.8.1"
   },
   "devDependencies": {
     "@rushstack/heft": "0.64.3",
