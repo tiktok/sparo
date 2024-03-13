@@ -21,16 +21,17 @@ export async function runAsync(runScriptOptions: IRunScriptOptions): Promise<voi
 
   const temporaryDirectory: string = path.resolve(buildFolderPath, 'temp');
   const testRepoURL: string = 'https://github.com/tiktok/sparo.git';
+  const testBranch: string = 'test-artifacts/sparo-real-repo-test';
   const repoFolder: string = path.resolve(temporaryDirectory, 'sparo');
 
   await FileSystem.deleteFolderAsync(repoFolder);
 
   const commandDefinitions: ICommandDefinition[] = [
-    // sparo clone git@github.com:tiktok/sparo.git --branch build-test
+    // sparo clone git@github.com:tiktok/sparo.git --branch test-artifacts/sparo-real-repo-test
     {
       kind: 'sparo-command',
       name: 'clone',
-      args: ['clone', testRepoURL, '--branch', 'build-test'],
+      args: ['clone', testRepoURL, '--branch', testBranch],
       currentWorkingDirectory: temporaryDirectory
     },
     // sparo init-profile --profile my-build-test
@@ -105,9 +106,4 @@ export async function runAsync(runScriptOptions: IRunScriptOptions): Promise<voi
     logger,
     production
   });
-
-  // Clean up the temporary directory in CI builds, but leave it for local debugging
-  if (production) {
-    await FileSystem.deleteFolderAsync(repoFolder);
-  }
 }
