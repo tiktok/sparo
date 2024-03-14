@@ -29,10 +29,10 @@ export interface ILaunchOptions {
   callerPackageJson?: ICallerPackageJson;
 
   /**
-   * Provide the extended skeleton folders.
+   * Provide the additional skeleton folders.
    * @internal
    */
-  extendedSkeletonFolders?: string[];
+  additionalSkeletonFolders?: string[];
 }
 
 /**

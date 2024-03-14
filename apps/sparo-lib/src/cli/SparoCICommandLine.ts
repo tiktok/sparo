@@ -29,10 +29,10 @@ export class SparoCICommandLine {
       callerPackageJson: launchOptions.callerPackageJson
     });
 
-    if (launchOptions.extendedSkeletonFolders) {
+    if (launchOptions.additionalSkeletonFolders) {
       const gitSparseCheckoutService: GitSparseCheckoutService =
         await getFromContainerAsync(GitSparseCheckoutService);
-      gitSparseCheckoutService.setExtendedSkeletonFolders(launchOptions.extendedSkeletonFolders);
+      gitSparseCheckoutService.setAdditionalSkeletonFolders(launchOptions.additionalSkeletonFolders);
     }
 
     const sparoCI: SparoCICommandLine = new SparoCICommandLine();

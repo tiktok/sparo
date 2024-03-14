@@ -2,7 +2,7 @@
   "changes": [
     {
       "packageName": "sparo",
-      "comment": "Add a new launch option called \"extendedSkeletonFolder\" to add more folders to skeleton",
+      "comment": "Add a new launch option called \"additionalSkeletonFolders\" to add more folders to skeleton",
       "type": "none"
     }
   ],

@@ -30,10 +30,10 @@ export class SparoCommandLine {
       callerPackageJson: launchOptions.callerPackageJson
     });
 
-    if (launchOptions.extendedSkeletonFolders) {
+    if (launchOptions.additionalSkeletonFolders) {
       const gitSparseCheckoutService: GitSparseCheckoutService =
         await getFromContainerAsync(GitSparseCheckoutService);
-      gitSparseCheckoutService.setExtendedSkeletonFolders(launchOptions.extendedSkeletonFolders);
+      gitSparseCheckoutService.setAdditionalSkeletonFolders(launchOptions.additionalSkeletonFolders);
     }
 
     const sparo: SparoCommandLine = new SparoCommandLine();

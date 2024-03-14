@@ -76,11 +76,11 @@ export interface IExecuteGitCommandParams {
 // @public
 export interface ILaunchOptions {
     // @internal
+    additionalSkeletonFolders?: string[];
+    // @internal
     callerPackageJson?: ICallerPackageJson;
     // @internal
     collectTelemetryAsync?: ICollectTelemetryFunction;
-    // @internal
-    extendedSkeletonFolders?: string[];
 }
 
 // @alpha (undocumented)
