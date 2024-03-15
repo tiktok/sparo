@@ -7,6 +7,7 @@ import { COMMAND_LIST } from './commands/cmd-list';
 import { ICommand } from './commands/base';
 import { GitVersionCompatibility } from '../logic/GitVersionCompatibility';
 import { TelemetryService } from '../services/TelemetryService';
+import { GitSparseCheckoutService } from '../services/GitSparseCheckoutService';
 import { getCommandName } from './commands/util';
 import { SparoStartupBanner } from './SparoStartupBanner';
 import type { ILaunchOptions } from '../api/Sparo';
@@ -28,6 +29,12 @@ export class SparoCommandLine {
     SparoStartupBanner.logBanner({
       callerPackageJson: launchOptions.callerPackageJson
     });
+
+    if (launchOptions.additionalSkeletonFolders) {
+      const gitSparseCheckoutService: GitSparseCheckoutService =
+        await getFromContainerAsync(GitSparseCheckoutService);
+      gitSparseCheckoutService.setAdditionalSkeletonFolders(launchOptions.additionalSkeletonFolders);
+    }
 
     const sparo: SparoCommandLine = new SparoCommandLine();
     await sparo.prepareCommandAsync();

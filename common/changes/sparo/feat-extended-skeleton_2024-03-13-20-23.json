@@ -1,0 +1,10 @@
+{
+  "changes": [
+    {
+      "packageName": "sparo",
+      "comment": "Add a new launch option called \"additionalSkeletonFolders\" to add more folders to skeleton",
+      "type": "none"
+    }
+  ],
+  "packageName": "sparo"
+}
