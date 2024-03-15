@@ -1,6 +1,14 @@
 # Change Log - sparo
 
-This log was last generated on Sat, 09 Mar 2024 02:43:07 GMT and should not be manually modified.
+This log was last generated on Fri, 15 Mar 2024 19:46:56 GMT and should not be manually modified.
+
+## 1.0.5
+Fri, 15 Mar 2024 19:46:56 GMT
+
+### Updates
+
+- Add more comments in Sparo profile template
+- Add a new launch option called "additionalSkeletonFolders" to add more folders to skeleton
 
 ## 1.0.4
 Sat, 09 Mar 2024 02:43:07 GMT

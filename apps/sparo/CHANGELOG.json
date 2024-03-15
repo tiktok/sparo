@@ -2,6 +2,21 @@
   "name": "sparo",
   "entries": [
     {
+      "version": "1.0.5",
+      "tag": "sparo_v1.0.5",
+      "date": "Fri, 15 Mar 2024 19:46:56 GMT",
+      "comments": {
+        "none": [
+          {
+            "comment": "Add more comments in Sparo profile template"
+          },
+          {
+            "comment": "Add a new launch option called \"additionalSkeletonFolders\" to add more folders to skeleton"
+          }
+        ]
+      }
+    },
+    {
       "version": "1.0.4",
       "tag": "sparo_v1.0.4",
       "date": "Sat, 09 Mar 2024 02:43:07 GMT",
