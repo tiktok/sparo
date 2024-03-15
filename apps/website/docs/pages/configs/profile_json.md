@@ -23,6 +23,8 @@ To initialize a new Sparo profile, you can copy and paste the contents of this t
     /**
      * For example, include all Rush projects tagged with "tag:my-team"
      * as well as the dependency workspace projects needed to build them.
+     * To learn about Rush project tags, see this documentation:
+     * https://rushjs.io/pages/developer/project_tags/
      */
     // {
     //   "selector": "--to",
@@ -42,6 +44,9 @@ To initialize a new Sparo profile, you can copy and paste the contents of this t
   /**
    * A list of arbitrary additional folders to be included for checkout,
    * not necessarily corresponding to any workspace project.
+   * The paths should use forward slashes, without a leading slash, and should be to the 
+   * root folder of the monorepo.  Wildcards and glob patterns are not supported for
+   * performance reasons.
    */
   "includeFolders": [
     // "path/to/include"
@@ -51,6 +56,9 @@ To initialize a new Sparo profile, you can copy and paste the contents of this t
    * A list of folders to be excluded from the checkout.  This field takes precedence
    * over the "includeFolders" and "selections" fields, guaranteeing that the
    * specified path will definitely not be included.
+   * The paths should use forward slashes, without a leading slash, and should be to the 
+   * root folder of the monorepo.  Wildcards and glob patterns are not supported for
+   * performance reasons.
    */
   "excludeFolders": [
     // "path/to/exclude"

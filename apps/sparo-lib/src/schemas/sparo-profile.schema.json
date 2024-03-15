@@ -23,7 +23,7 @@
             "type": "string"
           },
           "argument": {
-            "description": "The selector argument, for example a project name or an expression such as \"tag:my-tag\".",
+            "description": "The selector argument, for example a project name or an expression such as \"tag:my-tag\".\nTo learn about Rush project tags, see this documentation:\nhttps://rushjs.io/pages/developer/project_tags/",
             "type": "string"
           }
         }
@@ -31,7 +31,7 @@
     },
 
     "includeFolders": {
-      "description": "A list of arbitrary additional folders to be included for checkout, not necessarily corresponding to any workspace project.",
+      "description": "A list of arbitrary additional folders to be included for checkout, not necessarily corresponding to any workspace project.\nThe paths should use forward slashes, without a leading slash, and should be to the root folder of the monorepo. Wildcards and glob patterns are not supported for performance reasons.",
       "type": "array",
       "items": {
         "type": "string"
@@ -39,7 +39,7 @@
     },
 
     "excludeFolders": {
-      "description": "A list of folders to be excluded from the checkout.  This field takes precedence over the \"includeFolders\" and \"selections\" fields, guaranteeing that the specified path will definitely not be included.",
+      "description": "A list of folders to be excluded from the checkout.  This field takes precedence over the \"includeFolders\" and \"selections\" fields, guaranteeing that the specified path will definitely not be included.\nThe paths should use forward slashes, without a leading slash, and should be to the root folder of the monorepo. Wildcards and glob patterns are not supported for performance reasons.",
       "type": "array",
       "items": {
         "type": "string"
