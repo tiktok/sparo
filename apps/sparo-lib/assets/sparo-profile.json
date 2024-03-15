@@ -15,7 +15,7 @@
     /**
      * For example, include all Rush projects tagged with "tag:my-team"
      * as well as the dependency workspace projects needed to build them.
-     * Tag here points to Rush's project tags. See the Rush tag docs for details:
+     * To learn about Rush project tags, see this documentation:
      * https://rushjs.io/pages/developer/project_tags/
      */
     // {
@@ -36,10 +36,9 @@
   /**
    * A list of arbitrary additional folders to be included for checkout,
    * not necessarily corresponding to any workspace project.
-   * Each path given should be relative to the root directory of the Monorepo.
-   * Wildcards and glob patterns are not permitted due to a number of shortcomings.
-   * See the git sparse-checkout documentation for details:
-   * https://git-scm.com/docs/git-sparse-checkout#_internalsnon_cone_problems
+   * The paths should use forward slashes, without a leading slash, and should be to the 
+   * root folder of the monorepo.  Wildcards and glob patterns are not supported for
+   * performance reasons.
    */
   "includeFolders": [
     // "path/to/include"
