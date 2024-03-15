@@ -1,0 +1,10 @@
+{
+  "changes": [
+    {
+      "packageName": "sparo",
+      "comment": "Add more comments in Sparo profile template",
+      "type": "none"
+    }
+  ],
+  "packageName": "sparo"
+}
