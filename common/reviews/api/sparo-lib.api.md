@@ -45,6 +45,8 @@ export class GitService {
     // (undocumented)
     hasFile(filename: string, branch: string): boolean;
     // (undocumented)
+    isCommitSHA(shaMaybe: string): boolean;
+    // (undocumented)
     setGitConfig(k: string, v: string | number | boolean, option?: {
         dryRun?: boolean;
         global?: boolean;

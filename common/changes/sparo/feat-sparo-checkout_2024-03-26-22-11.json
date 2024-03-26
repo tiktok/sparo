@@ -1,0 +1,10 @@
+{
+  "changes": [
+    {
+      "packageName": "sparo",
+      "comment": "Checkout can handle branch, tag, commit SHA and file path",
+      "type": "none"
+    }
+  ],
+  "packageName": "sparo"
+}
