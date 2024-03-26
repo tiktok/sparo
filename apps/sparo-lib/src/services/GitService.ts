@@ -390,6 +390,13 @@ Please specify a directory on the command line
     return Boolean(result);
   }
 
+  public isCommitSHA(shaMaybe: string): boolean {
+    const catFileResult: child_process.SpawnSyncReturns<string> = this.executeGitCommand({
+      args: ['cat-file', '-t', shaMaybe]
+    });
+    return catFileResult.status === 0;
+  }
+
   private _processResult(result: child_process.SpawnSyncReturns<string>): void {
     if (result.error) {
       result.error.message += '\n' + (result.stderr ? result.stderr.toString() + '\n' : '');

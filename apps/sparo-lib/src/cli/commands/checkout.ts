@@ -16,6 +16,8 @@ export interface ICheckoutCommandOptions {
   addProfile?: string[];
 }
 
+type ICheckoutTargetKind = 'branch' | 'tag' | 'commit' | 'filePath';
+
 @Command()
 export class CheckoutCommand implements ICommand<ICheckoutCommandOptions> {
   public cmd: string = 'checkout [branch] [start-point]';
@@ -74,7 +76,24 @@ export class CheckoutCommand implements ICommand<ICheckoutCommandOptions> {
   ): Promise<void> => {
     const { _gitService: gitService } = this;
     terminalService.terminal.writeDebugLine(`got args in checkout command: ${JSON.stringify(args)}`);
-    const { b, B, branch, startPoint } = args;
+    const { b, B, startPoint } = args;
+
+    let branch: string | undefined = args.branch;
+
+    /**
+     * Special case: sparo checkout -
+     * yargs can not handle this, patch this case here.
+     */
+    if (!branch) {
+      const checkoutIndex: number = process.argv.findIndex((value: string) => value === 'checkout');
+      if (checkoutIndex >= 0 && process.argv[checkoutIndex + 1] === '-') {
+        branch = '-';
+        // FIXME: supports "sparo checkout -"
+        throw new Error('sparo checkout - has not supported yet. Please use sparo git-checkout - instead.');
+      }
+    }
+
+    let checkoutTargetKind: ICheckoutTargetKind = 'branch';
 
     /**
      * Since we set up single branch by default and branch can be missing in local, we are going to fetch the branch from remote server here.
@@ -91,9 +110,25 @@ export class CheckoutCommand implements ICommand<ICheckoutCommandOptions> {
       throw new Error(`Failed to get branch ${operationBranch}`);
     } else {
       if (operationBranch !== currentBranch) {
-        const isSynced: boolean = this._ensureBranchInLocal(operationBranch);
-        if (!isSynced) {
-          throw new Error(`Failed to sync ${operationBranch} from remote server`);
+        // 1. First, Sparo needs to see the branch matches any branch name
+        const isBranchSynced: boolean = this._ensureBranchInLocal(operationBranch);
+        if (isBranchSynced) {
+          checkoutTargetKind = 'branch';
+        } else {
+          // 2. If not, try tag names
+          const isTagSynced: boolean = this._ensureTagInLocal(operationBranch);
+          if (isTagSynced) {
+            checkoutTargetKind = 'tag';
+          } else {
+            // 3. If not, try commit SHA
+            const isCommitSHA: boolean = this._gitService.isCommitSHA(operationBranch);
+            if (isCommitSHA) {
+              checkoutTargetKind = 'commit';
+            } else {
+              // 4. Otherwise, treat it as file path
+              checkoutTargetKind = 'filePath';
+            }
+          }
         }
       }
     }
@@ -104,8 +139,11 @@ export class CheckoutCommand implements ICommand<ICheckoutCommandOptions> {
       profilesFromArg: args.profile
     });
 
-    // check wether profiles exist in local or operation branch
-    if (!isNoProfile) {
+    // Check wether profiles exist in local or operation branch
+    // Skip check in the following cases:
+    // 1. No profile
+    // 2. The target kind is file path
+    if (!isNoProfile && checkoutTargetKind !== 'filePath') {
       const targetProfileNames: Set<string> = new Set([...profiles, ...addProfiles]);
       const nonExistProfileNames: string[] = [];
       for (const targetProfileName of targetProfileNames) {
@@ -147,6 +185,13 @@ export class CheckoutCommand implements ICommand<ICheckoutCommandOptions> {
     if (startPoint) {
       checkoutArgs.push(startPoint);
     }
+    if (Array.isArray(args['--'])) {
+      checkoutArgs.push('--');
+      checkoutArgs.push(...args['--']);
+    } else if (process.argv.includes('--')) {
+      // "sparo checkout --" works
+      checkoutArgs.push('--');
+    }
     const result: child_process.SpawnSyncReturns<string> = gitService.executeGitCommand({
       args: checkoutArgs
     });
@@ -167,6 +212,26 @@ export class CheckoutCommand implements ICommand<ICheckoutCommandOptions> {
   }
 
   private _ensureBranchInLocal(branch: string): boolean {
+    // fetch from remote
+    const remote: string = this._gitService.getBranchRemote(branch);
+
+    const fetchResult: child_process.SpawnSyncReturns<string> = this._gitService.executeGitCommand({
+      args: [
+        'fetch',
+        remote,
+        `+refs/heads/${branch}:refs/remotes/${remote}/${branch}`,
+        // Follows the recommended config fetch.showForcedUpdates false
+        '--no-show-forced-updates'
+      ]
+    });
+
+    if (fetchResult.status === 0) {
+      // create local branch from remote branch
+      this._gitService.executeGitCommand({
+        args: ['branch', branch, `${remote}/${branch}`]
+      });
+    }
+
     const branchExistsInLocal: boolean = Boolean(
       this._gitService
         .executeGitCommandAndCaptureOutput({
@@ -174,27 +239,8 @@ export class CheckoutCommand implements ICommand<ICheckoutCommandOptions> {
         })
         .trim()
     );
-    if (!branchExistsInLocal) {
-      // fetch from remote
-      const remote: string = this._gitService.getBranchRemote(branch);
 
-      const fetchResult: child_process.SpawnSyncReturns<string> = this._gitService.executeGitCommand({
-        args: ['fetch', remote, `refs/heads/${branch}:refs/remotes/${remote}/${branch}`]
-      });
-      if (fetchResult.status !== 0) {
-        return false;
-      }
-
-      // create local branch from remote branch
-      const createBranchResult: child_process.SpawnSyncReturns<string> = this._gitService.executeGitCommand({
-        args: ['branch', branch, `${remote}/${branch}`]
-      });
-      if (createBranchResult.status !== 0) {
-        return false;
-      }
-    }
-
-    return true;
+    return branchExistsInLocal;
   }
 
   private _getCurrentBranch(): string {
@@ -204,5 +250,23 @@ export class CheckoutCommand implements ICommand<ICheckoutCommandOptions> {
       })
       .trim();
     return currentBranch;
+  }
+
+  private _ensureTagInLocal(tag: string): boolean {
+    // fetch from remote
+    const remote: string = 'origin';
+
+    this._gitService.executeGitCommand({
+      args: ['fetch', remote, 'tag', tag, '--force']
+    });
+
+    const tagExistsInLocal: boolean = Boolean(
+      this._gitService
+        .executeGitCommandAndCaptureOutput({
+          args: ['tag', '--list', tag]
+        })
+        .trim()
+    );
+    return tagExistsInLocal;
   }
 }
