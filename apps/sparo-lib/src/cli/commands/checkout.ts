@@ -91,7 +91,9 @@ export class CheckoutCommand implements ICommand<ICheckoutCommandOptions> {
       if (checkoutIndex >= 0 && process.argv[checkoutIndex + 1] === '-') {
         branch = '-';
         // FIXME: supports "sparo checkout -"
-        throw new Error('Git's "-" token is not yet supported. If this feature is important for your work, please let us know by creating a GitHub issue.');
+        throw new Error(
+          `Git's "-" token is not yet supported. If this feature is important for your work, please let us know by creating a GitHub issue.`
+        );
       }
     }
 
@@ -123,7 +125,7 @@ export class CheckoutCommand implements ICommand<ICheckoutCommandOptions> {
             checkoutTargetKind = 'tag';
           } else {
             // 3. If not, try commit SHA
-            const isCommitSHA: boolean = this._gitService.isCommitSHA(operationBranch);
+            const isCommitSHA: boolean = this._gitService.getObjectType(operationBranch) === 'commit';
             if (isCommitSHA) {
               checkoutTargetKind = 'commit';
             } else {

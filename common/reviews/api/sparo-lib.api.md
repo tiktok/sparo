@@ -40,12 +40,12 @@ export class GitService {
     // (undocumented)
     getIsSparseCheckoutMode(): boolean | undefined;
     // (undocumented)
+    getObjectType(object: string): IObjectType | undefined;
+    // (undocumented)
     getRepoInfo(): GitRepoInfo;
     get gitPath(): string | undefined;
     // (undocumented)
     hasFile(filename: string, branch: string): boolean;
-    // (undocumented)
-    isCommitSHA(shaMaybe: string): boolean;
     // (undocumented)
     setGitConfig(k: string, v: string | number | boolean, option?: {
         dryRun?: boolean;
@@ -84,6 +84,9 @@ export interface ILaunchOptions {
     // @internal
     collectTelemetryAsync?: ICollectTelemetryFunction;
 }
+
+// @alpha (undocumented)
+export type IObjectType = 'blob' | 'tag' | 'commit' | 'tree';
 
 // @alpha (undocumented)
 export interface ITelemetryData {

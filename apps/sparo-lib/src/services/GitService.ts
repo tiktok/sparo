@@ -16,6 +16,11 @@ export interface IExecuteGitCommandParams {
 }
 
 /**
+ * @alpha
+ */
+export type IObjectType = 'blob' | 'tag' | 'commit' | 'tree';
+
+/**
  * Help class for git operations
  *
  * @alpha
@@ -390,11 +395,16 @@ Please specify a directory on the command line
     return Boolean(result);
   }
 
-  public isCommitSHA(shaMaybe: string): boolean {
-    const catFileResult: child_process.SpawnSyncReturns<string> = this.executeGitCommand({
-      args: ['cat-file', '-t', shaMaybe]
-    });
-    return catFileResult.status === 0;
+  public getObjectType(object: string): IObjectType | undefined {
+    let objectType: IObjectType | undefined;
+    try {
+      objectType = this.executeGitCommandAndCaptureOutput({
+        args: ['cat-file', '-t', object]
+      }).trim() as IObjectType;
+    } catch (e) {
+      // query an unknown type
+    }
+    return objectType;
   }
 
   private _processResult(result: child_process.SpawnSyncReturns<string>): void {

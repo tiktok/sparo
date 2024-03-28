@@ -23,4 +23,15 @@ describe(GitService.name, () => {
       '%252E%252E%252Fsparo'
     );
   });
+
+  it('should get commit object type', async () => {
+    const gitService = await getFromContainerAsync(GitService);
+    const objectType = gitService.getObjectType('c48b5c0ceca929acd93e5a17b768c63c48eefc83');
+    expect(objectType).toBe('commit');
+  });
+  it('should get unknown object type', async () => {
+    const gitService = await getFromContainerAsync(GitService);
+    const objectType = gitService.getObjectType('foo');
+    expect(objectType).toBeUndefined();
+  });
 });
