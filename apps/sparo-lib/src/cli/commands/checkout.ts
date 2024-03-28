@@ -81,7 +81,9 @@ export class CheckoutCommand implements ICommand<ICheckoutCommandOptions> {
     let branch: string | undefined = args.branch;
 
     /**
-     * Special case: sparo checkout -
+     * Special case: "sparo checkout -"
+     *
+     * "git checkout -" is a shortcut that checks out the previously checked out branch.
      * yargs can not handle this, patch this case here.
      */
     if (!branch) {
@@ -89,7 +91,7 @@ export class CheckoutCommand implements ICommand<ICheckoutCommandOptions> {
       if (checkoutIndex >= 0 && process.argv[checkoutIndex + 1] === '-') {
         branch = '-';
         // FIXME: supports "sparo checkout -"
-        throw new Error('sparo checkout - has not supported yet. Please use sparo git-checkout - instead.');
+        throw new Error('Git's "-" token is not yet supported. If this feature is important for your work, please let us know by creating a GitHub issue.');
       }
     }
 
