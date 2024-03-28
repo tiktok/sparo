@@ -16,6 +16,11 @@ export interface IExecuteGitCommandParams {
 }
 
 /**
+ * @alpha
+ */
+export type IObjectType = 'blob' | 'tag' | 'commit' | 'tree';
+
+/**
  * Help class for git operations
  *
  * @alpha
@@ -388,6 +393,18 @@ Please specify a directory on the command line
       args: ['ls-tree', '--name-only', branch, filename]
     });
     return Boolean(result);
+  }
+
+  public getObjectType(object: string): IObjectType | undefined {
+    let objectType: IObjectType | undefined;
+    try {
+      objectType = this.executeGitCommandAndCaptureOutput({
+        args: ['cat-file', '-t', object]
+      }).trim() as IObjectType;
+    } catch (e) {
+      // query an unknown type
+    }
+    return objectType;
   }
 
   private _processResult(result: child_process.SpawnSyncReturns<string>): void {

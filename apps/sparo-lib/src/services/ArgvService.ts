@@ -26,6 +26,9 @@ export class ArgvService {
      * which prints help text instead of proxy args to git commit.
      */
     this._parsed = await this.yargsArgv
+      .parserConfiguration({
+        'populate--': true
+      })
       // --debug
       .boolean('debug')
       // --verbose

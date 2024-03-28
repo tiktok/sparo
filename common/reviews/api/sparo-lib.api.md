@@ -40,6 +40,8 @@ export class GitService {
     // (undocumented)
     getIsSparseCheckoutMode(): boolean | undefined;
     // (undocumented)
+    getObjectType(object: string): IObjectType | undefined;
+    // (undocumented)
     getRepoInfo(): GitRepoInfo;
     get gitPath(): string | undefined;
     // (undocumented)
@@ -82,6 +84,9 @@ export interface ILaunchOptions {
     // @internal
     collectTelemetryAsync?: ICollectTelemetryFunction;
 }
+
+// @alpha (undocumented)
+export type IObjectType = 'blob' | 'tag' | 'commit' | 'tree';
 
 // @alpha (undocumented)
 export interface ITelemetryData {
