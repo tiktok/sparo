@@ -10,13 +10,19 @@ sh -c "$(curl -fsSL https://raw.githubusercontent.com/tiktok/sparo/main/zsh-plug
 
 To use it, add `sparo` to the plugins array in your zshrc file:
 
+**~/.zshrc**
+
 ```shell
 plugins=(... sparo)
 ```
 
 Or, manually load it by appending the following code to your zshrc file:
 
+**~/.zshrc**
+
+```shell
 source $ZSH/custom/plugins/sparo/sparo.plugin.zsh
+```
 
 ## Aliases
 

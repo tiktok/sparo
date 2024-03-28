@@ -2,9 +2,9 @@
 
 BRANCH=${1:-main}
 
-# check existence of $ZSH/custom
-if [ ! -d "$ZSH/custom/" ]; then
-    echo "$ZSH/custom/ does not exist."
+# check ZSH environment
+if [ -z "$ZSH" ]; then
+    echo "ZSH environment variable does not defined."
     exit 1
 fi
 
