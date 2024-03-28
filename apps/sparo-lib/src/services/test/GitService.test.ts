@@ -26,7 +26,14 @@ describe(GitService.name, () => {
 
   it('should get commit object type', async () => {
     const gitService = await getFromContainerAsync(GitService);
-    const objectType = gitService.getObjectType('c48b5c0ceca929acd93e5a17b768c63c48eefc83');
+    // Shallow clone is used in CI builds, so getting the current commit SHA of HEAD
+    const commitSHA: string = gitService
+      .executeGitCommandAndCaptureOutput({
+        args: ['rev-parse', 'HEAD']
+      })
+      .trim();
+    expect(commitSHA).toBeTruthy();
+    const objectType = gitService.getObjectType(commitSHA);
     expect(objectType).toBe('commit');
   });
   it('should get unknown object type', async () => {
