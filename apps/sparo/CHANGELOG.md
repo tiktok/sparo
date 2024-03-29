@@ -1,6 +1,13 @@
 # Change Log - sparo
 
-This log was last generated on Fri, 29 Mar 2024 19:27:13 GMT and should not be manually modified.
+This log was last generated on Fri, 29 Mar 2024 21:28:25 GMT and should not be manually modified.
+
+## 1.0.7
+Fri, 29 Mar 2024 21:28:25 GMT
+
+### Updates
+
+- No need to sync sparse checkout state if the target kind is file path
 
 ## 1.0.6
 Fri, 29 Mar 2024 19:27:13 GMT

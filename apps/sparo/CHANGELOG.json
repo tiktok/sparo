@@ -2,6 +2,18 @@
   "name": "sparo",
   "entries": [
     {
+      "version": "1.0.7",
+      "tag": "sparo_v1.0.7",
+      "date": "Fri, 29 Mar 2024 21:28:25 GMT",
+      "comments": {
+        "none": [
+          {
+            "comment": "No need to sync sparse checkout state if the target kind is file path"
+          }
+        ]
+      }
+    },
+    {
       "version": "1.0.6",
       "tag": "sparo_v1.0.6",
       "date": "Fri, 29 Mar 2024 19:27:13 GMT",
