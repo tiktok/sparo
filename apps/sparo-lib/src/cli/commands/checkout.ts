@@ -204,11 +204,14 @@ export class CheckoutCommand implements ICommand<ICheckoutCommandOptions> {
       throw new Error(`git checkout failed`);
     }
 
-    // sync local sparse checkout state with given profiles.
-    await this._sparoProfileService.syncProfileState({
-      profiles: isNoProfile ? undefined : profiles,
-      addProfiles
-    });
+    // No need to sync sparse checkout state if the target kind is file path
+    if (checkoutTargetKind !== 'filePath') {
+      // Sync local sparse checkout state with given profiles.
+      await this._sparoProfileService.syncProfileState({
+        profiles: isNoProfile ? undefined : profiles,
+        addProfiles
+      });
+    }
   };
 
   public getHelp(): string {
