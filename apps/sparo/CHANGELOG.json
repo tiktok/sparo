@@ -2,6 +2,18 @@
   "name": "sparo",
   "entries": [
     {
+      "version": "1.0.6",
+      "tag": "sparo_v1.0.6",
+      "date": "Fri, 29 Mar 2024 19:27:13 GMT",
+      "comments": {
+        "none": [
+          {
+            "comment": "Checkout can handle branch, tag, commit SHA and file path"
+          }
+        ]
+      }
+    },
+    {
       "version": "1.0.5",
       "tag": "sparo_v1.0.5",
       "date": "Fri, 15 Mar 2024 19:46:56 GMT",

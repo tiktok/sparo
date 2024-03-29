@@ -1,6 +1,13 @@
 # Change Log - sparo
 
-This log was last generated on Fri, 15 Mar 2024 19:46:56 GMT and should not be manually modified.
+This log was last generated on Fri, 29 Mar 2024 19:27:13 GMT and should not be manually modified.
+
+## 1.0.6
+Fri, 29 Mar 2024 19:27:13 GMT
+
+### Updates
+
+- Checkout can handle branch, tag, commit SHA and file path
 
 ## 1.0.5
 Fri, 15 Mar 2024 19:46:56 GMT
