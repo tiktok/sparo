@@ -1,0 +1,10 @@
+{
+  "changes": [
+    {
+      "packageName": "sparo",
+      "comment": "Fix typo in recommended configs",
+      "type": "none"
+    }
+  ],
+  "packageName": "sparo"
+}
