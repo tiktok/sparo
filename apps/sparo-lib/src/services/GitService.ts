@@ -104,8 +104,8 @@ export class GitService {
       ['core.fsmonitor', 'true', 0],
       ['core.fscache', 'true', 0],
       ['core.untrackedcache', 'true', 0],
-      ['om-my-zsh.hide-status', '1', 0],
-      ['on-my-zsh.hide-dirty', '1', 0],
+      ['oh-my-zsh.hide-status', '1', 0],
+      ['oh-my-zsh.hide-dirty', '1', 0],
       ['lfs.allowincompletepush', 'true', 0],
       ['lfs.concurrenttransfers', '32', 0],
       ['push.autoSetupRemote', 'true', 0]
