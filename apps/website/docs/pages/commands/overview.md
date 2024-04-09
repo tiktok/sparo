@@ -12,13 +12,13 @@ Sparo has four kinds of subcommands:
    - `sparo checkout`
    - `sparo clone`
    - `sparo fetch`
-   - `sparo pull` _(not implemented yet; currently mirrors `git pull`)_
+   - `sparo pull`
 
 3. **Renamed subcommands** are the mirrored versions of the four enhanced subcommands. They are renamed to add a `git-` prefix:
   - `sparo git-checkout`
   - `sparo git-clone`
   - `sparo git-fetch`
-  - `sparo git-pull` _(not implemented yet)_
+  - `sparo git-pull`
 
 4. **Auxiliary subcommands** are new subcommands that provide Sparo-specific functionality.  They are:
   - `sparo auto-config`

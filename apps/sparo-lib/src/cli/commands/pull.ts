@@ -19,7 +19,7 @@ export class PullCommand implements ICommand<IPullCommandOptions> {
   @inject(GitService) private _gitService!: GitService;
   @inject(SparoProfileService) private _sparoProfileService!: SparoProfileService;
 
-  public builder(yargs: Argv<{}>): void {
+  public builder = (yargs: Argv<{}>): void => {
     /**
      * sparo pull [repository] [refsepc...] [--profile <profile_name> | --no-profile]
      *
@@ -32,9 +32,11 @@ export class PullCommand implements ICommand<IPullCommandOptions> {
       .default('profile', [])
       .parserConfiguration({ 'unknown-options-as-args': true })
       .usage(
-        'Usage: sparo pull [options] [repository] [refsepc...] [--profile <profile_name> | --no-profile]'
+        '$0 pull [options] [repository] [refsepc...] [--profile <profile_name> | --no-profile]' +
+          '\n\n' +
+          this.description
       );
-  }
+  };
 
   public handler = async (
     args: ArgumentsCamelCase<IPullCommandOptions>,

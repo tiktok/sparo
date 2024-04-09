@@ -62,9 +62,11 @@ const sidebars = {
         'pages/commands/sparo_checkout',
         'pages/commands/sparo_clone',
         'pages/commands/sparo_fetch',
+        'pages/commands/sparo_pull',
         'pages/commands/sparo_git-checkout',
         'pages/commands/sparo_git-clone',
         'pages/commands/sparo_git-fetch',
+        'pages/commands/sparo_git-pull',
         'pages/commands/sparo_init-profile',
         'pages/commands/sparo_list-profiles'
       ]
