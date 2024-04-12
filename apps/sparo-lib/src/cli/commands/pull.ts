@@ -8,35 +8,35 @@ import type { ICommand } from './base';
 import type { TerminalService } from '../../services/TerminalService';
 
 export interface IPullCommandOptions {
-  branch?: string;
-  remote?: string;
   profile?: string[];
-  addProfile?: string[];
 }
 
 @Command()
 export class PullCommand implements ICommand<IPullCommandOptions> {
-  public cmd: string = 'pull [remote] [branch]';
+  public cmd: string = 'pull';
   public description: string = 'Incorporates changes from a remote repository into the current branch.';
 
   @inject(GitService) private _gitService!: GitService;
   @inject(SparoProfileService) private _sparoProfileService!: SparoProfileService;
 
-  public builder(yargs: Argv<{}>): void {
+  public builder = (yargs: Argv<{}>): void => {
     /**
-     * sparo pull [remote] [branch] --profile <profile_name> --add-profile <profile_name> --no-profile
+     * sparo pull [repository] [refsepc...] [--profile <profile_name> | --no-profile]
+     *
+     * sparo pull origin
+     *
+     * sparo pull origin master
      */
     yargs
-      .positional('remote', { type: 'string' })
-      .positional('branch', { type: 'string' })
-      .string('remote')
-      .string('branch')
-      .boolean('full')
       .array('profile')
       .default('profile', [])
-      .array('add-profile')
-      .default('add-profile', []);
-  }
+      .parserConfiguration({ 'unknown-options-as-args': true })
+      .usage(
+        '$0 pull [options] [repository] [refsepc...] [--profile <profile_name> | --no-profile]' +
+          '\n\n' +
+          this.description
+      );
+  };
 
   public handler = async (
     args: ArgumentsCamelCase<IPullCommandOptions>,
@@ -46,17 +46,12 @@ export class PullCommand implements ICommand<IPullCommandOptions> {
     const { terminal } = terminalService;
 
     terminal.writeDebugLine(`got args in pull command: ${JSON.stringify(args)}`);
-    const pullArgs: string[] = ['pull'];
-
-    const { branch, remote } = args;
-
-    if (branch && remote) {
-      pullArgs.push(remote, branch);
-    }
+    // Collect anything that is not related to profile, pass down them to native git pull
+    const pullArgs: string[] = args._ as string[];
 
     const { isNoProfile, profiles, addProfiles } = await sparoProfileService.preprocessProfileArgs({
       profilesFromArg: args.profile ?? [],
-      addProfilesFromArg: args.addProfile ?? []
+      addProfilesFromArg: []
     });
 
     // invoke native git pull command

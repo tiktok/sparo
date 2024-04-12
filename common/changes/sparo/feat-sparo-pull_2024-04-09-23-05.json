@@ -1,0 +1,10 @@
+{
+  "changes": [
+    {
+      "packageName": "sparo",
+      "comment": "Add \"sparo pull\" command",
+      "type": "minor"
+    }
+  ],
+  "packageName": "sparo"
+}

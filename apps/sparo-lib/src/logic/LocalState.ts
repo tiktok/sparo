@@ -91,6 +91,6 @@ export class LocalState {
     if (!repoRoot) {
       throw new Error('Running outside of the git repository folder');
     }
-    return path.join(this._gitService.getRepoInfo().root, '.git/info/local-state.json');
+    return path.join(repoRoot, '.git/info/local-state.json');
   }
 }
