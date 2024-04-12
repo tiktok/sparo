@@ -2,7 +2,7 @@
   "changes": [
     {
       "packageName": "sparo",
-      "comment": "Sparo fetch all remote branches when \"sparo fetch--all\"",
+      "comment": "Track the branch which specifies to sparo checkout",
       "type": "minor"
     }
   ],
