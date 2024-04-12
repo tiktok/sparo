@@ -28,6 +28,7 @@ export class GitService {
     getGitConfig(k: string, option?: {
         dryRun?: boolean;
         global?: boolean;
+        array?: boolean;
     }): string | undefined;
     // (undocumented)
     getGitEmail(): string | undefined;
@@ -50,12 +51,16 @@ export class GitService {
     setGitConfig(k: string, v: string | number | boolean, option?: {
         dryRun?: boolean;
         global?: boolean;
+        replaceAll?: boolean;
+        add?: boolean;
     }): void;
     // (undocumented)
     setRecommendConfig(option?: {
         overwrite?: boolean;
         dryRun?: boolean;
     }): void;
+    // (undocumented)
+    unsetGitConfig(k: string): void;
 }
 
 // @alpha

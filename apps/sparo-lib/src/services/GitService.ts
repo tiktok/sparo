@@ -38,16 +38,22 @@ export class GitService {
   public setGitConfig(
     k: string,
     v: string | number | boolean,
-    option?: { dryRun?: boolean; global?: boolean }
+    option?: { dryRun?: boolean; global?: boolean; replaceAll?: boolean; add?: boolean }
   ): void {
     const gitPath: string = this.getGitPathOrThrow();
     const currentWorkingDirectory: string = this.getRepoInfo().root;
-    const { dryRun = false, global = false } = option ?? {};
+    const { dryRun = false, global = false, replaceAll = false, add = false } = option ?? {};
     const args: string[] = [];
 
     args.push('config');
     if (global) {
       args.push('--global');
+    }
+    if (add) {
+      args.push('--add');
+    }
+    if (replaceAll) {
+      args.push('--replace-all');
     }
 
     args.push(k, String(v));
@@ -64,14 +70,20 @@ export class GitService {
     }
   }
 
-  public getGitConfig(k: string, option?: { dryRun?: boolean; global?: boolean }): string | undefined {
+  public getGitConfig(
+    k: string,
+    option?: { dryRun?: boolean; global?: boolean; array?: boolean }
+  ): string | undefined {
     const gitPath: string = this.getGitPathOrThrow();
     const currentWorkingDirectory: string = this.getRepoInfo().root;
-    const { dryRun = false, global = false } = option ?? {};
+    const { dryRun = false, global = false, array = false } = option ?? {};
     const args: string[] = [];
     args.push('config');
     if (global) {
       args.push('--global');
+    }
+    if (array) {
+      args.push('--get-all');
     }
     args.push(k);
     this._terminalService.terminal.writeDebugLine(`get git config with args ${JSON.stringify(args)}`);
@@ -91,6 +103,25 @@ export class GitService {
     }
 
     return undefined;
+  }
+
+  public unsetGitConfig(k: string): void {
+    const gitPath: string = this.getGitPathOrThrow();
+    const currentWorkingDirectory: string = this.getRepoInfo().root;
+    const args: string[] = [];
+
+    args.push('config');
+    args.push('--unset-all');
+    args.push(k);
+
+    this._terminalService.terminal.writeDebugLine(`unset git config with args ${JSON.stringify(args)}`);
+    const { status, stderr } = Executable.spawnSync(gitPath, args, {
+      currentWorkingDirectory,
+      stdio: 'inherit'
+    });
+    if (status !== 0) {
+      throw new Error(`Error while unsetting git config: ${stderr}`);
+    }
   }
 
   public setRecommendConfig(option?: { overwrite?: boolean; dryRun?: boolean }): void {
