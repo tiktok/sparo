@@ -237,9 +237,8 @@ export class CheckoutCommand implements ICommand<ICheckoutCommandOptions> {
       this._gitService.executeGitCommand({
         args: ['branch', branch, `${remote}/${branch}`]
       });
-      this._gitService.executeGitCommand({
-        args: ['remote', 'set-branches', '--add', remote, branch]
-      });
+
+      this._addRemoteBranchIfNotExists(remote, branch);
     }
 
     const branchExistsInLocal: boolean = Boolean(
@@ -278,5 +277,22 @@ export class CheckoutCommand implements ICommand<ICheckoutCommandOptions> {
         .trim()
     );
     return tagExistsInLocal;
+  }
+
+  private _addRemoteBranchIfNotExists(remote: string, branch: string): void {
+    const result: string | undefined = this._gitService.getGitConfig(`remote.${remote}.fetch`, {
+      array: true
+    });
+    const remoteFetchGitConfig: string[] | undefined = result?.split('\n').filter(Boolean);
+
+    // Prevents adding the same remote branch multiple times
+    const targetConfig: string = `+refs/heads/${branch}:refs/remotes/${remote}/${branch}`;
+    if (remoteFetchGitConfig?.some((value: string) => value === targetConfig)) {
+      return;
+    }
+
+    this._gitService.executeGitCommand({
+      args: ['remote', 'set-branches', '--add', remote, branch]
+    });
   }
 }
