@@ -237,6 +237,9 @@ export class CheckoutCommand implements ICommand<ICheckoutCommandOptions> {
       this._gitService.executeGitCommand({
         args: ['branch', branch, `${remote}/${branch}`]
       });
+      this._gitService.executeGitCommand({
+        args: ['remote', 'set-branches', '--add', remote, branch]
+      });
     }
 
     const branchExistsInLocal: boolean = Boolean(
