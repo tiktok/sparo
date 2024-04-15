@@ -1,6 +1,7 @@
 import { inject } from 'inversify';
 import { Command } from '../../decorator';
 import { GitService } from '../../services/GitService';
+import { GracefulShutdownService } from '../../services/GracefulShutdownService';
 
 import type { Argv, ArgumentsCamelCase } from 'yargs';
 import type { GitRepoInfo } from 'git-repo-info';
@@ -19,6 +20,7 @@ export class FetchCommand implements ICommand<IFetchCommandOptions> {
   public description: string = 'fetch remote branch to local';
 
   @inject(GitService) private _gitService!: GitService;
+  @inject(GracefulShutdownService) private _gracefulShutdownService!: GracefulShutdownService;
   public builder(yargs: Argv<{}>): void {
     /**
      * sparo fetch <remote> <branch> [--all]
@@ -44,14 +46,10 @@ export class FetchCommand implements ICommand<IFetchCommandOptions> {
     const { all, branch = defaultBranch, remote = this._gitService.getBranchRemote(branch) } = args;
     const fetchArgs: string[] = ['fetch'];
 
-    let remoteFetchGitConfig: string[] | undefined;
+    let restoreSingleBranchCallback: (() => void) | undefined;
     if (all) {
-      // Temporary revert single branch fetch
-      const currentRemoteFetchGitConfig: string[] | undefined = this._getRemoteFetchGitConfig(remote);
-      if (currentRemoteFetchGitConfig) {
-        this._setAllBranchFetch(remote);
-        remoteFetchGitConfig = currentRemoteFetchGitConfig;
-      }
+      // Temporary revert single branch fetch if necessary
+      restoreSingleBranchCallback = this._revertSingleBranchIfNecessary(remote);
 
       fetchArgs.push('--all');
     } else {
@@ -60,14 +58,34 @@ export class FetchCommand implements ICommand<IFetchCommandOptions> {
 
     gitService.executeGitCommand({ args: fetchArgs });
 
-    if (remoteFetchGitConfig) {
-      this._restoreSingleBranchFetch(remote, remoteFetchGitConfig);
-    }
+    restoreSingleBranchCallback?.();
   };
 
   public getHelp(): string {
     return `fetch help`;
   }
+
+  private _revertSingleBranchIfNecessary = (remote: string): (() => void) | undefined => {
+    let remoteFetchGitConfig: string[] | undefined = this._getRemoteFetchGitConfig(remote);
+    let callback: (() => void) | undefined;
+    if (remoteFetchGitConfig) {
+      this._setAllBranchFetch(remote);
+
+      callback = () => {
+        if (remoteFetchGitConfig) {
+          this._restoreSingleBranchFetch(remote, remoteFetchGitConfig);
+
+          // Avoid memory leaking
+          remoteFetchGitConfig = undefined;
+          this._gracefulShutdownService.unregisterCallback(callback);
+        }
+      };
+
+      this._gracefulShutdownService.registerCallback(callback);
+    }
+
+    return callback;
+  };
 
   private _getRemoteFetchGitConfig(remote: string): string[] | undefined {
     const result: string | undefined = this._gitService.getGitConfig(`remote.${remote}.fetch`, {
