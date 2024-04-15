@@ -1,0 +1,10 @@
+{
+  "changes": [
+    {
+      "packageName": "sparo",
+      "comment": "Sparo fetch all remote branches when \"sparo fetch--all\"",
+      "type": "minor"
+    }
+  ],
+  "packageName": "sparo"
+}

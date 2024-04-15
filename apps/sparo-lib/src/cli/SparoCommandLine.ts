@@ -8,6 +8,7 @@ import { ICommand } from './commands/base';
 import { GitVersionCompatibility } from '../logic/GitVersionCompatibility';
 import { TelemetryService } from '../services/TelemetryService';
 import { GitSparseCheckoutService } from '../services/GitSparseCheckoutService';
+import { GracefulShutdownService } from '../services/GracefulShutdownService';
 import { getCommandName } from './commands/util';
 import { SparoStartupBanner } from './SparoStartupBanner';
 import type { ILaunchOptions } from '../api/Sparo';
@@ -52,6 +53,10 @@ export class SparoCommandLine {
         this._commandsMap.add(getCommandName(cmdInstance.cmd));
       })
     );
+
+    const gracefulShutdownService: GracefulShutdownService =
+      await getFromContainerAsync(GracefulShutdownService);
+    gracefulShutdownService.setup();
   }
 
   public async runAsync(): Promise<void> {

@@ -1,0 +1,10 @@
+{
+  "changes": [
+    {
+      "packageName": "sparo",
+      "comment": "Track the branch which specifies to sparo checkout",
+      "type": "minor"
+    }
+  ],
+  "packageName": "sparo"
+}
