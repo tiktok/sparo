@@ -2,6 +2,29 @@
   "name": "sparo",
   "entries": [
     {
+      "version": "1.0.8",
+      "tag": "sparo_v1.0.8",
+      "date": "Mon, 15 Apr 2024 23:34:54 GMT",
+      "comments": {
+        "minor": [
+          {
+            "comment": "Sparo fetch all remote branches when \"sparo fetch--all\""
+          },
+          {
+            "comment": "Track the branch which specifies to sparo checkout"
+          },
+          {
+            "comment": "Add \"sparo pull\" command"
+          }
+        ],
+        "none": [
+          {
+            "comment": "Fix typo in recommended configs"
+          }
+        ]
+      }
+    },
+    {
       "version": "1.0.7",
       "tag": "sparo_v1.0.7",
       "date": "Fri, 29 Mar 2024 21:28:25 GMT",

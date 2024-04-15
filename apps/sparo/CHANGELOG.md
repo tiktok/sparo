@@ -1,6 +1,19 @@
 # Change Log - sparo
 
-This log was last generated on Fri, 29 Mar 2024 21:28:25 GMT and should not be manually modified.
+This log was last generated on Mon, 15 Apr 2024 23:34:54 GMT and should not be manually modified.
+
+## 1.0.8
+Mon, 15 Apr 2024 23:34:54 GMT
+
+### Minor changes
+
+- Sparo fetch all remote branches when "sparo fetch--all"
+- Track the branch which specifies to sparo checkout
+- Add "sparo pull" command
+
+### Updates
+
+- Fix typo in recommended configs
 
 ## 1.0.7
 Fri, 29 Mar 2024 21:28:25 GMT
