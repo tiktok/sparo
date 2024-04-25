@@ -14,6 +14,8 @@ export interface ICheckoutCommandOptions {
   B?: boolean;
   startPoint?: string;
   addProfile?: string[];
+  to?: string[];
+  from?: string[];
 }
 
 type ICheckoutTargetKind = 'branch' | 'tag' | 'commit' | 'filePath';
@@ -43,6 +45,7 @@ export class CheckoutCommand implements ICommand<ICheckoutCommandOptions> {
      *  have been implemented, while other scenarios are yet to be implemented.
      * 1. sparo checkout [-b|-B] <new-branch> [start-point] [--profile <profile...>]
      * 2. sparo checkout [branch] [--profile <profile...>]
+     * 3. sparo checkout [branch] [--to <project-name...>]
      *
      * TODO: implement more checkout functionalities
      */
@@ -67,7 +70,11 @@ export class CheckoutCommand implements ICommand<ICheckoutCommandOptions> {
       .array('profile')
       .default('profile', [])
       .array('add-profile')
-      .default('add-profile', []);
+      .default('add-profile', [])
+      .array('to')
+      .default('to', [])
+      .array('from')
+      .default('from', []);
   }
 
   public handler = async (
@@ -76,7 +83,9 @@ export class CheckoutCommand implements ICommand<ICheckoutCommandOptions> {
   ): Promise<void> => {
     const { _gitService: gitService } = this;
     terminalService.terminal.writeDebugLine(`got args in checkout command: ${JSON.stringify(args)}`);
-    const { b, B, startPoint } = args;
+    const { b, B, startPoint, to, from } = args;
+    const toProjects: Set<string> = new Set(to);
+    const fromProjects: Set<string> = new Set(from);
 
     let branch: string | undefined = args.branch;
 
@@ -209,7 +218,9 @@ export class CheckoutCommand implements ICommand<ICheckoutCommandOptions> {
       // Sync local sparse checkout state with given profiles.
       await this._sparoProfileService.syncProfileState({
         profiles: isNoProfile ? undefined : profiles,
-        addProfiles
+        addProfiles,
+        fromProjects,
+        toProjects
       });
     }
   };

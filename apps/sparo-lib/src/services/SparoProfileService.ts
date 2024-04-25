@@ -227,10 +227,14 @@ ${availableProfiles.join(',')}
    */
   public async syncProfileState({
     profiles,
-    addProfiles
+    addProfiles,
+    fromProjects,
+    toProjects
   }: {
     profiles?: Set<string>;
     addProfiles?: Set<string>;
+    fromProjects?: Set<string>;
+    toProjects?: Set<string>;
   }): Promise<void> {
     this._localState.reset();
     const allProfiles: string[] = Array.from([...(profiles ?? []), ...(addProfiles ?? [])]);
@@ -239,11 +243,11 @@ ${availableProfiles.join(',')}
         `Syncing checkout with these Sparo profiles:\n${allProfiles.join(', ')}`
       );
     } else if (allProfiles.length === 1) {
-      this._terminalService.terminal.writeLine(
-        `Syncing checkout with the Sparo profile: ${allProfiles[0]}`
-      );
+      this._terminalService.terminal.writeLine(`Syncing checkout with the Sparo profile: ${allProfiles[0]}`);
     } else {
-      this._terminalService.terminal.writeLine('Syncing checkout with the Sparo skeleton (no profile selection)');
+      this._terminalService.terminal.writeLine(
+        'Syncing checkout with the Sparo skeleton (no profile selection)'
+      );
     }
     this._terminalService.terminal.writeLine();
     if (!profiles || profiles.size === 0) {
@@ -298,5 +302,29 @@ ${availableProfiles.join(',')}
         checkoutAction: 'add'
       });
     }
+
+    // handle case of `sparo checkout --to project-A project-B --from project-C project-D
+    const toSelector: Set<string> = toProjects || new Set();
+    const fromSelector: Set<string> = toProjects || new Set();
+    // If Rush Selector --to <projects> is specified, using `git sparse-checkout add` to add folders of the projects specified
+    const projectsSelections: ISelection[] = [];
+
+    for (const project of toSelector) {
+      projectsSelections.push({
+        selector: '--to',
+        argument: project
+      });
+    }
+    for (const project of fromSelector) {
+      projectsSelections.push({
+        selector: '--from',
+        argument: project
+      });
+    }
+
+    await this._gitSparseCheckoutService.checkoutAsync({
+      selections: projectsSelections,
+      checkoutAction: 'add'
+    });
   }
 }
