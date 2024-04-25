@@ -322,9 +322,11 @@ ${availableProfiles.join(',')}
       });
     }
 
-    await this._gitSparseCheckoutService.checkoutAsync({
-      selections: projectsSelections,
-      checkoutAction: 'add'
-    });
+    if (projectsSelections.length > 0) {
+      await this._gitSparseCheckoutService.checkoutAsync({
+        selections: projectsSelections,
+        checkoutAction: 'add'
+      });
+    }
   }
 }

@@ -80,6 +80,20 @@ export async function runAsync(runScriptOptions: IRunScriptOptions): Promise<voi
       args: ['checkout', '--profile', 'my-build-test'],
       currentWorkingDirectory: repoFolder
     },
+    // sparo checkout --to sparo-output-test
+    {
+      kind: 'sparo-command',
+      name: 'checkout-to',
+      args: ['checkout', '--to', 'sparo-output-test'],
+      currentWorkingDirectory: repoFolder
+    },
+    // sparo checkout --from build-test-utilities
+    {
+      kind: 'sparo-command',
+      name: 'checkout-from',
+      args: ['checkout', '--from', 'build-test-utilities'],
+      currentWorkingDirectory: repoFolder
+    },
     // sparo list-profiles
     {
       kind: 'sparo-command',
