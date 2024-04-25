@@ -2,7 +2,7 @@
   "changes": [
     {
       "packageName": "sparo",
-      "comment": "[sparo checkout] support cli --to/--from option for projects seletion",
+      "comment": "[sparo checkout] support cli --to/--from option for projects selection",
       "type": "none"
     }
   ],
