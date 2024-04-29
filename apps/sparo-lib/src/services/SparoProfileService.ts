@@ -2,7 +2,7 @@ import { FileSystem, Async } from '@rushstack/node-core-library';
 import path from 'path';
 import { inject } from 'inversify';
 import { Service } from '../decorator';
-import { SparoProfile, ISelection } from '../logic/SparoProfile';
+import { SparoProfile, ISelection, ISparoProfileJson } from '../logic/SparoProfile';
 import { TerminalService } from './TerminalService';
 import { GitService } from './GitService';
 import { GitSparseCheckoutService } from './GitSparseCheckoutService';
@@ -18,6 +18,7 @@ export interface IResolveSparoProfileOptions {
 }
 
 const defaultSparoProfileFolder: string = 'common/sparo-profiles';
+const INTERNAL_RUSH_SELECTOR_PSEUDO_PROFILE: string = '__INTERNAL_RUSH_SELECTOR_PSEUDO_PROFILE__';
 
 @Service()
 export class SparoProfileService {
@@ -170,10 +171,12 @@ ${availableProfiles.join(',')}
     addProfilesFromArg: string[];
   }): Promise<{
     isNoProfile: boolean;
+    isProfileRestoreFromLocal: boolean;
     profiles: Set<string>;
     addProfiles: Set<string>;
   }> {
     let isNoProfile: boolean = false;
+    let isProfileRestoreFromLocal: boolean = false;
     /**
      * --profile is defined as array type parameter, specifying --no-profile is resolved to false by yargs.
      *
@@ -210,16 +213,43 @@ ${availableProfiles.join(',')}
       // 1. If profile specified from CLI parameter, preferential use it.
       // 2. If none profile specified, read from existing profile from local state as default.
       const localStateProfiles: ILocalStateProfiles | undefined = await this._localState.getProfiles();
-
+      isProfileRestoreFromLocal = true;
       if (localStateProfiles) {
-        Object.keys(localStateProfiles).forEach((p) => profiles.add(p));
+        Object.keys(localStateProfiles).forEach((p) => {
+          if (p === INTERNAL_RUSH_SELECTOR_PSEUDO_PROFILE) return;
+          profiles.add(p);
+        });
       }
     }
     return {
       isNoProfile,
       profiles,
-      addProfiles
+      addProfiles,
+      isProfileRestoreFromLocal
     };
+  }
+
+  private async _syncRushSelectors(): Promise<ISelection[]>;
+  private async _syncRushSelectors(selections: ISelection[]): Promise<void>;
+  private async _syncRushSelectors(selections?: ISelection[]): Promise<void | ISelection[]> {
+    if (typeof selections !== 'undefined') {
+      return this._localState.setProfiles(
+        {
+          [INTERNAL_RUSH_SELECTOR_PSEUDO_PROFILE]: {
+            selections
+          }
+        },
+        'add'
+      );
+    } else {
+      const localStateProfiles: ILocalStateProfiles | undefined = await this._localState.getProfiles();
+      if (localStateProfiles) {
+        const rushSelectorProfiles: ISparoProfileJson | undefined =
+          localStateProfiles[INTERNAL_RUSH_SELECTOR_PSEUDO_PROFILE];
+        return rushSelectorProfiles?.selections || [];
+      }
+      return [];
+    }
   }
 
   /**
@@ -229,13 +259,19 @@ ${availableProfiles.join(',')}
     profiles,
     addProfiles,
     fromProjects,
-    toProjects
+    toProjects,
+    isProfileRestoreFromLocal
   }: {
     profiles?: Set<string>;
     addProfiles?: Set<string>;
     fromProjects?: Set<string>;
     toProjects?: Set<string>;
+    isProfileRestoreFromLocal?: boolean;
   }): Promise<void> {
+    // only if user didn't specify any profile during a sparo checkout, we need to
+    // retain any previously checked out projects based on Rush Selectors
+    // https://rushjs.io/pages/developer/selecting_subsets/
+    const rushSelectorState: ISelection[] = isProfileRestoreFromLocal ? await this._syncRushSelectors() : [];
     this._localState.reset();
     const allProfiles: string[] = Array.from([...(profiles ?? []), ...(addProfiles ?? [])]);
     if (allProfiles.length > 1) {
@@ -305,9 +341,9 @@ ${availableProfiles.join(',')}
 
     // handle case of `sparo checkout --to project-A project-B --from project-C project-D
     const toSelector: Set<string> = toProjects || new Set();
-    const fromSelector: Set<string> = toProjects || new Set();
+    const fromSelector: Set<string> = fromProjects || new Set();
     // If Rush Selector --to <projects> is specified, using `git sparse-checkout add` to add folders of the projects specified
-    const projectsSelections: ISelection[] = [];
+    const projectsSelections: ISelection[] = [...rushSelectorState];
 
     for (const project of toSelector) {
       projectsSelections.push({
@@ -323,6 +359,7 @@ ${availableProfiles.join(',')}
     }
 
     if (projectsSelections.length > 0) {
+      await this._syncRushSelectors(projectsSelections);
       await this._gitSparseCheckoutService.checkoutAsync({
         selections: projectsSelections,
         checkoutAction: 'add'

@@ -45,7 +45,7 @@ export class CheckoutCommand implements ICommand<ICheckoutCommandOptions> {
      *  have been implemented, while other scenarios are yet to be implemented.
      * 1. sparo checkout [-b|-B] <new-branch> [start-point] [--profile <profile...>]
      * 2. sparo checkout [branch] [--profile <profile...>]
-     * 3. sparo checkout [branch] [--to <project-name...>]
+     * 3. sparo checkout [branch] [--to <project-name...>] [--from <project-name...>]
      *
      * TODO: implement more checkout functionalities
      */
@@ -71,10 +71,18 @@ export class CheckoutCommand implements ICommand<ICheckoutCommandOptions> {
       .default('profile', [])
       .array('add-profile')
       .default('add-profile', [])
-      .array('to')
-      .default('to', [])
-      .array('from')
-      .default('from', []);
+      .option('to', {
+        type: 'array',
+        default: [],
+        description:
+          'Checkout projects up to (and including) project <to..>, can be used together with option --profile/--add-profile to form a union selection of the two options. The projects selectors here will never replace what have been checked out by profiles'
+      })
+      .option('from', {
+        type: 'array',
+        default: [],
+        description:
+          'Checkout projects downstream from (and including itself and all its dependencies) project <from..>, can be used together with option --profile/--add-profile to form a union selection of the two options. The projects selectors here will never replace what have been checked out by profiles'
+      });
   }
 
   public handler = async (
@@ -147,10 +155,11 @@ export class CheckoutCommand implements ICommand<ICheckoutCommandOptions> {
     }
 
     // preprocess profile related args
-    const { isNoProfile, profiles, addProfiles } = await this._sparoProfileService.preprocessProfileArgs({
-      addProfilesFromArg: args.addProfile ?? [],
-      profilesFromArg: args.profile
-    });
+    const { isNoProfile, profiles, addProfiles, isProfileRestoreFromLocal } =
+      await this._sparoProfileService.preprocessProfileArgs({
+        addProfilesFromArg: args.addProfile ?? [],
+        profilesFromArg: args.profile
+      });
 
     // Check wether profiles exist in local or operation branch
     // Skip check in the following cases:
@@ -220,7 +229,8 @@ export class CheckoutCommand implements ICommand<ICheckoutCommandOptions> {
         profiles: isNoProfile ? undefined : profiles,
         addProfiles,
         fromProjects,
-        toProjects
+        toProjects,
+        isProfileRestoreFromLocal
       });
     }
   };

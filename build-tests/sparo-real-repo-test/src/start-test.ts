@@ -91,7 +91,7 @@ export async function runAsync(runScriptOptions: IRunScriptOptions): Promise<voi
     {
       kind: 'sparo-command',
       name: 'checkout-from',
-      args: ['checkout', '--from', 'build-test-utilities'],
+      args: ['checkout', '--from', 'sparo'],
       currentWorkingDirectory: repoFolder
     },
     // sparo list-profiles

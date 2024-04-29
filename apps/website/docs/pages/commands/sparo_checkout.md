@@ -20,4 +20,19 @@ Options:
                      already exists, reset it to <start-point>         [boolean]
       --profile                                            [array] [default: []]
       --add-profile                                        [array] [default: []]
+      --to           Checkout projects up to (and including) project <to..>, can
+                     be used together with option --profile/--add-profile to
+                     form a union selection of the two options. The projects
+                     selectors here will never replace what have been checked
+                     out by profiles                       [array] [default: []]
+      --from         Checkout projects downstream from (and including itself and
+                     all its dependencies) project <from..>, can be used
+                     together with option --profile/--add-profile to form a
+                     union selection of the two options. The projects selectors
+                     here will never replace what have been checked out by
+                     profiles                              [array] [default: []]
 ```
+
+
+
+
