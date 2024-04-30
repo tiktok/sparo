@@ -1,0 +1,10 @@
+{
+  "changes": [
+    {
+      "packageName": "sparo",
+      "comment": "Fix checkout command in a detached HEAD state",
+      "type": "none"
+    }
+  ],
+  "packageName": "sparo"
+}
