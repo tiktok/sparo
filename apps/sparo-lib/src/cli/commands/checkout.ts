@@ -111,7 +111,14 @@ export class CheckoutCommand implements ICommand<ICheckoutCommandOptions> {
     }
 
     if (!operationBranch) {
-      throw new Error(`Failed to get branch ${operationBranch}`);
+      if (!currentBranch) {
+        // If current branch is missing, it means the repository is in a detached HEAD state.
+        // Let's treat it as a commit SHA for convenience now.
+        checkoutTargetKind = 'commit';
+      } else {
+        // This should not happen
+        throw new Error(`Failed to get branch ${operationBranch}`);
+      }
     } else {
       if (operationBranch !== currentBranch) {
         // 1. First, Sparo needs to see the branch matches any branch name
