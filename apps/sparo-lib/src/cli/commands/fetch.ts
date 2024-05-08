@@ -68,7 +68,7 @@ export class FetchCommand implements ICommand<IFetchCommandOptions> {
   private _revertSingleBranchIfNecessary = (remote: string): (() => void) | undefined => {
     let remoteFetchGitConfig: string[] | undefined = this._getRemoteFetchGitConfig(remote);
     let callback: (() => void) | undefined;
-    if (remoteFetchGitConfig) {
+    if (remoteFetchGitConfig && !remoteFetchGitConfig.includes(`+refs/heads/*:refs/remotes/${remote}/*`)) {
       this._setAllBranchFetch(remote);
 
       callback = () => {
