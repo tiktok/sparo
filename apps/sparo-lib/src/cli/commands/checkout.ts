@@ -292,10 +292,16 @@ export class CheckoutCommand implements ICommand<ICheckoutCommandOptions> {
     });
     const remoteFetchGitConfig: string[] | undefined = result?.split('\n').filter(Boolean);
 
-    // Prevents adding the same remote branch multiple times
-    const targetConfig: string = `+refs/heads/${branch}:refs/remotes/${remote}/${branch}`;
-    if (remoteFetchGitConfig?.some((value: string) => value === targetConfig)) {
-      return;
+    if (remoteFetchGitConfig) {
+      const targetConfig: string = `+refs/heads/${branch}:refs/remotes/${remote}/${branch}`;
+      if (
+        // Prevents adding remote branch if it is not single branch mode
+        remoteFetchGitConfig.includes(`+refs/heads/*:refs/remotes/${remote}/*`) ||
+        // Prevents adding the same remote branch multiple times
+        remoteFetchGitConfig?.some((value: string) => value === targetConfig)
+      ) {
+        return;
+      }
     }
 
     this._gitService.executeGitCommand({

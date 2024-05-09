@@ -1,0 +1,10 @@
+{
+  "changes": [
+    {
+      "packageName": "sparo",
+      "comment": "Improve check logic to prevent unnecessary git operations when tracking remote branches",
+      "type": "none"
+    }
+  ],
+  "packageName": "sparo"
+}
