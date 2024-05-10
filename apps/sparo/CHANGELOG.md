@@ -1,6 +1,15 @@
 # Change Log - sparo
 
-This log was last generated on Mon, 15 Apr 2024 23:34:54 GMT and should not be manually modified.
+This log was last generated on Fri, 10 May 2024 20:44:01 GMT and should not be manually modified.
+
+## 1.1.0
+Fri, 10 May 2024 20:44:01 GMT
+
+### Updates
+
+- Fix checkout command in a detached HEAD state
+- [sparo checkout] support cli --to/--from option for projects selection
+- Improve check logic to prevent unnecessary git operations when tracking remote branches
 
 ## 1.0.8
 Mon, 15 Apr 2024 23:34:54 GMT
