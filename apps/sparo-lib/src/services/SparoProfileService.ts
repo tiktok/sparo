@@ -344,18 +344,25 @@ ${availableProfiles.join(',')}
     const fromSelector: Set<string> = fromProjects || new Set();
     // If Rush Selector --to <projects> is specified, using `git sparse-checkout add` to add folders of the projects specified
     const projectsSelections: ISelection[] = [...rushSelectorState];
+    const existingSelections: Set<string> = new Set<string>(
+      rushSelectorState.map(({ selector, argument }) => `${selector}$$${argument}`)
+    );
 
     for (const project of toSelector) {
-      projectsSelections.push({
-        selector: '--to',
-        argument: project
-      });
+      if (!existingSelections.has(`--to$$${project}`)) {
+        projectsSelections.push({
+          selector: '--to',
+          argument: project
+        });
+      }
     }
     for (const project of fromSelector) {
-      projectsSelections.push({
-        selector: '--from',
-        argument: project
-      });
+      if (!existingSelections.has(`--from$$${project}`)) {
+        projectsSelections.push({
+          selector: '--from',
+          argument: project
+        });
+      }
     }
 
     if (projectsSelections.length > 0) {
