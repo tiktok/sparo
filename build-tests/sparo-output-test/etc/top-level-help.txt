@@ -22,10 +22,12 @@ Commands:
   sparo fetch [remote] [branch]          fetch remote branch to local
   sparo pull                             Incorporates changes from a remote
                                          repository into the current branch.
+  sparo branch [branch]                  List, create, or delete branches
   sparo git-clone                        original git clone command
   sparo git-checkout                     original git checkout command
   sparo git-fetch                        original git fetch command
   sparo git-pull                         original git pull command
+  sparo git-branch                       original git branch command
 
 Options:
   --help     Show help                                                 [boolean]
