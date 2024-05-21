@@ -2,11 +2,7 @@
   "changes": [
     {
       "packageName": "sparo",
-<<<<<<< HEAD
       "comment": "Add a renamed command \"sparo git-branch\"",
-=======
-      "comment": "Add a mirror command \"sparo git-branch\"",
->>>>>>> ae8407d (chore: rush change)
       "type": "none"
     }
   ],
