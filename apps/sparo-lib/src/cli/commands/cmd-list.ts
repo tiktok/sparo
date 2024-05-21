@@ -12,6 +12,7 @@ import { GitFetchCommand } from './git-fetch';
 import { GitPullCommand } from './git-pull';
 import { InitProfileCommand } from './init-profile';
 import { PullCommand } from './pull';
+import { BranchCommand } from './branch';
 
 // When adding new Sparo subcommands, remember to update this doc page:
 // https://github.com/tiktok/sparo/blob/main/apps/website/docs/pages/commands/overview.md
@@ -24,6 +25,7 @@ export const COMMAND_LIST: Constructable[] = [
   CheckoutCommand,
   FetchCommand,
   PullCommand,
+  BranchCommand,
 
   // The commands customized by Sparo require a mirror command to Git
   GitCloneCommand,
