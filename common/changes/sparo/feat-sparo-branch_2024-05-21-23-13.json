@@ -1,0 +1,10 @@
+{
+  "changes": [
+    {
+      "packageName": "sparo",
+      "comment": "\"sparo branch -d\" clean up remote fetch git configuration",
+      "type": "none"
+    }
+  ],
+  "packageName": "sparo"
+}

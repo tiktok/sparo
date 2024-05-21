@@ -1,0 +1,10 @@
+{
+  "changes": [
+    {
+      "packageName": "sparo",
+      "comment": "Add a renamed command \"sparo git-branch\"",
+      "type": "none"
+    }
+  ],
+  "packageName": "sparo"
+}
