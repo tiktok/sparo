@@ -13,6 +13,7 @@ import { GitPullCommand } from './git-pull';
 import { InitProfileCommand } from './init-profile';
 import { PullCommand } from './pull';
 import { BranchCommand } from './branch';
+import { GitBranchCommand } from './git-branch';
 
 // When adding new Sparo subcommands, remember to update this doc page:
 // https://github.com/tiktok/sparo/blob/main/apps/website/docs/pages/commands/overview.md
@@ -31,7 +32,8 @@ export const COMMAND_LIST: Constructable[] = [
   GitCloneCommand,
   GitCheckoutCommand,
   GitFetchCommand,
-  GitPullCommand
+  GitPullCommand,
+  GitBranchCommand
 ];
 
 export const CI_COMMAND_LIST: Constructable[] = [CICloneCommand, CICheckoutCommand];
