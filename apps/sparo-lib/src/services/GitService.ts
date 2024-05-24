@@ -464,7 +464,7 @@ Please specify a directory on the command line
   /**
    * Check existence for one branch name.
    *
-   * {@link checkRemoteBranchesExistenceAsync} is preferred if you are going to check a list of branch name.
+   * Function "checkRemoteBranchesExistenceAsync" is preferred if you are going to check a list of branch name.
    */
   public checkRemoteBranchExistenceAsync = async (remote: string, branch: string): Promise<boolean> => {
     const gitPath: string = this.getGitPathOrThrow();
