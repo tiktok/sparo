@@ -1,5 +1,5 @@
 import * as child_process from 'child_process';
-import { Executable } from '@rushstack/node-core-library';
+import { Async, Executable } from '@rushstack/node-core-library';
 import getRepoInfo, { type GitRepoInfo } from 'git-repo-info';
 import { inject } from 'inversify';
 import { Service } from '../decorator';
@@ -437,6 +437,66 @@ Please specify a directory on the command line
     }
     return objectType;
   }
+
+  public getCurrentBranch(): string {
+    const currentBranch: string = this.executeGitCommandAndCaptureOutput({
+      args: ['branch', '--show-current']
+    }).trim();
+    return currentBranch;
+  }
+
+  /**
+   * Check existence for a list of branch name
+   */
+  public checkRemoteBranchesExistenceAsync = async (
+    remote: string,
+    branches: string[]
+  ): Promise<Record<string, boolean>> => {
+    this._terminalService.terminal.writeDebugLine(`Checking branches: ${branches.join(',')}`);
+    const ret: Record<string, boolean> = {};
+    await Async.forEachAsync(branches, async (branch: string) => {
+      const isExists: boolean = await this.checkRemoteBranchExistenceAsync(remote, branch);
+      ret[branch] = isExists;
+    });
+    return ret;
+  };
+
+  /**
+   * Check existence for one branch name.
+   *
+   * {@link checkRemoteBranchesExistenceAsync} is preferred if you are going to check a list of branch name.
+   */
+  public checkRemoteBranchExistenceAsync = async (remote: string, branch: string): Promise<boolean> => {
+    const gitPath: string = this.getGitPathOrThrow();
+    const currentWorkingDirectory: string = this.getRepoInfo().root;
+    const childProcess: child_process.ChildProcess = Executable.spawn(
+      gitPath,
+      ['ls-remote', '--exit-code', remote, branch],
+      {
+        currentWorkingDirectory,
+        stdio: ['ignore', 'pipe', 'pipe']
+      }
+    );
+    if (!childProcess.stdout || !childProcess.stderr) {
+      this._terminalService.terminal.writeDebugLine(`Failed to spawn git process, fallback to spawnSync`);
+      const result: string = this.executeGitCommandAndCaptureOutput({
+        args: ['ls-remote', remote, branch]
+      }).trim();
+      return Promise.resolve(!!result);
+    }
+    return await new Promise((resolve, reject) => {
+      // Only care about exit code since specifying --exit-code
+      childProcess.on('close', (exitCode: number | null) => {
+        if (exitCode) {
+          this._terminalService.terminal.writeDebugLine(`Branch "${branch}" doesn't exist remotely`);
+          resolve(false);
+        } else {
+          this._terminalService.terminal.writeDebugLine(`Branch "${branch}" exists remotely`);
+          resolve(true);
+        }
+      });
+    });
+  };
 
   private _processResult(result: child_process.SpawnSyncReturns<string>): void {
     if (result.error) {

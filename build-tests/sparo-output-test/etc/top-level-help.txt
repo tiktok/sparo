@@ -20,7 +20,7 @@ Commands:
                                          HEAD to set the specified branch as the
                                          current branch.
   sparo fetch [remote] [branch]          fetch remote branch to local
-  sparo pull                             Incorporates changes from a remote
+  sparo pull [remote]                    Incorporates changes from a remote
                                          repository into the current branch.
   sparo git-clone                        original git clone command
   sparo git-checkout                     original git checkout command
