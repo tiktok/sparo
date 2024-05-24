@@ -1,6 +1,7 @@
 import { inject } from 'inversify';
 import { Command } from '../../decorator';
 import { GitService } from '../../services/GitService';
+import { GitRemoteFetchConfigService } from '../../services/GitRemoteFetchConfigService';
 import { SparoProfileService } from '../../services/SparoProfileService';
 
 import type { Argv, ArgumentsCamelCase } from 'yargs';
@@ -8,15 +9,17 @@ import type { ICommand } from './base';
 import type { TerminalService } from '../../services/TerminalService';
 
 export interface IPullCommandOptions {
+  remote?: string;
   profile?: string[];
 }
 
 @Command()
 export class PullCommand implements ICommand<IPullCommandOptions> {
-  public cmd: string = 'pull';
+  public cmd: string = 'pull [remote]';
   public description: string = 'Incorporates changes from a remote repository into the current branch.';
 
   @inject(GitService) private _gitService!: GitService;
+  @inject(GitRemoteFetchConfigService) private _gitRemoteFetchConfigService!: GitRemoteFetchConfigService;
   @inject(SparoProfileService) private _sparoProfileService!: SparoProfileService;
 
   public builder = (yargs: Argv<{}>): void => {
@@ -28,6 +31,9 @@ export class PullCommand implements ICommand<IPullCommandOptions> {
      * sparo pull origin master
      */
     yargs
+      .positional('remote', {
+        type: 'string'
+      })
       .array('profile')
       .default('profile', [])
       .parserConfiguration({ 'unknown-options-as-args': true })
@@ -53,6 +59,13 @@ export class PullCommand implements ICommand<IPullCommandOptions> {
       profilesFromArg: args.profile ?? [],
       addProfilesFromArg: []
     });
+
+    const { remote } = args;
+    if (remote) {
+      pullArgs.splice(1, 0, remote);
+    }
+
+    await this._gitRemoteFetchConfigService.pruneRemoteBranchesInGitConfigAsync(remote || 'origin');
 
     // invoke native git pull command
     gitService.executeGitCommand({ args: pullArgs });

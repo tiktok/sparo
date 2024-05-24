@@ -17,6 +17,8 @@ export function getFromContainerAsync<T>(clazz: Constructable<T>): Promise<T>;
 
 // @alpha
 export class GitService {
+    checkRemoteBranchesExistenceAsync: (remote: string, branches: string[]) => Promise<Record<string, boolean>>;
+    checkRemoteBranchExistenceAsync: (remote: string, branch: string) => Promise<boolean>;
     // (undocumented)
     executeGitCommand({ args, workingDirectory }: IExecuteGitCommandParams): child_process.SpawnSyncReturns<string>;
     // (undocumented)
@@ -24,6 +26,8 @@ export class GitService {
     getBasenameFromUrl(url: string): string;
     // (undocumented)
     getBranchRemote(branch: string): string;
+    // (undocumented)
+    getCurrentBranch(): string;
     // (undocumented)
     getGitConfig(k: string, option?: {
         dryRun?: boolean;

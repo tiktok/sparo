@@ -2,11 +2,13 @@ import * as child_process from 'child_process';
 import { inject } from 'inversify';
 import { Command } from '../../decorator';
 import { GitService } from '../../services/GitService';
+import { GitRemoteFetchConfigService } from '../../services/GitRemoteFetchConfigService';
 import { TerminalService } from '../../services/TerminalService';
 import { SparoProfileService } from '../../services/SparoProfileService';
 
 import type { ICommand } from './base';
 import type { ArgumentsCamelCase, Argv } from 'yargs';
+
 export interface ICheckoutCommandOptions {
   profile: string[];
   branch?: string;
@@ -27,6 +29,7 @@ export class CheckoutCommand implements ICommand<ICheckoutCommandOptions> {
     'Updates files in the working tree to match the version in the index or the specified tree. If no pathspec was given, git checkout will also update HEAD to set the specified branch as the current branch.';
 
   @inject(GitService) private _gitService!: GitService;
+  @inject(GitRemoteFetchConfigService) private _gitRemoteFetchConfigService!: GitRemoteFetchConfigService;
   @inject(SparoProfileService) private _sparoProfileService!: SparoProfileService;
 
   public builder(yargs: Argv<{}>): void {
@@ -119,7 +122,7 @@ export class CheckoutCommand implements ICommand<ICheckoutCommandOptions> {
     /**
      * Since we set up single branch by default and branch can be missing in local, we are going to fetch the branch from remote server here.
      */
-    const currentBranch: string = this._getCurrentBranch();
+    const currentBranch: string = this._gitService.getCurrentBranch();
     let operationBranch: string = currentBranch;
     if (b || B) {
       operationBranch = startPoint || operationBranch;
@@ -266,7 +269,7 @@ export class CheckoutCommand implements ICommand<ICheckoutCommandOptions> {
         args: ['branch', branch, `${remote}/${branch}`]
       });
 
-      this._addRemoteBranchIfNotExists(remote, branch);
+      this._gitRemoteFetchConfigService.addRemoteBranchIfNotExists(remote, branch);
     }
 
     const branchExistsInLocal: boolean = Boolean(
@@ -278,15 +281,6 @@ export class CheckoutCommand implements ICommand<ICheckoutCommandOptions> {
     );
 
     return branchExistsInLocal;
-  }
-
-  private _getCurrentBranch(): string {
-    const currentBranch: string = this._gitService
-      .executeGitCommandAndCaptureOutput({
-        args: ['branch', '--show-current']
-      })
-      .trim();
-    return currentBranch;
   }
 
   private _ensureTagInLocal(tag: string): boolean {
@@ -305,28 +299,5 @@ export class CheckoutCommand implements ICommand<ICheckoutCommandOptions> {
         .trim()
     );
     return tagExistsInLocal;
-  }
-
-  private _addRemoteBranchIfNotExists(remote: string, branch: string): void {
-    const result: string | undefined = this._gitService.getGitConfig(`remote.${remote}.fetch`, {
-      array: true
-    });
-    const remoteFetchGitConfig: string[] | undefined = result?.split('\n').filter(Boolean);
-
-    if (remoteFetchGitConfig) {
-      const targetConfig: string = `+refs/heads/${branch}:refs/remotes/${remote}/${branch}`;
-      if (
-        // Prevents adding remote branch if it is not single branch mode
-        remoteFetchGitConfig.includes(`+refs/heads/*:refs/remotes/${remote}/*`) ||
-        // Prevents adding the same remote branch multiple times
-        remoteFetchGitConfig?.some((value: string) => value === targetConfig)
-      ) {
-        return;
-      }
-    }
-
-    this._gitService.executeGitCommand({
-      args: ['remote', 'set-branches', '--add', remote, branch]
-    });
   }
 }
