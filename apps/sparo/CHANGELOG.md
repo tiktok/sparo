@@ -1,6 +1,14 @@
 # Change Log - sparo
 
-This log was last generated on Fri, 10 May 2024 20:44:01 GMT and should not be manually modified.
+This log was last generated on Fri, 24 May 2024 23:10:09 GMT and should not be manually modified.
+
+## 1.2.0
+Fri, 24 May 2024 23:10:09 GMT
+
+### Updates
+
+- Improve "sparo checkout" help text for "--profile", "--add-profile" and "--no-profile" paramters
+- "sparo fetch" and "sparo pull" automatically clean up merged branches from the git configuration before actually invoking git fetch or pull
 
 ## 1.1.0
 Fri, 10 May 2024 20:44:01 GMT
