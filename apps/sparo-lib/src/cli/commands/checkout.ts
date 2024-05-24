@@ -70,10 +70,23 @@ export class CheckoutCommand implements ICommand<ICheckoutCommandOptions> {
         description:
           'Create a new branch and start it at <start-point>; if it already exists, reset it to <start-point>'
       })
-      .array('profile')
-      .default('profile', [])
-      .array('add-profile')
-      .default('add-profile', [])
+      .option('profile', {
+        describe:
+          'Checkout projects by specified profile(s). The profiles will be recorded and reused by other sparo commands. For example, running "sparo checkout <branch>" sparse checkout based on the reused profiles after running "git checkout"',
+        default: [],
+        type: 'array'
+      })
+      .option('add-profile', {
+        describe:
+          'Checkout projects with recorded profile(s) and the specified added profile(s). Adds the specified added profile(s) to sparo recorded profiles',
+        default: [],
+        type: 'array'
+      })
+      .option('no-profile', {
+        hidden: false,
+        describe: 'Checkout projects without any profiles and clear all recorded profiles',
+        type: 'boolean'
+      })
       .option('to', {
         type: 'array',
         default: [],

@@ -1,0 +1,10 @@
+{
+  "changes": [
+    {
+      "packageName": "sparo",
+      "comment": "Improve \"sparo checkout\" help text for \"--profile\", \"--add-profile\" and \"--no-profile\" paramters",
+      "type": "none"
+    }
+  ],
+  "packageName": "sparo"
+}
