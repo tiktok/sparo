@@ -2,7 +2,7 @@
   "changes": [
     {
       "packageName": "sparo",
-      "comment": "sparo pull need to track rush selectors also",
+      "comment": "\"sparo pull\" respects temporary rush selectors \"--to\" and \"--from\".",
       "type": "none"
     }
   ],
