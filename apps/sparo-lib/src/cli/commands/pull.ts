@@ -55,10 +55,11 @@ export class PullCommand implements ICommand<IPullCommandOptions> {
     // Collect anything that is not related to profile, pass down them to native git pull
     const pullArgs: string[] = args._ as string[];
 
-    const { isNoProfile, profiles, addProfiles } = await sparoProfileService.preprocessProfileArgs({
-      profilesFromArg: args.profile ?? [],
-      addProfilesFromArg: []
-    });
+    const { isNoProfile, profiles, addProfiles, isProfileRestoreFromLocal } =
+      await sparoProfileService.preprocessProfileArgs({
+        profilesFromArg: args.profile ?? [],
+        addProfilesFromArg: []
+      });
 
     const { remote } = args;
     if (remote) {
@@ -93,7 +94,8 @@ export class PullCommand implements ICommand<IPullCommandOptions> {
     // sync local sparse checkout state with given profiles.
     await this._sparoProfileService.syncProfileState({
       profiles: isNoProfile ? undefined : profiles,
-      addProfiles
+      addProfiles,
+      isProfileRestoreFromLocal
     });
   };
 
