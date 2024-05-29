@@ -1,0 +1,10 @@
+{
+  "changes": [
+    {
+      "packageName": "sparo",
+      "comment": "sparo pull need to track rush selectors also",
+      "type": "none"
+    }
+  ],
+  "packageName": "sparo"
+}
