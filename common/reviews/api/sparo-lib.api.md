@@ -46,6 +46,7 @@ export class GitService {
     getIsSparseCheckoutMode(): boolean | undefined;
     // (undocumented)
     getObjectType(object: string): IObjectType | undefined;
+    getPreviousBranch(n: number): string;
     // (undocumented)
     getRepoInfo(): GitRepoInfo;
     get gitPath(): string | undefined;
