@@ -1,0 +1,10 @@
+{
+  "changes": [
+    {
+      "packageName": "sparo",
+      "comment": "\"sparo pull\" respects temporary rush selectors \"--to\" and \"--from\".",
+      "type": "none"
+    }
+  ],
+  "packageName": "sparo"
+}
