@@ -1,0 +1,68 @@
+name: Website preview deployment
+on:
+  pull_request:
+    branches:
+      - main
+    paths:
+      - .github/workflows/website-preview-deploy.yaml
+      - apps/website/**
+permissions:
+  contents: write
+  pull-requests: write
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  preview-deploy:
+    name: Preview deployment
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Configure Git
+        env:
+          GITHUB_TOKEN: ${{ secrets.BOT_ACCESS_TOKEN }}
+        run: |
+          git config --local user.name tiktokbot
+          git config --local user.email tiktokbot@users.noreply.github.com
+          git config --global credential.helper '!f() { echo "protocol=https\nhost=github.com" ; echo "username=oauth_token" ; echo "password=${GITHUB_TOKEN}" ; }; f'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 18
+      - name: Set environment variable
+        run: echo "BASE_URL=/sparo/_preview/pr-${{ github.event.number }}/" >> $GITHUB_ENV
+      - name: Rush Install(Website)
+        run: node common/scripts/install-run-rush.js install --to website
+      - name: Rush build(Website)
+        env:
+          BASE_URL: ${{ env.BASE_URL }}
+        run: node common/scripts/install-run-rush.js build --verbose --production --to website
+      - name: Deploy to GitHub Pages preview
+        uses: peaceiris/actions-gh-pages@v4
+        if: github.event_name == 'pull_request'
+        with:
+          github_token: ${{ secrets.BOT_ACCESS_TOKEN }}
+          publish_dir: ./apps/website/build
+          destination_dir: _preview/pr-${{ github.event.number }}
+      - name: Comment on the pull request with preview URL
+        if: github.event_name == 'pull_request'
+        uses: hasura/comment-progress@v2
+        with:
+          github-token: ${{ secrets.BOT_ACCESS_TOKEN }}
+          repository: 'tiktok/sparo'
+          number: ${{ github.event.number }}
+          id: deploy-preview
+          recreate: true
+          message: |
+            ## 🚀 Deployment Update
+
+            The preview of your changes has been successfully deployed! 🎉
+
+            ### 🌐 Website Preview
+
+            https://tiktok.github.io/sparo/_preview/pr-${{ github.event.number }}/
+
+            Please review the changes at the above link. If everything looks good, you can proceed with the merge. If you encounter any issues, please address them and push the changes.
+
+            Happy coding! 😃

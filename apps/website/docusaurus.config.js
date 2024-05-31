@@ -16,7 +16,7 @@ const config = {
   url: 'https://tiktok.github.io',
   // Set the /<baseUrl>/ pathname under which your site is served
   // For GitHub pages deployment, it is often '/<projectName>/'
-  baseUrl: '/sparo/',
+  baseUrl: process.env.BASE_URL || '/sparo/',
 
   // GitHub pages deployment config.
   // If you aren't using GitHub pages, you don't need these.
