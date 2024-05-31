@@ -1,0 +1,10 @@
+{
+  "changes": [
+    {
+      "packageName": "sparo",
+      "comment": "\"sparo checkout -\" can checkout to previous branch correctly",
+      "type": "none"
+    }
+  ],
+  "packageName": "sparo"
+}

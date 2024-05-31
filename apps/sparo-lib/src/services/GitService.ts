@@ -446,6 +446,24 @@ Please specify a directory on the command line
   }
 
   /**
+   * Retrieves the previous branch name using `@{-n}` syntax
+   *
+   * Assume:
+   * git checkout feature
+   * git checkout main
+   * ---
+   * `git checkout @{-1}` equals to run `git checkout feature`.
+   * Running `getPreviousBranch(1)` works in the similar way and returns "feature" in this case.
+   */
+  public getPreviousBranch(n: number): string {
+    const result: string = this.executeGitCommandAndCaptureOutput({
+      args: ['rev-parse', '--symbolic-full-name', '--abbrev-ref=loose', `@{-${n}}`]
+    }).trim();
+    this._terminalService.terminal.writeDebugLine(`getPreviousBranch ${n}: ${result}`);
+    return result;
+  }
+
+  /**
    * Check existence for a list of branch name
    */
   public checkRemoteBranchesExistenceAsync = async (

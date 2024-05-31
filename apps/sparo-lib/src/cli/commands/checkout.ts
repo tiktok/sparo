@@ -122,11 +122,11 @@ export class CheckoutCommand implements ICommand<ICheckoutCommandOptions> {
     if (!branch) {
       const checkoutIndex: number = process.argv.findIndex((value: string) => value === 'checkout');
       if (checkoutIndex >= 0 && process.argv[checkoutIndex + 1] === '-') {
-        branch = '-';
-        // FIXME: supports "sparo checkout -"
-        throw new Error(
-          `Git's "-" token is not yet supported. If this feature is important for your work, please let us know by creating a GitHub issue.`
-        );
+        // - is a shortcut of @{-1}
+        branch = gitService.getPreviousBranch(1);
+        if (!branch) {
+          throw new Error(`Argument "-" is unknown revision or path not in the working tree.`);
+        }
       }
     }
 
