@@ -1,6 +1,14 @@
 # Change Log - sparo
 
-This log was last generated on Fri, 24 May 2024 23:10:09 GMT and should not be manually modified.
+This log was last generated on Fri, 31 May 2024 18:31:02 GMT and should not be manually modified.
+
+## 1.3.0
+Fri, 31 May 2024 18:31:02 GMT
+
+### Updates
+
+- "sparo checkout -" can checkout to previous branch correctly
+- "sparo pull" respects temporary rush selectors "--to" and "--from".
 
 ## 1.2.0
 Fri, 24 May 2024 23:10:09 GMT

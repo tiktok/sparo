@@ -2,6 +2,21 @@
   "name": "sparo",
   "entries": [
     {
+      "version": "1.3.0",
+      "tag": "sparo_v1.3.0",
+      "date": "Fri, 31 May 2024 18:31:02 GMT",
+      "comments": {
+        "none": [
+          {
+            "comment": "\"sparo checkout -\" can checkout to previous branch correctly"
+          },
+          {
+            "comment": "\"sparo pull\" respects temporary rush selectors \"--to\" and \"--from\"."
+          }
+        ]
+      }
+    },
+    {
       "version": "1.2.0",
       "tag": "sparo_v1.2.0",
       "date": "Fri, 24 May 2024 23:10:09 GMT",
