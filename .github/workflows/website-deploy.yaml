@@ -1,0 +1,56 @@
+name: Website deployment
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - .github/workflows/website-deploy.yaml
+      - apps/website/**
+permissions:
+  contents: write
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  deploy:
+    name: Website deployment
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Configure Git
+        env:
+          GITHUB_TOKEN: ${{ secrets.BOT_ACCESS_TOKEN }}
+        run: |
+          git config --local user.name tiktokbot
+          git config --local user.email tiktokbot@users.noreply.github.com
+          git config --global credential.helper '!f() { echo "protocol=https\nhost=github.com" ; echo "username=oauth_token" ; echo "password=${GITHUB_TOKEN}" ; }; f'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 18
+      - name: Rush Install(Website)
+        run: node common/scripts/install-run-rush.js install --to website
+      - name: Rush build(Website)
+        run: node common/scripts/install-run-rush.js build --verbose --production --to website
+      - name: Deploy to GitHub Pages preview
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.BOT_ACCESS_TOKEN }}
+          publish_dir: ./apps/website/build
+      - name: Get current time
+        id: comment
+        run: |
+          CURRENT_TIME=$(TZ='America/Los_Angeles' date +"%Y-%m-%d %H:%M:%S %Z")
+          echo "::set-output name=current_time::$CURRENT_TIME"
+      - name: Comment on the commit
+        uses: hasura/comment-progress@v2
+        with:
+          github-token: ${{ secrets.BOT_ACCESS_TOKEN }}
+          repository: 'tiktok/sparo'
+          commit-sha: ${{ github.sha }}
+          recreate: true
+          message: |
+            ## 🚀 Deployment Information
+
+            The website has been deployed at ${{ steps.comment.outputs.current_time }}
