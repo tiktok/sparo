@@ -42,9 +42,9 @@ jobs:
         id: comment
         run: |
           CURRENT_TIME=$(TZ='America/Los_Angeles' date +"%Y-%m-%d %H:%M:%S %Z")
-          echo "::set-output name=current_time::$CURRENT_TIME"
+          echo "current_time=$CURRENT_TIME" >> $GITHUB_OUTPUT
       - name: Comment on the commit
-        uses: hasura/comment-progress@v2
+        uses: hasura/comment-progress@v2.3.0
         with:
           github-token: ${{ secrets.BOT_ACCESS_TOKEN }}
           repository: 'tiktok/sparo'
