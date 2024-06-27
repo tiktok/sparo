@@ -21,6 +21,7 @@ export class CommandService {
   @inject(HelpTextService) private _helpTextService!: HelpTextService;
   @inject(TerminalService) private _terminalService!: TerminalService;
   @inject(TelemetryService) private _telemetryService!: TelemetryService;
+  private _hasInternalError: boolean = false;
 
   public register<O extends {}>(command: ICommand<O>): void {
     const { cmd, description, builder, handler, getHelp } = command;
@@ -36,19 +37,23 @@ export class CommandService {
       },
       async (args) => {
         process.exitCode = 1;
+        this._hasInternalError = false;
         try {
           terminal.writeVerboseLine(`Invoking command "${commandName}" with args ${JSON.stringify(args)}`);
           const stopwatch: Stopwatch = Stopwatch.start();
           await handler(args, terminalService);
           terminal.writeVerboseLine(`Invoked command "${commandName}" done (${stopwatch.toString()})`);
           stopwatch.stop();
-          this._telemetryService.collectTelemetry({
-            commandName,
-            args: process.argv.slice(2),
-            durationInSeconds: stopwatch.duration,
-            startTimestampMs: stopwatch.startTime,
-            endTimestampMs: stopwatch.endTime
-          });
+          if (!this._hasInternalError) {
+            // Only report success data
+            this._telemetryService.collectTelemetry({
+              commandName,
+              args: process.argv.slice(2),
+              durationInSeconds: stopwatch.duration,
+              startTimestampMs: stopwatch.startTime,
+              endTimestampMs: stopwatch.endTime
+            });
+          }
           // eslint-disable-next-line require-atomic-updates
           process.exitCode = 0;
         } catch (e) {
@@ -59,5 +64,9 @@ export class CommandService {
       }
     );
     this._helpTextService.set(commandName, getHelp());
+  }
+
+  public setHasInternalError(): void {
+    this._hasInternalError = true;
   }
 }

@@ -6,6 +6,7 @@ import { Service } from '../decorator';
 import { TerminalService } from './TerminalService';
 import { Stopwatch } from '../logic/Stopwatch';
 import { TelemetryService } from './TelemetryService';
+import { CommandService } from './CommandService';
 
 /**
  * @alpha
@@ -34,6 +35,7 @@ export class GitService {
   private _isSparseCheckoutMode: boolean | undefined;
   @inject(TerminalService) private _terminalService!: TerminalService;
   @inject(TelemetryService) private _telemetryService!: TelemetryService;
+  @inject(CommandService) private _commandService!: CommandService;
 
   public setGitConfig(
     k: string,
@@ -248,14 +250,18 @@ export class GitService {
     this._terminalService.terminal.writeDebugLine(`Invoked git command done (${stopwatch.toString()})`);
     this._terminalService.writeTaskFooter();
     stopwatch.stop();
-    this._telemetryService.collectTelemetry({
-      commandName: args[0],
-      args: args.slice(1),
-      durationInSeconds: stopwatch.duration,
-      startTimestampMs: stopwatch.startTime,
-      endTimestampMs: stopwatch.endTime,
-      isRawGitCommand: true
-    });
+    if (result.status === 0) {
+      this._telemetryService.collectTelemetry({
+        commandName: args[0],
+        args: args.slice(1),
+        durationInSeconds: stopwatch.duration,
+        startTimestampMs: stopwatch.startTime,
+        endTimestampMs: stopwatch.endTime,
+        isRawGitCommand: true
+      });
+    } else {
+      this._commandService.setHasInternalError();
+    }
     return result;
   }
 
@@ -274,14 +280,16 @@ export class GitService {
     });
     this._terminalService.terminal.writeDebugLine(`Invoked git command done (${stopwatch.toString()})`);
     stopwatch.stop();
-    this._telemetryService.collectTelemetry({
-      commandName: args[0],
-      args: args.slice(1),
-      durationInSeconds: stopwatch.duration,
-      startTimestampMs: stopwatch.startTime,
-      endTimestampMs: stopwatch.endTime,
-      isRawGitCommand: true
-    });
+    if (result.status === 0) {
+      this._telemetryService.collectTelemetry({
+        commandName: args[0],
+        args: args.slice(1),
+        durationInSeconds: stopwatch.duration,
+        startTimestampMs: stopwatch.startTime,
+        endTimestampMs: stopwatch.endTime,
+        isRawGitCommand: true
+      });
+    }
     this._processResult(result);
     return result.stdout.toString();
   }
@@ -492,8 +500,8 @@ Please specify a directory on the command line
     const { terminal } = this._terminalService;
     terminal.writeDebugLine(`Running git ${lsRemoteArgs.join(' ')}...`);
     const childProcess: child_process.ChildProcess = Executable.spawn(gitPath, lsRemoteArgs, {
-        currentWorkingDirectory,
-        stdio: ['ignore', 'pipe', 'pipe']
+      currentWorkingDirectory,
+      stdio: ['ignore', 'pipe', 'pipe']
     });
     if (!childProcess.stdout || !childProcess.stderr) {
       terminal.writeDebugLine(`Failed to spawn git process, fallback to spawnSync`);
