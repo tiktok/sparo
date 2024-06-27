@@ -18,7 +18,7 @@ export class GitRemoteFetchConfigService {
   @inject(GracefulShutdownService) private _gracefulShutdownService!: GracefulShutdownService;
 
   public addRemoteBranchIfNotExists(remote: string, branch: string): void {
-    const remoteFetchGitConfig: string[] | undefined = this._loadForRemote(remote);
+    const remoteFetchGitConfig: string[] | undefined = this._getRemoteFetchInGitConfig(remote);
 
     if (remoteFetchGitConfig) {
       const targetConfig: string = `+refs/heads/${branch}:refs/remotes/${remote}/${branch}`;
@@ -38,7 +38,7 @@ export class GitRemoteFetchConfigService {
   }
 
   public pruneRemoteBranchesInGitConfigAsync = async (remote: string): Promise<void> => {
-    const remoteFetchConfig: string[] | undefined = this._loadForRemote(remote);
+    const remoteFetchConfig: string[] | undefined = this._getRemoteFetchInGitConfig(remote);
     if (!remoteFetchConfig) {
       return;
     }
@@ -103,12 +103,12 @@ export class GitRemoteFetchConfigService {
    * It's used in "sparo fetch --all" command
    */
   public revertSingleBranchIfNecessary = (remote: string): (() => void) | undefined => {
-    let remoteFetchGitConfig: string[] | undefined = this._loadForRemote(remote);
+    let remoteFetchGitConfig: string[] | undefined = this._getRemoteFetchInGitConfig(remote);
     let callback: (() => void) | undefined;
     if (remoteFetchGitConfig && !remoteFetchGitConfig.includes(`+refs/heads/*:refs/remotes/${remote}/*`)) {
       this._setAllBranchFetch(remote);
 
-      callback = () => {
+      callback = (): void => {
         if (remoteFetchGitConfig) {
           this._setRemoteFetchInGitConfig(remote, remoteFetchGitConfig);
 
@@ -147,7 +147,7 @@ export class GitRemoteFetchConfigService {
     return branchToValues;
   }
 
-  private _loadForRemote(remote: string): string[] | undefined {
+  private _getRemoteFetchInGitConfig(remote: string): string[] | undefined {
     const result: string | undefined = this._gitService.getGitConfig(`remote.${remote}.fetch`, {
       array: true
     });
@@ -160,9 +160,10 @@ export class GitRemoteFetchConfigService {
    * So, delete all remote.origin.fetch configuration and restores expected value
    */
   private _setRemoteFetchInGitConfig(remote: string, remoteFetchGitConfig: string[]): void {
-    this._gitService.unsetGitConfig(`remote.${remote}.fetch`);
+    const key: string = `remote.${remote}.fetch`;
+    this._gitService.unsetGitConfig(key);
     for (const value of remoteFetchGitConfig) {
-      this._gitService.setGitConfig(`remote.${remote}.fetch`, value, { add: true });
+      this._gitService.setGitConfig(key, value, { add: true });
     }
   }
 
