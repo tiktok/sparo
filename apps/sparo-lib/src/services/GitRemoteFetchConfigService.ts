@@ -50,6 +50,8 @@ export class GitRemoteFetchConfigService {
     );
     const checkBranches: string[] = Array.from(branchToValues.keys()).filter((x) => x !== '*');
 
+    this._terminalService.terminal.writeLine(`Checking tracking branches...`);
+
     const remoteBranchExistenceInfo: Record<string, boolean> =
       await this._gitService.checkRemoteBranchesExistenceAsync(remote, checkBranches);
 
