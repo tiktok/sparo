@@ -1,0 +1,10 @@
+{
+  "changes": [
+    {
+      "packageName": "sparo",
+      "comment": "Enhance metric logic to accurately report success data",
+      "type": "none"
+    }
+  ],
+  "packageName": "sparo"
+}
