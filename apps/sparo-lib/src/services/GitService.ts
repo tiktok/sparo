@@ -487,31 +487,54 @@ Please specify a directory on the command line
   public checkRemoteBranchExistenceAsync = async (remote: string, branch: string): Promise<boolean> => {
     const gitPath: string = this.getGitPathOrThrow();
     const currentWorkingDirectory: string = this.getRepoInfo().root;
-    const childProcess: child_process.ChildProcess = Executable.spawn(
-      gitPath,
-      ['ls-remote', '--exit-code', remote, branch],
-      {
+    const isDebug: boolean = this._terminalService.isDebug;
+    const lsRemoteArgs: string[] = ['ls-remote', '--exit-code', '--heads', remote, branch];
+    const { terminal } = this._terminalService;
+    terminal.writeDebugLine(`Running git ${lsRemoteArgs.join(' ')}...`);
+    const childProcess: child_process.ChildProcess = Executable.spawn(gitPath, lsRemoteArgs, {
         currentWorkingDirectory,
         stdio: ['ignore', 'pipe', 'pipe']
-      }
-    );
+    });
     if (!childProcess.stdout || !childProcess.stderr) {
-      this._terminalService.terminal.writeDebugLine(`Failed to spawn git process, fallback to spawnSync`);
+      terminal.writeDebugLine(`Failed to spawn git process, fallback to spawnSync`);
       const result: string = this.executeGitCommandAndCaptureOutput({
         args: ['ls-remote', remote, branch]
       }).trim();
       return Promise.resolve(!!result);
     }
+    if (isDebug) {
+      childProcess.stdout.on('data', (data: Buffer) => {
+        const text: string = data.toString();
+        terminal.writeDebugLine(text);
+      });
+      childProcess.stderr.on('data', (data: Buffer) => {
+        const text: string = data.toString();
+        terminal.writeDebugLine(text);
+      });
+    }
     return await new Promise((resolve, reject) => {
       // Only care about exit code since specifying --exit-code
       childProcess.on('close', (exitCode: number | null) => {
-        if (exitCode) {
-          this._terminalService.terminal.writeDebugLine(`Branch "${branch}" doesn't exist remotely`);
-          resolve(false);
-        } else {
-          this._terminalService.terminal.writeDebugLine(`Branch "${branch}" exists remotely`);
-          resolve(true);
+        // Allow exitCode 128. It indicates permission issue
+        switch (exitCode) {
+          case 0: {
+            terminal.writeDebugLine(`Branch "${branch}" exists remotely`);
+            break;
+          }
+          case 2: {
+            terminal.writeDebugLine(`Branch "${branch}" doesn't exist remotely`);
+            return resolve(false);
+          }
+          case 128: {
+            terminal.writeDebugLine(`Check "${branch}" failed because of permission issue`);
+            break;
+          }
+          default: {
+            terminal.writeDebugLine(`Check "${branch}" returns unknown exit code ${exitCode}`);
+            break;
+          }
         }
+        resolve(true);
       });
     });
   };

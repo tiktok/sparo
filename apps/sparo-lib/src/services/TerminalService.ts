@@ -65,6 +65,10 @@ export class TerminalService {
     this._terminal.writeLine(Colorize.gray('-'.repeat(this._asciiHeaderWidth)));
     this._terminal.writeLine();
   }
+
+  public get isDebug(): boolean {
+    return this._terminalProvider.debugEnabled;
+  }
 }
 
 export type { ITerminal };
