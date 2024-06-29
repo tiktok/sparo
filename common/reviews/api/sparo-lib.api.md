@@ -122,6 +122,8 @@ export class Sparo {
 export class TerminalService {
     constructor();
     // (undocumented)
+    get isDebug(): boolean;
+    // (undocumented)
     setIsDebug(value: boolean): void;
     // (undocumented)
     setIsVerbose(value: boolean): void;

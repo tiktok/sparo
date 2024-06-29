@@ -1,0 +1,10 @@
+{
+  "changes": [
+    {
+      "packageName": "sparo",
+      "comment": "Improve logic to check existence of a branch",
+      "type": "none"
+    }
+  ],
+  "packageName": "sparo"
+}

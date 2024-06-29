@@ -6,6 +6,7 @@ import { Service } from '../decorator';
 import { TerminalService } from './TerminalService';
 import { Stopwatch } from '../logic/Stopwatch';
 import { TelemetryService } from './TelemetryService';
+import { CommandService } from './CommandService';
 
 /**
  * @alpha
@@ -34,6 +35,7 @@ export class GitService {
   private _isSparseCheckoutMode: boolean | undefined;
   @inject(TerminalService) private _terminalService!: TerminalService;
   @inject(TelemetryService) private _telemetryService!: TelemetryService;
+  @inject(CommandService) private _commandService!: CommandService;
 
   public setGitConfig(
     k: string,
@@ -248,14 +250,18 @@ export class GitService {
     this._terminalService.terminal.writeDebugLine(`Invoked git command done (${stopwatch.toString()})`);
     this._terminalService.writeTaskFooter();
     stopwatch.stop();
-    this._telemetryService.collectTelemetry({
-      commandName: args[0],
-      args: args.slice(1),
-      durationInSeconds: stopwatch.duration,
-      startTimestampMs: stopwatch.startTime,
-      endTimestampMs: stopwatch.endTime,
-      isRawGitCommand: true
-    });
+    if (result.status === 0) {
+      this._telemetryService.collectTelemetry({
+        commandName: args[0],
+        args: args.slice(1),
+        durationInSeconds: stopwatch.duration,
+        startTimestampMs: stopwatch.startTime,
+        endTimestampMs: stopwatch.endTime,
+        isRawGitCommand: true
+      });
+    } else {
+      this._commandService.setHasInternalError();
+    }
     return result;
   }
 
@@ -274,14 +280,16 @@ export class GitService {
     });
     this._terminalService.terminal.writeDebugLine(`Invoked git command done (${stopwatch.toString()})`);
     stopwatch.stop();
-    this._telemetryService.collectTelemetry({
-      commandName: args[0],
-      args: args.slice(1),
-      durationInSeconds: stopwatch.duration,
-      startTimestampMs: stopwatch.startTime,
-      endTimestampMs: stopwatch.endTime,
-      isRawGitCommand: true
-    });
+    if (result.status === 0) {
+      this._telemetryService.collectTelemetry({
+        commandName: args[0],
+        args: args.slice(1),
+        durationInSeconds: stopwatch.duration,
+        startTimestampMs: stopwatch.startTime,
+        endTimestampMs: stopwatch.endTime,
+        isRawGitCommand: true
+      });
+    }
     this._processResult(result);
     return result.stdout.toString();
   }
@@ -487,31 +495,54 @@ Please specify a directory on the command line
   public checkRemoteBranchExistenceAsync = async (remote: string, branch: string): Promise<boolean> => {
     const gitPath: string = this.getGitPathOrThrow();
     const currentWorkingDirectory: string = this.getRepoInfo().root;
-    const childProcess: child_process.ChildProcess = Executable.spawn(
-      gitPath,
-      ['ls-remote', '--exit-code', remote, branch],
-      {
-        currentWorkingDirectory,
-        stdio: ['ignore', 'pipe', 'pipe']
-      }
-    );
+    const isDebug: boolean = this._terminalService.isDebug;
+    const lsRemoteArgs: string[] = ['ls-remote', '--exit-code', '--heads', remote, branch];
+    const { terminal } = this._terminalService;
+    terminal.writeDebugLine(`Running git ${lsRemoteArgs.join(' ')}...`);
+    const childProcess: child_process.ChildProcess = Executable.spawn(gitPath, lsRemoteArgs, {
+      currentWorkingDirectory,
+      stdio: ['ignore', 'pipe', 'pipe']
+    });
     if (!childProcess.stdout || !childProcess.stderr) {
-      this._terminalService.terminal.writeDebugLine(`Failed to spawn git process, fallback to spawnSync`);
+      terminal.writeDebugLine(`Failed to spawn git process, fallback to spawnSync`);
       const result: string = this.executeGitCommandAndCaptureOutput({
         args: ['ls-remote', remote, branch]
       }).trim();
       return Promise.resolve(!!result);
     }
+    if (isDebug) {
+      childProcess.stdout.on('data', (data: Buffer) => {
+        const text: string = data.toString();
+        terminal.writeDebugLine(text);
+      });
+      childProcess.stderr.on('data', (data: Buffer) => {
+        const text: string = data.toString();
+        terminal.writeDebugLine(text);
+      });
+    }
     return await new Promise((resolve, reject) => {
       // Only care about exit code since specifying --exit-code
       childProcess.on('close', (exitCode: number | null) => {
-        if (exitCode) {
-          this._terminalService.terminal.writeDebugLine(`Branch "${branch}" doesn't exist remotely`);
-          resolve(false);
-        } else {
-          this._terminalService.terminal.writeDebugLine(`Branch "${branch}" exists remotely`);
-          resolve(true);
+        // Allow exitCode 128. It indicates permission issue
+        switch (exitCode) {
+          case 0: {
+            terminal.writeDebugLine(`Branch "${branch}" exists remotely`);
+            break;
+          }
+          case 2: {
+            terminal.writeDebugLine(`Branch "${branch}" doesn't exist remotely`);
+            return resolve(false);
+          }
+          case 128: {
+            terminal.writeDebugLine(`Check "${branch}" failed because of permission issue`);
+            break;
+          }
+          default: {
+            terminal.writeDebugLine(`Check "${branch}" returns unknown exit code ${exitCode}`);
+            break;
+          }
         }
+        resolve(true);
       });
     });
   };
