@@ -1,6 +1,14 @@
 # Change Log - sparo
 
-This log was last generated on Fri, 31 May 2024 18:31:02 GMT and should not be manually modified.
+This log was last generated on Tue, 02 Jul 2024 18:03:52 GMT and should not be manually modified.
+
+## 1.4.0
+Tue, 02 Jul 2024 18:03:52 GMT
+
+### Updates
+
+- Improve logic to check existence of a branch
+- Enhance metric logic to accurately report success data
 
 ## 1.3.0
 Fri, 31 May 2024 18:31:02 GMT

@@ -2,6 +2,21 @@
   "name": "sparo",
   "entries": [
     {
+      "version": "1.4.0",
+      "tag": "sparo_v1.4.0",
+      "date": "Tue, 02 Jul 2024 18:03:52 GMT",
+      "comments": {
+        "none": [
+          {
+            "comment": "Improve logic to check existence of a branch"
+          },
+          {
+            "comment": "Enhance metric logic to accurately report success data"
+          }
+        ]
+      }
+    },
+    {
       "version": "1.3.0",
       "tag": "sparo_v1.3.0",
       "date": "Fri, 31 May 2024 18:31:02 GMT",
