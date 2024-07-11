@@ -2,7 +2,7 @@
   "changes": [
     {
       "packageName": "sparo",
-      "comment": "Automatically set up recommended git configuration even when full clone",
+      "comment": "Automatically set up recommended git configuration even when performing a full clone",
       "type": "none"
     }
   ],
