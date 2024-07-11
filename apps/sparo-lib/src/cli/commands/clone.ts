@@ -77,15 +77,16 @@ export class CloneCommand implements ICommand<ICloneCommandOptions> {
       directory: directory
     };
 
+    const { full, skipGitConfig } = args;
+
     terminal.writeLine('Initializing working directory...');
     const stopwatch: Stopwatch = Stopwatch.start();
 
-    if (args.full) {
+    if (full) {
       this._gitCloneService.fullClone(cloneOptions);
-      return;
+    } else {
+      this._gitCloneService.bloblessClone(cloneOptions);
     }
-
-    this._gitCloneService.bloblessClone(cloneOptions);
 
     process.chdir(directory);
 
@@ -94,37 +95,39 @@ export class CloneCommand implements ICommand<ICloneCommandOptions> {
       addProfilesFromArg: []
     });
 
-    await this._GitSparseCheckoutService.ensureSkeletonExistAndUpdated();
+    if (!full) {
+      this._GitSparseCheckoutService.ensureSkeletonExistAndUpdated();
 
-    // check whether profile exist in local branch
-    if (!isNoProfile) {
-      const targetProfileNames: Set<string> = new Set(profiles);
-      const nonExistProfileNames: string[] = [];
-      for (const targetProfileName of targetProfileNames) {
-        if (!this._sparoProfileService.hasProfileInFS(targetProfileName)) {
-          nonExistProfileNames.push(targetProfileName);
+      // check whether profile exist in local branch
+      if (!isNoProfile) {
+        const targetProfileNames: Set<string> = new Set(profiles);
+        const nonExistProfileNames: string[] = [];
+        for (const targetProfileName of targetProfileNames) {
+          if (!this._sparoProfileService.hasProfileInFS(targetProfileName)) {
+            nonExistProfileNames.push(targetProfileName);
+          }
+        }
+
+        if (nonExistProfileNames.length) {
+          throw new Error(
+            `Clone failed. The following profile(s) are missing in cloned repo: ${Array.from(
+              targetProfileNames
+            ).join(', ')}`
+          );
         }
       }
 
-      if (nonExistProfileNames.length) {
-        throw new Error(
-          `Clone failed. The following profile(s) are missing in cloned repo: ${Array.from(
-            targetProfileNames
-          ).join(', ')}`
-        );
+      // Avoid redundant sync if no profile is given
+      if (!isNoProfile && profiles.size) {
+        // sync local sparse checkout state with given profiles.
+        await this._sparoProfileService.syncProfileState({
+          profiles: isNoProfile ? undefined : profiles
+        });
       }
     }
 
-    // Avoid redundant sync if no profile is given
-    if (!isNoProfile && profiles.size) {
-      // sync local sparse checkout state with given profiles.
-      await this._sparoProfileService.syncProfileState({
-        profiles: isNoProfile ? undefined : profiles
-      });
-    }
-
     // set recommended git config
-    if (!args.skipGitConfig) {
+    if (!skipGitConfig) {
       terminal.writeLine(`Applying recommended configuration...`);
       this._gitService.setRecommendConfig({ overwrite: true });
     }
@@ -139,7 +142,7 @@ export class CloneCommand implements ICommand<ICloneCommandOptions> {
     terminal.writeLine('   ' + Colorize.cyan(`cd ${directory}`));
     terminal.writeLine();
 
-    if (isNoProfile || profiles.size === 0) {
+    if (!full && (isNoProfile || profiles.size === 0)) {
       terminal.writeLine('Your next step is to choose a Sparo profile for checkout.');
       terminal.writeLine('To see available profiles in this repo:');
       terminal.writeLine('   ' + Colorize.cyan('sparo list-profiles'));
