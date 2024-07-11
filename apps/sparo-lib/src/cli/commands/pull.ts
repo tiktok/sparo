@@ -74,7 +74,7 @@ export class PullCommand implements ICommand<IPullCommandOptions> {
 
     if (pullProcess.status !== 0) {
       // Pull failed
-      throw new Error('"git pull" operation failed');
+      throw new Error(`"git pull" operation failed (exit code ${pullProcess.status})`);
     }
 
     // check whether profile exist in local branch
