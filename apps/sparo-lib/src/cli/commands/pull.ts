@@ -4,6 +4,7 @@ import { GitService } from '../../services/GitService';
 import { GitRemoteFetchConfigService } from '../../services/GitRemoteFetchConfigService';
 import { SparoProfileService } from '../../services/SparoProfileService';
 
+import type { SpawnSyncReturns } from 'child_process';
 import type { Argv, ArgumentsCamelCase } from 'yargs';
 import type { ICommand } from './base';
 import type { TerminalService } from '../../services/TerminalService';
@@ -69,7 +70,12 @@ export class PullCommand implements ICommand<IPullCommandOptions> {
     await this._gitRemoteFetchConfigService.pruneRemoteBranchesInGitConfigAsync(remote || 'origin');
 
     // invoke native git pull command
-    gitService.executeGitCommand({ args: pullArgs });
+    const pullProcess: SpawnSyncReturns<string> = gitService.executeGitCommand({ args: pullArgs });
+
+    if (pullProcess.status !== 0) {
+      // Pull failed
+      throw new Error('"git pull" operation failed');
+    }
 
     // check whether profile exist in local branch
     if (!isNoProfile) {
