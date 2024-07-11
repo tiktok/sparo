@@ -41,13 +41,19 @@ export class FetchCommand implements ICommand<IFetchCommandOptions> {
     const { _gitService: gitService } = this;
     const { terminal } = terminalService;
     const repoInfo: GitRepoInfo = gitService.getRepoInfo();
-    const { branch: defaultBranch } = repoInfo;
+    const { branch: currentBranch } = repoInfo;
 
     terminal.writeDebugLine(`got args in fetch command: ${JSON.stringify(args)}`);
-    const { all, branch = defaultBranch, remote = this._gitService.getBranchRemote(branch) } = args;
+    const { all, branch } = args;
+    let { remote } = args;
     const fetchArgs: string[] = ['fetch'];
 
-    await this._gitRemoteFetchConfigService.pruneRemoteBranchesInGitConfigAsync(remote || 'origin');
+    // When no remote is specified, by default the origin remote will be used,
+    // unless there’s an upstream branch configured for the current branch.
+    remote = this._gitService.getBranchRemote(currentBranch) || 'origin';
+
+    this._gitRemoteFetchConfigService.addRemoteBranchIfNotExists(remote, currentBranch);
+    await this._gitRemoteFetchConfigService.pruneRemoteBranchesInGitConfigAsync(remote);
 
     let restoreSingleBranchCallback: (() => void) | undefined;
     if (all) {
@@ -56,7 +62,13 @@ export class FetchCommand implements ICommand<IFetchCommandOptions> {
 
       fetchArgs.push('--all');
     } else {
-      fetchArgs.push(remote, branch);
+      fetchArgs.push(remote);
+      if (branch) {
+        fetchArgs.push(branch);
+      } else {
+        // When no <refspec>s appear on the command line, the refs to fetch are read from remote.<repository>.fetch
+        // variables instead
+      }
     }
 
     gitService.executeGitCommand({ args: fetchArgs });
