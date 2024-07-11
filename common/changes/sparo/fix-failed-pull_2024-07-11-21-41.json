@@ -1,0 +1,10 @@
+{
+  "changes": [
+    {
+      "packageName": "sparo",
+      "comment": "Print error message and exit when git pull fails",
+      "type": "none"
+    }
+  ],
+  "packageName": "sparo"
+}
