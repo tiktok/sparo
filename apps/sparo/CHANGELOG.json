@@ -2,6 +2,24 @@
   "name": "sparo",
   "entries": [
     {
+      "version": "1.5.0",
+      "tag": "sparo_v1.5.0",
+      "date": "Mon, 15 Jul 2024 18:00:28 GMT",
+      "comments": {
+        "none": [
+          {
+            "comment": "Automatically set up recommended git configuration even when performing a full clone"
+          },
+          {
+            "comment": "\"sparo fetch\" behaves the same as \"git fetch\" when no remote or no branches specified"
+          },
+          {
+            "comment": "Print error message and exit when git pull fails"
+          }
+        ]
+      }
+    },
+    {
       "version": "1.4.0",
       "tag": "sparo_v1.4.0",
       "date": "Tue, 02 Jul 2024 18:03:52 GMT",

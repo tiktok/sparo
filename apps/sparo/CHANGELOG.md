@@ -1,6 +1,15 @@
 # Change Log - sparo
 
-This log was last generated on Tue, 02 Jul 2024 18:03:52 GMT and should not be manually modified.
+This log was last generated on Mon, 15 Jul 2024 18:00:28 GMT and should not be manually modified.
+
+## 1.5.0
+Mon, 15 Jul 2024 18:00:28 GMT
+
+### Updates
+
+- Automatically set up recommended git configuration even when performing a full clone
+- "sparo fetch" behaves the same as "git fetch" when no remote or no branches specified
+- Print error message and exit when git pull fails
 
 ## 1.4.0
 Tue, 02 Jul 2024 18:03:52 GMT
