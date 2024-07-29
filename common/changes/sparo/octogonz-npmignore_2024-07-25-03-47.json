@@ -1,0 +1,10 @@
+{
+  "changes": [
+    {
+      "packageName": "sparo",
+      "comment": "Include CHANGELOG.md in published releases",
+      "type": "none"
+    }
+  ],
+  "packageName": "sparo"
+}
