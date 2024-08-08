@@ -406,6 +406,10 @@
 
     // Build tests
     {
+      "packageName": "sparo-completion-test",
+      "projectFolder": "build-tests/sparo-completion-test"
+    },
+    {
       "packageName": "sparo-output-test",
       "projectFolder": "build-tests/sparo-output-test"
     },

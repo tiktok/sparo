@@ -1,0 +1,5 @@
+Running "sparo --get-yargs-completions sparo clone --":
+--profile
+--branch
+--full
+--skip-git-config
