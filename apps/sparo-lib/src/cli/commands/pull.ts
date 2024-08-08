@@ -37,6 +37,55 @@ export class PullCommand implements ICommand<IPullCommandOptions> {
       })
       .array('profile')
       .default('profile', [])
+      .option('get-yargs-completions', {
+        hidden: true,
+        type: 'boolean'
+      })
+      .completion('completion', false, (current, argv, done) => {
+        const isNoProfile: boolean = argv.profile.some(
+          (profile: string | boolean) => typeof profile === 'boolean' && profile === false
+        );
+        const longParameters: string[] = [
+          isNoProfile ? '' : '--profile',
+          isNoProfile ? '' : '--no-profile'
+        ].filter(Boolean);
+        if (current === 'pull') {
+          done(['origin']);
+        } else if (current === 'origin') {
+          const branchNames: string[] = this._gitRemoteFetchConfigService.getBranchNamesFromRemote('origin');
+          branchNames.unshift('HEAD');
+          done(branchNames);
+        } else if (current === '--') {
+          done(longParameters);
+        } else if (current === '--profile') {
+          const profileNameSet: Set<string> = new Set(this._sparoProfileService.loadProfileNames());
+          for (const profile of argv.profile) {
+            if (typeof profile === 'string') {
+              profileNameSet.delete(profile);
+            }
+          }
+          done(Array.from(profileNameSet));
+        } else if (current.startsWith('--')) {
+          done(longParameters.filter((parameter) => parameter.startsWith(current)));
+        } else {
+          const previous: string = process.argv.slice(-2)[0];
+          if (previous === '--profile') {
+            const profileNameSet: Set<string> = new Set(this._sparoProfileService.loadProfileNames());
+            for (const profile of argv.profile) {
+              if (typeof profile === 'string') {
+                profileNameSet.delete(profile);
+              }
+            }
+            done(Array.from(profileNameSet).filter((profileName) => profileName.startsWith(current)));
+          } else if (previous === 'origin') {
+            const branchNames: string[] =
+              this._gitRemoteFetchConfigService.getBranchNamesFromRemote('origin');
+            branchNames.unshift('HEAD');
+            done(branchNames.filter((name) => name.startsWith(current)));
+          }
+          done([]);
+        }
+      })
       .parserConfiguration({ 'unknown-options-as-args': true })
       .usage(
         '$0 pull [options] [repository] [refsepc...] [--profile <profile_name> | --no-profile]' +

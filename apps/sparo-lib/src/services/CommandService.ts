@@ -10,23 +10,31 @@ import { getCommandName } from '../cli/commands/util';
 
 export interface ICommandServiceParams {
   yargs: Argv<{}>;
-  helpTextService: HelpTextService;
   terminalService: TerminalService;
+}
+
+export interface ICommandInfo {
+  name: string;
+  description: string;
 }
 
 @Service()
 export class CommandService {
   @inject(ArgvService) private _yargs!: ArgvService;
-  @inject(HelpTextService) private _helpTextService!: HelpTextService;
   @inject(TerminalService) private _terminalService!: TerminalService;
   @inject(TelemetryService) private _telemetryService!: TelemetryService;
   private _hasInternalError: boolean = false;
+  private _commandInfos: Map<string, ICommandInfo> = new Map<string, ICommandInfo>();
 
   public register<O extends {}>(command: ICommand<O>): void {
-    const { cmd, description, builder, handler, getHelp } = command;
+    const { cmd, description, builder, handler } = command;
     const { _terminalService: terminalService } = this;
     const { terminal } = terminalService;
     const commandName: string = getCommandName(cmd);
+    this._commandInfos.set(commandName, {
+      name: commandName,
+      description
+    });
     this._yargs.yargsArgv.command<O>(
       cmd,
       description,
@@ -66,5 +74,9 @@ export class CommandService {
 
   public setHasInternalError(): void {
     this._hasInternalError = true;
+  }
+
+  public get commandInfos(): Map<string, ICommandInfo> {
+    return this._commandInfos;
   }
 }

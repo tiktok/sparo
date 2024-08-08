@@ -28,6 +28,18 @@ export class AutoConfigCommand implements ICommand<IAutoConfigCommandOptions> {
         type: 'boolean',
         hidden: true,
         default: false
+      })
+      .completion('completion', false, (current, argv, done) => {
+        const longParameters: string[] = [argv.overwrite ? '' : '--overwrite'].filter(Boolean);
+        if (current.startsWith('--')) {
+          done(
+            longParameters.filter((parameter) => {
+              return parameter.startsWith(current);
+            })
+          );
+        } else {
+          done([]);
+        }
       });
   }
   public handler = async (

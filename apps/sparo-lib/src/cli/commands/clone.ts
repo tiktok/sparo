@@ -22,7 +22,7 @@ export interface ICloneCommandOptions {
 @Command()
 export class CloneCommand implements ICommand<ICloneCommandOptions> {
   public cmd: string = 'clone <repository> [directory]';
-  public description: string = '';
+  public description: string = 'Clone a repository into a new directory';
 
   @inject(GitService) private _gitService!: GitService;
   @inject(GitCloneService) private _gitCloneService!: GitCloneService;
@@ -61,6 +61,17 @@ export class CloneCommand implements ICommand<ICloneCommandOptions> {
           return 'You must specify a repository to clone.';
         }
         return true;
+      })
+      .completion('completion', false, (current, argv, done) => {
+        const longParameters: string[] = ['--profile', '--branch', '--full', '--skip-git-config'];
+
+        if (current === '--') {
+          done(longParameters);
+        } else if (current.startsWith('--')) {
+          done(longParameters.filter((parameter) => parameter.startsWith(current)));
+        } else {
+          done([]);
+        }
       });
   }
 

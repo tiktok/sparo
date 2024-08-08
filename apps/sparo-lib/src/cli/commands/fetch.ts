@@ -22,7 +22,7 @@ export class FetchCommand implements ICommand<IFetchCommandOptions> {
   @inject(GitService) private _gitService!: GitService;
   @inject(GitRemoteFetchConfigService) private _gitRemoteFetchConfigService!: GitRemoteFetchConfigService;
 
-  public builder(yargs: Argv<{}>): void {
+  public builder = (yargs: Argv<{}>): void => {
     /**
      * sparo fetch <remote> <branch> [--all]
      */
@@ -31,8 +31,31 @@ export class FetchCommand implements ICommand<IFetchCommandOptions> {
       .positional('branch', { type: 'string' })
       .string('remote')
       .string('branch')
-      .boolean('all');
-  }
+      .boolean('all')
+      .completion('completion', false, (current, argv, done) => {
+        const longParameters: string[] = [argv.all ? '' : '--all', argv.tags ? '' : '--tags'].filter(Boolean);
+        if (current === 'fetch') {
+          done(['origin']);
+        } else if (current === 'origin') {
+          const branchNames: string[] = this._gitRemoteFetchConfigService.getBranchNamesFromRemote('origin');
+          branchNames.unshift('HEAD');
+          done(branchNames);
+        } else if (current === '--') {
+          done(longParameters);
+        } else if (current.startsWith('--')) {
+          done(longParameters.filter((parameter) => parameter.startsWith(current)));
+        } else {
+          const previous: string = process.argv.slice(-2)[0];
+          if (previous === 'origin') {
+            const branchNames: string[] =
+              this._gitRemoteFetchConfigService.getBranchNamesFromRemote('origin');
+            branchNames.unshift('HEAD');
+            done(branchNames.filter((name) => name.startsWith(current)));
+          }
+          done([]);
+        }
+      });
+  };
 
   public handler = async (
     args: ArgumentsCamelCase<IFetchCommandOptions>,

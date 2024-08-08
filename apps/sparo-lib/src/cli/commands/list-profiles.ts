@@ -1,9 +1,10 @@
 import childProcess from 'child_process';
-import { Sort } from '@rushstack/node-core-library';
+import { JsonFile, Sort } from '@rushstack/node-core-library';
 import { inject } from 'inversify';
 import { SparoProfileService } from '../../services/SparoProfileService';
 import { ICommand } from './base';
 import { Command } from '../../decorator';
+import { GitService } from '../../services/GitService';
 import { GitSparseCheckoutService } from '../../services/GitSparseCheckoutService';
 
 import type { Argv, ArgumentsCamelCase } from 'yargs';
@@ -24,14 +25,58 @@ export class ListProfilesCommand implements ICommand<IListProfilesCommandOptions
   public description: string =
     'List all available profiles or query profiles that contain the specified project name';
   @inject(SparoProfileService) private _sparoProfileService!: SparoProfileService;
+  @inject(GitService) private _gitService!: GitService;
   @inject(GitSparseCheckoutService) private _gitSparseCheckoutService!: GitSparseCheckoutService;
 
-  public builder(yargs: Argv<IListProfilesCommandOptions>): void {
-    yargs.option('project', {
-      type: 'string',
-      description: 'List all profiles contains this specified project name'
-    });
-  }
+  public builder = (yargs: Argv<IListProfilesCommandOptions>): void => {
+    yargs
+      .option('project', {
+        type: 'string',
+        description: 'List all profiles contains this specified project name'
+      })
+      .completion('completion', false, (current, argv, done) => {
+        const longParameters: string[] = [argv.project ? '' : '--project'].filter(Boolean);
+        if (current === '--') {
+          done(longParameters);
+        } else if (current === '--project') {
+          let rushJson: { projects?: { packageName: string }[] } = {};
+          const root: string = this._gitService.getRepoInfo().root;
+          try {
+            rushJson = JsonFile.load(`${root}/rush.json`);
+          } catch (e) {
+            // no-catch
+          }
+          if (Array.isArray(rushJson.projects)) {
+            const packageNameSet: Set<string> = new Set<string>(
+              rushJson.projects.map((project) => project.packageName)
+            );
+            const packageNames: string[] = Array.from(packageNameSet).sort();
+            done(packageNames);
+          }
+        } else if (current.startsWith('--')) {
+          done(longParameters.filter((parameter) => parameter.startsWith(current)));
+        } else {
+          const previous: string = process.argv.slice(-2)[0];
+          if (previous === '--project') {
+            let rushJson: { projects?: { packageName: string }[] } = {};
+            const root: string = this._gitService.getRepoInfo().root;
+            try {
+              rushJson = JsonFile.load(`${root}/rush.json`);
+            } catch (e) {
+              // no-catch
+            }
+            if (Array.isArray(rushJson.projects)) {
+              const packageNameSet: Set<string> = new Set<string>(
+                rushJson.projects.map((project) => project.packageName)
+              );
+              const packageNames: string[] = Array.from(packageNameSet).sort();
+              done(packageNames.filter((packageName) => packageName.startsWith(current)));
+            }
+          }
+          done([]);
+        }
+      });
+  };
   public handler = async (
     args: ArgumentsCamelCase<IListProfilesCommandOptions>,
     terminalService: TerminalService
