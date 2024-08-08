@@ -1,7 +1,6 @@
 import { inject } from 'inversify';
 import type { Argv } from 'yargs';
 import type { ICommand } from '../cli/commands/base';
-import { HelpTextService } from './HelpTextService';
 import { TerminalService } from './TerminalService';
 import { Service } from '../decorator';
 import { ArgvService } from './ArgvService';
@@ -63,7 +62,6 @@ export class CommandService {
         }
       }
     );
-    this._helpTextService.set(commandName, getHelp());
   }
 
   public setHasInternalError(): void {

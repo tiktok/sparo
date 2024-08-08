@@ -44,7 +44,4 @@ export class CICheckoutCommand implements ICommand<ICICheckoutCommandOptions> {
       from
     });
   };
-  public getHelp(): string {
-    return 'sparse help';
-  }
 }

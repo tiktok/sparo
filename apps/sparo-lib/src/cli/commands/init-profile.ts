@@ -66,8 +66,4 @@ export class InitProfileCommand implements ICommand<IInitProjectCommandOptions> 
     this._terminalService.terminal.writeLine();
     this._terminalService.terminal.writeLine('  ' + Colorize.cyan(destinationPath));
   };
-
-  public getHelp(): string {
-    return 'init-profile help';
-  }
 }

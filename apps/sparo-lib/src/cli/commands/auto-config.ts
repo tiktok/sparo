@@ -52,7 +52,4 @@ export class AutoConfigCommand implements ICommand<IAutoConfigCommandOptions> {
       throw e;
     }
   };
-  public getHelp(): string {
-    return '';
-  }
 }

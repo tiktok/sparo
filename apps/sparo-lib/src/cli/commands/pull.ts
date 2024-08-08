@@ -105,8 +105,4 @@ export class PullCommand implements ICommand<IPullCommandOptions> {
       isProfileRestoreFromLocal
     });
   };
-
-  public getHelp(): string {
-    return `pull help`;
-  }
 }

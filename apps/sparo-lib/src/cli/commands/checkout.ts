@@ -258,10 +258,6 @@ export class CheckoutCommand implements ICommand<ICheckoutCommandOptions> {
     }
   };
 
-  public getHelp(): string {
-    return '';
-  }
-
   private _ensureBranchInLocal(branch: string): boolean {
     // fetch from remote
     const remote: string = this._gitService.getBranchRemote(branch);

@@ -154,8 +154,4 @@ export class CloneCommand implements ICommand<ICloneCommandOptions> {
       terminal.writeLine('   ' + Colorize.cyan('sparo init-profile --profile <profile_name>'));
     }
   };
-
-  public getHelp(): string {
-    return `clone help`;
-  }
 }

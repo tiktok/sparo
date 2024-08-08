@@ -75,8 +75,4 @@ export class FetchCommand implements ICommand<IFetchCommandOptions> {
 
     restoreSingleBranchCallback?.();
   };
-
-  public getHelp(): string {
-    return `fetch help`;
-  }
 }

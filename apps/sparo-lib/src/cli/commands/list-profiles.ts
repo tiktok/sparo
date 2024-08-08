@@ -85,7 +85,4 @@ export class ListProfilesCommand implements ICommand<IListProfilesCommandOptions
       }
     }
   };
-  public getHelp(): string {
-    return 'list-profiles help';
-  }
 }
