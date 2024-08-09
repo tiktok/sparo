@@ -6,6 +6,8 @@ Git version is __VERSION__
 
 sparo clone <repository> [directory]
 
+Clone a repository into a new directory
+
 Positionals:
   repository  The remote repository to clone from.           [string] [required]
   directory   The name of a new directory to clone into. The "humanish" part of
