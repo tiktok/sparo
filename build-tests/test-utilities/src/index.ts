@@ -111,6 +111,7 @@ export async function executeCommandsAndCollectOutputs({
           outputPath,
           `Running "sparo ${args.join(' ')}":\n${processSparoOutput(
             stdout,
+            // process.cwd() -> project folder
             currentWorkingDirectory || process.cwd()
           )}`
         );

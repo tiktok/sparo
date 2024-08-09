@@ -28,7 +28,18 @@ export class InitProfileCommand implements ICommand<IInitProjectCommandOptions> 
         description: 'The name of the profile to initialize.'
       })
       .demandOption(['profile'])
-      .usage('Usage: $0 init-profile --profile <profile>');
+      .usage('Usage: $0 init-profile --profile <profile>')
+      .completion('completion', false, (current, argv, done) => {
+        const longParameters: string[] = [argv.profile ? '' : '--profile'].filter(Boolean);
+
+        if (current === '--') {
+          done(longParameters);
+        } else if (current.startsWith('--')) {
+          done(longParameters.filter((parameter) => parameter.startsWith(current)));
+        } else {
+          done([]);
+        }
+      });
   }
 
   public handler = async (
@@ -66,8 +77,4 @@ export class InitProfileCommand implements ICommand<IInitProjectCommandOptions> 
     this._terminalService.terminal.writeLine();
     this._terminalService.terminal.writeLine('  ' + Colorize.cyan(destinationPath));
   };
-
-  public getHelp(): string {
-    return 'init-profile help';
-  }
 }

@@ -1,0 +1,23 @@
+Running "sparo --get-yargs-completions sparo":
+auto-config:Automatic setup optimized git config
+list-profiles:List all available profiles or query profiles that contain the specified project name
+init-profile:Initialize a new profile.
+clone:Clone a repository into a new directory
+checkout:Updates files in the working tree to match the version in the index or the specified tree. If no pathspec was given, git checkout will also update HEAD to set the specified branch as the current branch.
+fetch:fetch remote branch to local
+pull:Incorporates changes from a remote repository into the current branch.
+git-clone:original git clone command
+git-checkout:original git checkout command
+git-fetch:original git fetch command
+git-pull:original git pull command
+add:add file contents to the index
+branch:list, create, or delete branches
+commit:record changes to the repository
+diff:show changes between commits, commit and working tree, etc
+log:show commit logs
+merge:join two or more development histories together
+push:update remote refs along with associated objects
+rebase:forward-port local commits to the updated upstream head
+reset:reset current HEAD to the specified state
+restore:restore working tree files
+status:show the working tree status

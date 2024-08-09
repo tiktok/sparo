@@ -17,5 +17,4 @@ export interface ICommand<O extends {}> {
 
   builder: (yargs: Argv<O>) => void;
   handler: (args: ArgumentsCamelCase<O>, terminalService: TerminalService) => Promise<void>;
-  getHelp: () => string;
 }

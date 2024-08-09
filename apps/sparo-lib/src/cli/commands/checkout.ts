@@ -1,5 +1,6 @@
 import * as child_process from 'child_process';
 import { inject } from 'inversify';
+import { JsonFile } from '@rushstack/node-core-library';
 import { Command } from '../../decorator';
 import { GitService } from '../../services/GitService';
 import { GitRemoteFetchConfigService } from '../../services/GitRemoteFetchConfigService';
@@ -32,7 +33,7 @@ export class CheckoutCommand implements ICommand<ICheckoutCommandOptions> {
   @inject(GitRemoteFetchConfigService) private _gitRemoteFetchConfigService!: GitRemoteFetchConfigService;
   @inject(SparoProfileService) private _sparoProfileService!: SparoProfileService;
 
-  public builder(yargs: Argv<{}>): void {
+  public builder = (yargs: Argv<{}>): void => {
     /**
      * git checkout [-q] [-f] [-m] [<branch>]
      * git checkout [-q] [-f] [-m] --detach [<branch>]
@@ -98,8 +99,114 @@ export class CheckoutCommand implements ICommand<ICheckoutCommandOptions> {
         default: [],
         description:
           'Checkout projects downstream from (and including itself and all its dependencies) project <from..>, can be used together with option --profile/--add-profile to form a union selection of the two options. The projects selectors here will never replace what have been checked out by profiles'
+      })
+      .completion('completion', false, (current, argv, done) => {
+        const isNoProfile: boolean = argv.profile.some(
+          (profile: string | boolean) => typeof profile === 'boolean' && profile === false
+        );
+        const shortParameters: string[] = [argv.b ? '' : '-b', argv.B ? '' : '-B'].filter(Boolean);
+        const longParameters: string[] = [
+          isNoProfile ? '' : '--no-profile',
+          isNoProfile ? '' : '--profile',
+          isNoProfile ? '' : '--add-profile',
+          '--to',
+          '--from'
+        ].filter(Boolean);
+
+        if (current === '-') {
+          done(shortParameters);
+        } else if (current === '--') {
+          done(longParameters);
+        } else if (current === '--profile' || current === '--add-profile') {
+          const profileNameSet: Set<string> = new Set(this._sparoProfileService.loadProfileNames());
+          for (const profile of argv.profile) {
+            if (typeof profile === 'string') {
+              profileNameSet.delete(profile);
+            }
+          }
+          for (const profile of argv.addProfile) {
+            if (typeof profile === 'string') {
+              profileNameSet.delete(profile);
+            }
+          }
+          done(Array.from(profileNameSet));
+        } else if (current === '--to' || current === '--from') {
+          let rushJson: { projects?: { packageName: string }[] } = {};
+          const root: string = this._gitService.getRepoInfo().root;
+          try {
+            rushJson = JsonFile.load(`${root}/rush.json`);
+          } catch (e) {
+            // no-catch
+          }
+          if (Array.isArray(rushJson.projects)) {
+            const packageNameSet: Set<string> = new Set<string>(
+              rushJson.projects.map((project) => project.packageName)
+            );
+            if (current === '--to') {
+              for (const packageName of argv.to) {
+                packageNameSet.delete(packageName);
+              }
+            }
+            if (current === '--from') {
+              for (const packageName of argv.from) {
+                packageNameSet.delete(packageName);
+              }
+            }
+            const packageNames: string[] = Array.from(packageNameSet).sort();
+            if (process.cwd() !== root) {
+              packageNames.unshift('.');
+            }
+            done(packageNames);
+          }
+          done([]);
+        } else if (current.startsWith('--')) {
+          done(longParameters.filter((parameter) => parameter.startsWith(current)));
+        } else {
+          const previous: string = process.argv.slice(-2)[0];
+          if (previous === '--profile' || previous === '--add-profile') {
+            const profileNameSet: Set<string> = new Set(this._sparoProfileService.loadProfileNames());
+            for (const profile of argv.profile) {
+              if (typeof profile === 'string') {
+                profileNameSet.delete(profile);
+              }
+            }
+            for (const profile of argv.addProfile) {
+              if (typeof profile === 'string') {
+                profileNameSet.delete(profile);
+              }
+            }
+            done(Array.from(profileNameSet).filter((profileName) => profileName.startsWith(current)));
+          } else if (previous === '--to' || previous === '--from') {
+            let rushJson: { projects?: { packageName: string }[] } = {};
+            const root: string = this._gitService.getRepoInfo().root;
+            try {
+              rushJson = JsonFile.load(`${root}/rush.json`);
+            } catch (e) {
+              // no-catch
+            }
+            if (Array.isArray(rushJson.projects)) {
+              const packageNameSet: Set<string> = new Set<string>(
+                rushJson.projects.map((project) => project.packageName)
+              );
+              if (previous === '--to') {
+                for (const packageName of argv.to) {
+                  packageNameSet.delete(packageName);
+                }
+              }
+              if (previous === '--from') {
+                for (const packageName of argv.from) {
+                  packageNameSet.delete(packageName);
+                }
+              }
+              const packageNames: string[] = Array.from(packageNameSet).sort();
+              done(packageNames.filter((packageName) => packageName.startsWith(current)));
+            }
+            done([]);
+          }
+          done([]);
+        }
       });
-  }
+  };
 
   public handler = async (
     args: ArgumentsCamelCase<ICheckoutCommandOptions>,
@@ -257,10 +364,6 @@ export class CheckoutCommand implements ICommand<ICheckoutCommandOptions> {
       });
     }
   };
-
-  public getHelp(): string {
-    return '';
-  }
 
   private _ensureBranchInLocal(branch: string): boolean {
     // fetch from remote

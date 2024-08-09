@@ -1,0 +1,2 @@
+Running "sparo --get-yargs-completions sparo add __fixture__/dir-a/file":
+__fixture__/dir-a/file-under-a.txt

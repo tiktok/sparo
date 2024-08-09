@@ -1,0 +1,10 @@
+{
+  "changes": [
+    {
+      "packageName": "sparo",
+      "comment": "Supports shell completion",
+      "type": "none"
+    }
+  ],
+  "packageName": "sparo"
+}

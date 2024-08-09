@@ -1,0 +1,1 @@
+Running "sparo --get-yargs-completions sparo rebase --interactive -":

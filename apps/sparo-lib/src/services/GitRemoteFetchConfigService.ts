@@ -128,6 +128,10 @@ export class GitRemoteFetchConfigService {
 
   /**
    * Reads remote.origin.fetch from git configuration. It returns a mapping
+   *
+   * Map {
+   *   'master' => Set { '+refs/heads/master:refs/remotes/origin/master' }
+   * }
    */
   public getBranchesInfoFromRemoteFetchConfig(remoteFetchConfig: string[]): Map<string, Set<string>> {
     const branchRegExp: RegExp = /^(?:\+)?refs\/heads\/([^:]+):/;
@@ -147,6 +151,17 @@ export class GitRemoteFetchConfigService {
       }
     }
     return branchToValues;
+  }
+
+  /**
+   * This function is used for completion
+   */
+  public getBranchNamesFromRemote(remote: string): string[] {
+    const remoteFetchConfig: string[] | undefined = this._getRemoteFetchInGitConfig(remote);
+    if (!remoteFetchConfig) {
+      return [];
+    }
+    return Array.from(this.getBranchesInfoFromRemoteFetchConfig(remoteFetchConfig).keys());
   }
 
   private _getRemoteFetchInGitConfig(remote: string): string[] | undefined {

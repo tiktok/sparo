@@ -19,22 +19,25 @@ export class SparoCommandLine {
   private constructor() {}
 
   public static async launchAsync(launchOptions: ILaunchOptions): Promise<void> {
-    if (launchOptions.collectTelemetryAsync) {
-      const telemetryService: TelemetryService = await getFromContainerAsync(TelemetryService);
-      telemetryService.setCollectTelemetryFunction(launchOptions.collectTelemetryAsync);
-    }
+    const isCompletion: boolean = ['completion', '--get-yargs-completions'].includes(process.argv[2]);
+    if (!isCompletion) {
+      if (launchOptions.collectTelemetryAsync) {
+        const telemetryService: TelemetryService = await getFromContainerAsync(TelemetryService);
+        telemetryService.setCollectTelemetryFunction(launchOptions.collectTelemetryAsync);
+      }
 
-    if (GitVersionCompatibility.reportGitRequiredVersion()) {
-      process.exit(1);
-    }
-    SparoStartupBanner.logBanner({
-      callerPackageJson: launchOptions.callerPackageJson
-    });
+      if (GitVersionCompatibility.reportGitRequiredVersion()) {
+        process.exit(1);
+      }
+      SparoStartupBanner.logBanner({
+        callerPackageJson: launchOptions.callerPackageJson
+      });
 
-    if (launchOptions.additionalSkeletonFolders) {
-      const gitSparseCheckoutService: GitSparseCheckoutService =
-        await getFromContainerAsync(GitSparseCheckoutService);
-      gitSparseCheckoutService.setAdditionalSkeletonFolders(launchOptions.additionalSkeletonFolders);
+      if (launchOptions.additionalSkeletonFolders) {
+        const gitSparseCheckoutService: GitSparseCheckoutService =
+          await getFromContainerAsync(GitSparseCheckoutService);
+        gitSparseCheckoutService.setAdditionalSkeletonFolders(launchOptions.additionalSkeletonFolders);
+      }
     }
 
     const sparo: SparoCommandLine = new SparoCommandLine();
@@ -79,6 +82,6 @@ export class SparoCommandLine {
   }
 
   private _supportedCommand(commandName: string): boolean {
-    return this._commandsMap.has(commandName);
+    return this._commandsMap.has(commandName) || commandName === 'completion';
   }
 }

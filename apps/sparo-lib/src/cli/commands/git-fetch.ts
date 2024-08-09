@@ -28,8 +28,4 @@ export class GitFetchCommand implements ICommand<{}> {
     terminal.writeDebugLine(`proxy args in git-fetch command: ${JSON.stringify(rawArgs)}`);
     gitService.executeGitCommand({ args: rawArgs });
   };
-
-  public getHelp(): string {
-    return `git-fetch help`;
-  }
 }

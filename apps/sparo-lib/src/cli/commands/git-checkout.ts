@@ -27,8 +27,4 @@ export class GitCheckoutCommand implements ICommand<{}> {
     terminal.writeDebugLine(`proxy args in git-checkout command: ${JSON.stringify(rawArgs)}`);
     gitService.executeGitCommand({ args: rawArgs });
   };
-
-  public getHelp(): string {
-    return `git-checkout help`;
-  }
 }

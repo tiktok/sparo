@@ -1,0 +1,5 @@
+Running "sparo --get-yargs-completions sparo rebase --":
+--continue
+--skip
+--abort
+--interactive

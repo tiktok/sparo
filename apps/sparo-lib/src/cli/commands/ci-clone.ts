@@ -71,8 +71,4 @@ export class CICloneCommand implements ICommand<ICloneCommandOptions> {
 
     terminal.writeLine(`Remember to run "cd ${directory}"`);
   };
-
-  public getHelp(): string {
-    return `clone help`;
-  }
 }
