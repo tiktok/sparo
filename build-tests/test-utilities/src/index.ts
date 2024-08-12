@@ -27,6 +27,11 @@ export interface ISparoCommandDefinition {
    * The working directory
    */
   currentWorkingDirectory?: string;
+
+  /**
+   * Process stdout. Use case: Unify path separator to /
+   */
+  processStdout?: (output: string) => string;
 }
 
 export interface ICustomCallbackDefinition {
@@ -64,7 +69,7 @@ export async function executeCommandsAndCollectOutputs({
     const { kind } = commandListDefinition;
     switch (commandListDefinition.kind) {
       case 'sparo-command': {
-        const { name, args, currentWorkingDirectory } = commandListDefinition;
+        const { name, args, currentWorkingDirectory, processStdout } = commandListDefinition;
         const subProcess: ChildProcess = Executable.spawn(sparoBinPath, args, {
           stdio: 'pipe',
           currentWorkingDirectory,
@@ -78,8 +83,11 @@ export async function executeCommandsAndCollectOutputs({
         let stdout: string = '';
         let stderr: string = '';
         subProcess.stdout?.on('data', (data: Buffer) => {
-          const text: string = data.toString();
+          let text: string = data.toString();
           console.log(text);
+          if (processStdout) {
+            text = processStdout(text);
+          }
           stdout += text;
         });
 

@@ -231,17 +231,20 @@ export async function runAsync(runScriptOptions: IRunScriptOptions): Promise<voi
     {
       kind: 'sparo-command',
       name: 'add-partial-completion',
-      args: prefixArgs.concat(['add', '__fixture__'])
+      args: prefixArgs.concat(['add', '__fixture__']),
+      processStdout: replaceBackslashes
     },
     {
       kind: 'sparo-command',
       name: 'add-folder-completion',
-      args: prefixArgs.concat(['add', '__fixture__/'])
+      args: prefixArgs.concat(['add', '__fixture__/']),
+      processStdout: replaceBackslashes
     },
     {
       kind: 'sparo-command',
       name: 'add-folder-partial-completion',
-      args: prefixArgs.concat(['add', '__fixture__/dir-a/file'])
+      args: prefixArgs.concat(['add', '__fixture__/dir-a/file']),
+      processStdout: replaceBackslashes
     },
     // branch
     // commit
@@ -308,4 +311,8 @@ export async function runAsync(runScriptOptions: IRunScriptOptions): Promise<voi
     logger,
     production
   });
+}
+
+function replaceBackslashes(text: string): string {
+  return text.replace(/\\/g, '/');
 }
