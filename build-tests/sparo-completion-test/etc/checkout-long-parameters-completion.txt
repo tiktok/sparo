@@ -1,0 +1,6 @@
+Running "sparo --get-yargs-completions sparo checkout --":
+--no-profile
+--profile
+--add-profile
+--to
+--from

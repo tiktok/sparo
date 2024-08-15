@@ -1,0 +1,4 @@
+Running "sparo --get-yargs-completions sparo checkout --add-profile":
+my-team
+sparo-development
+sparo-website

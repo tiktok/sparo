@@ -1,0 +1,3 @@
+Running "sparo --get-yargs-completions sparo checkout --no-profile --":
+--to
+--from

@@ -27,7 +27,4 @@ export class GitPullCommand implements ICommand<{}> {
     terminal.writeDebugLine(`proxy args in git-pull command: ${JSON.stringify(rawArgs)}`);
     gitService.executeGitCommand({ args: rawArgs });
   };
-  public getHelp(): string {
-    return `git-pull help`;
-  }
 }

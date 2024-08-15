@@ -30,6 +30,20 @@ export class SparoProfileService {
   @inject(LocalState) private _localState!: LocalState;
   @inject(GitSparseCheckoutService) private _gitSparseCheckoutService!: GitSparseCheckoutService;
 
+  /**
+   * This function is used for completion
+   */
+  public loadProfileNames(): string[] {
+    const sparoProfileFolder: string = this._sparoProfileFolder;
+    const sparoProfilePaths: string[] = FileSystem.readFolderItemNames(sparoProfileFolder, {
+      absolutePaths: true
+    });
+    return sparoProfilePaths
+      .filter((profilePath) => profilePath.endsWith('.json'))
+      .map((profilePath) => SparoProfileService._getProfileName(profilePath))
+      .sort();
+  }
+
   public async loadProfilesAsync(): Promise<void> {
     if (!this._loadPromise) {
       this._loadPromise = (async () => {

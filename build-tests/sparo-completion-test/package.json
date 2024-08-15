@@ -1,0 +1,24 @@
+{
+  "name": "sparo-completion-test",
+  "description": "Building this project tests Sparo command-line outputs",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "_phase:build": "heft run --only build -- --clean",
+    "build": "heft build --clean"
+  },
+  "dependencies": {
+    "@rushstack/node-core-library": "~3.64.2",
+    "build-test-utilities": "workspace:*"
+  },
+  "devDependencies": {
+    "@rushstack/heft": "0.64.3",
+    "@rushstack/heft-node-rig": "2.4.5",
+    "@types/heft-jest": "1.0.6",
+    "@types/node": "20.11.16",
+    "eslint": "8.56.0",
+    "typescript": "~5.3.3"
+  },
+  "keywords": [],
+  "license": "MIT"
+}

@@ -12,7 +12,7 @@ Commands:
                                          profiles that contain the specified
                                          project name
   sparo init-profile                     Initialize a new profile.
-  sparo clone <repository> [directory]
+  sparo clone <repository> [directory]   Clone a repository into a new directory
   sparo checkout [branch] [start-point]  Updates files in the working tree to
                                          match the version in the index or the
                                          specified tree. If no pathspec was

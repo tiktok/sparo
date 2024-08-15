@@ -27,8 +27,4 @@ export class GitCloneCommand implements ICommand<{}> {
     terminal.writeDebugLine(`proxy args in git-clone command: ${JSON.stringify(rawArgs)}`);
     gitService.executeGitCommand({ args: rawArgs });
   };
-
-  public getHelp(): string {
-    return `git-clone help`;
-  }
 }

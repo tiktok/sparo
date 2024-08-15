@@ -1,0 +1,2 @@
+Running "sparo --get-yargs-completions sparo pull":
+origin
