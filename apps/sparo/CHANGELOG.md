@@ -1,6 +1,14 @@
 # Change Log - sparo
 
-This log was last generated on Mon, 15 Jul 2024 18:00:28 GMT and should not be manually modified.
+This log was last generated on Fri, 16 Aug 2024 22:09:09 GMT and should not be manually modified.
+
+## 1.6.0
+Fri, 16 Aug 2024 22:09:09 GMT
+
+### Updates
+
+- Supports shell completion
+- Include CHANGELOG.md in published releases
 
 ## 1.5.0
 Mon, 15 Jul 2024 18:00:28 GMT
