@@ -6,7 +6,7 @@ title: 概述
 
 Sparo 有四种类型的子命令：
 
-1. **镜像子命令**，例如 `sparo branch` 和 `sparo revert`，直接调用相应的 `git` 子命令。使用镜像子命令的目的是让 Sparo 能够提供有关可能导致性能问题的参数的建议。此外，您还可以选择配置 Sparo 以收集匿名使用数据，帮助您衡量在您的代码库中的使用体验。（收集的数据会发送到您自己的服务，其他任何人无法访问。）
+1. **mirrored子命令**，例如 `sparo branch` 和 `sparo revert`，直接调用相应的 `git` 子命令。使用mirrored子命令的目的是让 Sparo 能够提供有关可能导致性能问题的参数的建议。此外，您还可以选择配置 Sparo 以收集匿名使用数据，帮助您衡量在您的代码库中的使用体验。（收集的数据会发送到您自己的服务，其他任何人无法访问。）
 
 2. **增强子命令**，其基本设计与对应的 `git` 子命令相同，但针对稀疏签出配置文件和更高效的默认设置进行了调整。共有四个增强命令：
    - `sparo checkout`
@@ -14,7 +14,7 @@ Sparo 有四种类型的子命令：
    - `sparo fetch`
    - `sparo pull`
 
-3. **重命名子命令** 是四个增强子命令的镜像版本，它们被重命名为添加了 `git-` 前缀：
+3. **重命名子命令** 是四个增强子命令的mirrored版本，它们被重命名为添加了 `git-` 前缀：
   - `sparo git-checkout`
   - `sparo git-clone`
   - `sparo git-fetch`
@@ -27,9 +27,9 @@ Sparo 有四种类型的子命令：
   - `sparo inspect` _(尚未实现，将报告工作目录状态和诊断信息)_
   - `sparo reclone` _(尚未实现，将有效地恢复到干净的克隆状态)_
 
-## 镜像命令
+## mirrored命令
 
-每个子命令在本文档中都有自己的页面，镜像命令除外，它们已经在 Git 文档中进行了介绍。为了方便起见，下面的表格列出了最重要的["porcelain"](https://git-scm.com/book/en/v2/Git-Internals-Plumbing-and-Porcelain)子命令，然而每个 Git 子命令都受支持。
+每个子命令在本文档中都有自己的页面，mirrored命令除外，它们已经在 Git 文档中进行了介绍。为了方便起见，下面的表格列出了最重要的["porcelain"](https://git-scm.com/book/en/v2/Git-Internals-Plumbing-and-Porcelain)子命令，然而每个 Git 子命令都受支持。
 
 | 子命令 | 概述 |
 | --- | --- |

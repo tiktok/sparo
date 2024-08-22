@@ -95,7 +95,7 @@ Sparo 优化了 Git 操作在大型前端 monorepo 中的性能。
    rush build --to @azure/arm-commerce
    ```
 
-5. 在日常工作中，考虑选择 [镜像子命令](./pages/commands/overview.md)，例如 `sparo revert` 而不是 `git revert`。Sparo 包装器提供 (1) 更好的默认设置，(2) 更好的性能建议，以及 (3) 可选的匿名化性能指标。
+5. 在日常工作中，考虑选择 [mirrored子命令](./pages/commands/overview.md)，例如 `sparo revert` 而不是 `git revert`。Sparo 包装器提供 (1) 更好的默认设置，(2) 更好的性能建议，以及 (3) 可选的匿名化性能指标。
 
    示例：
 
