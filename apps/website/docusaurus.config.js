@@ -40,7 +40,7 @@ const config = {
       require.resolve('docusaurus-lunr-search'),
       {
         // language codes
-        languages: ['en']
+        languages: ['en', 'zh']
       }
     ]
   ],
