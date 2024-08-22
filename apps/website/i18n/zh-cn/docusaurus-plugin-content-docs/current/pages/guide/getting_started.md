@@ -15,6 +15,10 @@ title: 入门指南
 克隆您的 [RushJS](https://rushjs.io/) monorepo：
 
 ```shell
+# 从 NPM 全局安装 Sparo CLI
+npm install -g sparo
+
+# 使用 Sparo 克隆你的仓库
 sparo clone https://github.com/my-company/my-monorepo.git
 
 cd my-monorepo

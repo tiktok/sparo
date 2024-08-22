@@ -48,6 +48,10 @@ Sparo 优化了 Git 操作在大型前端 monorepo 中的性能。
 2. 在此演示中，我们将使用 Azure SDK，这是 GitHub 上一个大型的公共 [RushJS](https://rushjs.io/) monorepo。以下命令将签出[骨架文件夹](./pages/reference/skeleton_folders.md)，但不会签出源代码：
 
    ```shell
+   # 从 NPM 全局安装 Sparo CLI
+   npm install -g sparo
+
+   # 使用 Sparo 克隆你的仓库
    sparo clone https://github.com/Azure/azure-sdk-for-js.git
 
    cd azure-sdk-for-js
