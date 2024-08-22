@@ -2,7 +2,7 @@
 title: sparo git-checkout
 ---
 
-This is the [mirrored subcommand](./overview.md) for `git checkout`.  It has the same functionality as the corresponding Git subcommand, but supports Sparo's optional anonymous timing metrics collection.
+这是 `git checkout` 的[镜像子命令](./overview.md)。它具有与相应 Git 子命令相同的功能，但支持 Sparo 可选的匿名计时数据收集。
 
 ```
 sparo git-checkout [-q] [-f] [-m] [<branch>]
@@ -14,4 +14,4 @@ sparo git-checkout [-f|--ours|--theirs|-m|--conflict=<style>] [<tree-ish>] --pat
 sparo git-checkout (-p|--patch) [<tree-ish>] [--] [<pathspec>…​]
 ```
 
-See [git checkout](https://git-scm.com/docs/git-checkout) in the Git documentation for details.
+详情请参阅 Git 文档中的 [git checkout](https://git-scm.com/docs/git-checkout)。

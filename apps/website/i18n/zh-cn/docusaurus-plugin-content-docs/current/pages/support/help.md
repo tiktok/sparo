@@ -1,14 +1,13 @@
 ---
-title: Getting help
+title: 获取帮助
 ---
 
-Please [create a GitHub issue](https://github.com/tiktok/sparo/issues/new/choose) to report any problems or feature requests.
+请[创建 GitHub issue](https://github.com/tiktok/sparo/issues/new/choose) 来报告任何问题或功能请求。
 
-For general questions, please use our [GitHub Discussions](https://github.com/tiktok/sparo/discussions) forum.
+对于一般性问题，请使用我们的 [GitHub Discussions](https://github.com/tiktok/sparo/discussions) 论坛。
 
-## Troubleshooting tips
+## 故障排除提示
 
-- UPGRADE TO THE LATEST GIT.  Sparo normally reports an error if your Git version is too old.  If the minimum Git version is not high enough, let us know!
+- 升级到最新的 GIT。 如果您的 Git 版本过旧，Sparo 通常会报告错误。如果最低 Git 版本不够高，请告诉我们！
 
-- If an operation is failing, use `--debug` to investigate.  For example, `sparo --debug clone http://my-repo` instead of `sparo clone http://my-repo`.
-
+- 如果操作失败，请使用 `--debug` 进行调查。例如，使用 `sparo --debug clone http://my-repo` 代替 `sparo clone http://my-repo`。

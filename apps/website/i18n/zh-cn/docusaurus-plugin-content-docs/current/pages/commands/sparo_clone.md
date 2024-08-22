@@ -5,21 +5,18 @@ title: sparo clone
 ```
 sparo clone <repository> [directory]
 
-Positionals:
-  repository  The remote repository to clone from.           [string] [required]
-  directory   The name of a new directory to clone into. The "humanish" part of
-              the source repository is used if no directory is explicitly given
-              (repo for /path/to/repo.gitService and foo for
-              host.xz:foo/.gitService). Cloning into an existing directory is
-              only allowed if the directory is empty                    [string]
+位置参数：
+  repository  要克隆的远程仓库。                              [string] [required]
+  directory   要克隆到的新目录名称。如果未明确指定目录名称，则使用源仓库的
+              “人性化”部分（对于 /path/to/repo.gitService 使用 repo，对于
+              host.xz:foo/.gitService 使用 foo）。仅当目录为空时，才允许克隆
+              到现有目录中。                                           [string]
 
-Options:
-  -h, --help             Show help                                     [boolean]
-  -s, --skip-git-config  By default, Sparo automatically configures the
-                         recommended git settings for the repository you are
-                         about to clone. If you prefer not to include this step,
-                         you can use the input parameter --skip-git-config
-                                                      [boolean] [default: false]
-  -b, --branch           Specify a branch to clone                      [string]
+选项：
+  -h, --help             显示帮助                                      [boolean]
+  -s, --skip-git-config  默认情况下，Sparo 会自动配置您即将克隆的仓库的推荐
+                         git 设置。如果您不希望包含此步骤，可以使用输入参数
+                         --skip-git-config                    [boolean] [default: false]
+  -b, --branch           指定要克隆的分支                                [string]
       --profile                                            [array] [default: []]
 ```

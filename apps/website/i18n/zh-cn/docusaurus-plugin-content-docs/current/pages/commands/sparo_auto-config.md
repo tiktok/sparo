@@ -5,18 +5,18 @@ title: sparo auto-config
 ```
 sparo auto-config
 
-Automatic setup optimized git config
+自动设置优化的 Git 配置
 
-Options:
-  -h, --help       Show help                                           [boolean]
+选项:
+  -h, --help       显示帮助                                           [boolean]
       --overwrite                                     [boolean] [default: false]
 ```
 
-You do not normally need to invoke `sparo auto-config`.  As the name implies, it is automatically applied by `sparo clone`.  This command is provided for reapplying the configuration in a situation where the user may have manually altered Sparo's configuration.  It is a good first step when investigating problems.
+通常，您不需要手动调用 `sparo auto-config`。顾名思义，它由 `sparo clone` 自动应用。该命令提供用于在用户可能手动更改了 Sparo 配置的情况下重新应用配置。当调查问题时，这是一个不错的第一步。
 
-## Auto-config settings
+## 自动配置设置
 
-The implementation can be found in [GitService.ts](https://github.com/tiktok/sparo/blob/main/apps/sparo-lib/src/services/GitService.ts).  Below is a summary of the currently applied settings:
+实现可以在 [GitService.ts](https://github.com/tiktok/sparo/blob/main/apps/sparo-lib/src/services/GitService.ts) 中找到。以下是当前应用设置的摘要：
 
 ```
 pull.rebase=true

@@ -2,10 +2,10 @@
 title: sparo git-pull
 ---
 
-This is the [mirrored subcommand](./overview.md) for `git pull`.  It has the same functionality as the corresponding Git subcommand, but supports Sparo's optional anonymous timing metrics collection.
+这是 `git pull` 的[镜像子命令](./overview.md)。它具有与相应 Git 子命令相同的功能，但支持 Sparo 可选的匿名计时数据收集。
 
 ```
 sparo git-pull [<options>] [<repository> [<refspec>…​]]
 ```
 
-See [git pull](https://git-scm.com/docs/git-pull) in the Git documentation for details.
+详情请参阅 Git 文档中的 [git pull](https://git-scm.com/docs/git-pull)。

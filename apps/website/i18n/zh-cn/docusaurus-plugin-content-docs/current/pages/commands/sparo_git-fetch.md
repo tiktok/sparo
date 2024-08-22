@@ -2,7 +2,7 @@
 title: sparo git-fetch
 ---
 
-This is the [mirrored subcommand](./overview.md) for `git fetch`.  It has the same functionality as the corresponding Git subcommand, but supports Sparo's optional anonymous timing metrics collection.
+这是 `git fetch` 的[镜像子命令](./overview.md)。它具有与相应 Git 子命令相同的功能，但支持 Sparo 可选的匿名计时数据收集。
 
 ```
 sparo git-fetch [<options>] [<repository> [<refspec>…​]]
@@ -11,5 +11,4 @@ sparo git-fetch --multiple [<options>] [(<repository> | <group>)…​]
 sparo git-fetch --all [<options>]
 ```
 
-See [git fetch](https://git-scm.com/docs/git-fetch) in the Git documentation for details.
-
+详情请参阅 Git 文档中的 [git fetch](https://git-scm.com/docs/git-fetch)。

@@ -2,28 +2,27 @@
 title: <profile-name>.json
 ---
 
-To initialize a new Sparo profile, you can copy and paste the contents of this template.
+要初始化一个新的 Sparo 配置文件，您可以复制并粘贴此模板的内容。
 
 **common/sparo-profiles/&lt;profile-name&gt;.json**
 ```js
 /**
- * OWNER:   <your team name>
- * PURPOSE: <what you use this profile for>
+ * 所有者:   <您的团队名称>
+ * 目的:     <您使用此配置文件的目的>
  */
 {
   "$schema": "https://tiktok.github.io/sparo/schemas/sparo-profile.schema.json",
 
   /**
-   * A list of Rush project selectors indicating the project folders to be
-   * included for sparse checkout.  The selectors will be combined to make
-   * the union superset of projects.  See the Rush selector docs for details:
+   * 一个 Rush 项目选择器列表，指示要包含在稀疏签出中的项目文件夹。
+   * 选择器将组合以构成项目的并集。详情请参阅 Rush 选择器文档：
    * https://rushjs.io/pages/developer/selecting_subsets/
    */
   "selections": [
     /**
-     * For example, include all Rush projects tagged with "tag:my-team"
-     * as well as the dependency workspace projects needed to build them.
-     * To learn about Rush project tags, see this documentation:
+     * 例如，包含所有标记为 "tag:my-team" 的 Rush 项目
+     * 以及构建它们所需的依赖工作区项目。
+     * 要了解有关 Rush 项目标签的信息，请参阅此文档：
      * https://rushjs.io/pages/developer/project_tags/
      */
     // {
@@ -31,9 +30,8 @@ To initialize a new Sparo profile, you can copy and paste the contents of this t
     //   "argument": "tag:my-team"
     // },
     /**
-     * For example, include the project called "my-library", as well as all
-     * projects that are impacted by changes to it, as well as the dependency
-     * projects needed to build everything.
+     * 例如，包含名为 "my-library" 的项目，以及所有
+     * 受其更改影响的项目，以及构建所有项目所需的依赖项目。
      */
     // {
     //   "selector": "--from",
@@ -42,23 +40,20 @@ To initialize a new Sparo profile, you can copy and paste the contents of this t
   ],
 
   /**
-   * A list of arbitrary additional folders to be included for checkout,
-   * not necessarily corresponding to any workspace project.
-   * The paths should use forward slashes, without a leading slash, and should be to the 
-   * root folder of the monorepo.  Wildcards and glob patterns are not supported for
-   * performance reasons.
+   * 要包含在签出中的任意其他文件夹列表，
+   * 不一定对应于任何工作区项目。
+   * 路径应使用正斜杠，不带前导斜杠，并且应指向 monorepo 的根文件夹。
+   * 出于性能原因，不支持通配符和 glob 模式。
    */
   "includeFolders": [
     // "path/to/include"
   ],
 
   /**
-   * A list of folders to be excluded from the checkout.  This field takes precedence
-   * over the "includeFolders" and "selections" fields, guaranteeing that the
-   * specified path will definitely not be included.
-   * The paths should use forward slashes, without a leading slash, and should be to the 
-   * root folder of the monorepo.  Wildcards and glob patterns are not supported for
-   * performance reasons.
+   * 要从签出中排除的文件夹列表。此字段优先于
+   * "includeFolders" 和 "selections" 字段，确保指定的路径绝对不会被包含。
+   * 路径应使用正斜杠，不带前导斜杠，并且应指向 monorepo 的根文件夹。
+   * 出于性能原因，不支持通配符和 glob 模式。
    */
   "excludeFolders": [
     // "path/to/exclude"
@@ -66,6 +61,6 @@ To initialize a new Sparo profile, you can copy and paste the contents of this t
 }
 ```
 
-## See also
+## 另见
 
-- [Sparo profiles](../guide/sparo_profiles.md)
+- [Sparo 配置文件](../guide/sparo_profiles.md)

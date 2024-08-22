@@ -5,14 +5,14 @@ title: sparo-ci clone
 ```
 sparo-ci clone <repository> [directory]
 
-Positionals:
-  repository  The remote repository to clone from.           [string] [required]
-  directory   The name of a new directory to clone into. The "humanish" part of
-              the source repository is used if no directory is explicitly given
-              (repo for /path/to/repo.gitService and foo for
-              host.xz:foo/.gitService). Cloning into an existing directory is
-              only allowed if the directory is empty                    [string]
+位置参数:
+  repository  要克隆的远程仓库。                            [string] [required]
+  directory   要克隆到的新目录名称。如果未显式指定目录，
+              将使用源仓库的“humanish”部分
+              （对于 /path/to/repo.gitService 使用 repo，对于
+              host.xz:foo/.gitService 使用 foo）。
+              仅当目录为空时才允许克隆到现有目录。          [string]
 
-Options:
-  --help  Show help                                                    [boolean]
+选项:
+  --help  显示帮助                                                   [boolean]
 ```

@@ -2,9 +2,9 @@
 title: Skeleton folders
 ---
 
-By default `sparo clones` initializes a sparse checkout that does not include any Sparo profile selections, but does include folders containing essential config files such as **package-lock.yaml** and **package.json**.  We call this starting point the checkout **"skeleton"** because it shows the full tree of all project folders in your monorepo, but without their source code subfolders.  In other words, although the source files for each project are excluded, the skeleton nonetheless allows engineers to remain aware of other team's projects, and how their own project relates to those other projects.  This discourages "tunnel vision" (where engineers pretend their project is the only project in the repository), while still ensuring fast Git performance.
+By default `sparo clone` initializes a sparse checkout that does not include any Sparo profile selections, but does include folders containing essential config files such as **package-lock.yaml** and **package.json**.  We call this starting point the checkout **"skeleton"** because it shows the full tree of all project folders in your monorepo, but without their source code subfolders.  In other words, although the source files for each project are excluded, the skeleton nonetheless allows engineers to remain aware of other team's projects, and how their own project relates to those other projects.  This discourages "tunnel vision" (where engineers pretend their project is the only project in the repository), while still ensuring fast Git performance.
 
-Because Sparo enables the "cone mode" optimization for Git sparse checkout, the skeleton uses globs to match entire folders, not individual files.  
+Because Sparo enables the "cone mode" optimization for Git sparse checkout, the skeleton uses globs to match entire folders, not individual files.
 
 ## Skeleton spec
 

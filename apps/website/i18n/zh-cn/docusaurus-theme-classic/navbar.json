@@ -4,7 +4,7 @@
     "description": "The alt text of navbar logo"
   },
   "item.label.Docs": {
-    "message": "Docs",
+    "message": "文档",
     "description": "Navbar item with label Docs"
   },
   "item.label.GitHub": {
@@ -12,11 +12,11 @@
     "description": "Navbar item with label GitHub"
   },
   "item.label.News": {
-    "message": "News",
+    "message": "新闻",
     "description": "Navbar item with label News"
   },
   "item.label.Help": {
-    "message": "Help",
+    "message": "帮助",
     "description": "Navbar item with label Help"
   }
 }

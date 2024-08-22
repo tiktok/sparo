@@ -5,12 +5,12 @@ title: sparo fetch
 ```
 sparo fetch [remote] [branch]
 
-fetch remote branch to local
+将远程分支获取到本地
 
-Positionals:
+位置参数:
   remote                                                                [string]
   branch                                                                [string]
 
-Options:
-  -h, --help  Show help                                                [boolean]
+选项:
+  -h, --help  显示帮助                                                 [boolean]
 ```

@@ -1,35 +1,35 @@
 ---
-title: Contributing
+title: 贡献指南
 ---
 
-Building the projects in this monorepo:
+在这个 monorepo 中构建项目：
 
-1. Install the [RushJS](https://rushjs.io/) tool:
+1. 安装 [RushJS](https://rushjs.io/) 工具：
 
    ```shell
    npm install -g @microsoft/rush
    ```
 
-2. Clone the repo:
+2. 克隆仓库：
 
    ```shell
    git clone https://github.com/tiktok/sparo.git
    ```
 
-3. Install the dependencies
+3. 安装依赖项
 
    ```shell
    cd sparo
    rush install
    ```
 
-4. Build all projects
+4. 构建所有项目
 
    ```shell
    rush build
    ```
 
-How to invoke your locally build `sparo` command:
+如何调用您本地构建的 `sparo` 命令：
 
 ```shell
 cd apps/sparo

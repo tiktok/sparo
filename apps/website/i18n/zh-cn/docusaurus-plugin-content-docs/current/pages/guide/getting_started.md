@@ -1,18 +1,18 @@
 ---
-title: Getting started
+title: 入门指南
 ---
 
-In this tutorial we'll revisit the [Quick Demo](../../index.md#quick-demo) steps, but this time examining the Sparo workflow in more detail.
+在本教程中，我们将重温[快速演示](../../index.md#quick-demo)的步骤，但这次我们将更详细地探讨 Sparo 的工作流程。
 
-## Step 1: Upgrade Git
+## 第 1 步：升级 Git
 
-Remember to upgrade to the latest Git version! Many Git optimizations are relatively new and not available in older versions of the software.
+请记住将 Git 升级到最新版本！许多 Git 优化功能相对较新，在旧版本的软件中不可用。
 
-For macOS, we recommend to use [brew install git](https://git-scm.com/download/mac).  For other operating systems, see the [Git documentation](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git) for instructions.
+对于 macOS，我们推荐使用 [brew install git](https://git-scm.com/download/mac)。对于其他操作系统，请参阅 [Git 文档](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git) 了解安装说明。
 
-## Step 2: Clone your Rush monorepo
+## 第 2 步：克隆您的 Rush monorepo
 
-Clone your [RushJS](https://rushjs.io/) monorepo:
+克隆您的 [RushJS](https://rushjs.io/) monorepo：
 
 ```shell
 sparo clone https://github.com/my-company/my-monorepo.git
@@ -20,34 +20,34 @@ sparo clone https://github.com/my-company/my-monorepo.git
 cd my-monorepo
 ```
 
-👉 _For a real world demo, try cloning this repo:_
+👉 _对于真实世界的演示，尝试克隆这个仓库：_
 [https://github.com/Azure/azure-sdk-for-js.git](https://github.com/Azure/azure-sdk-for-js.git)
 
 
-**How "sparo clone" optimizes:**
+**"sparo clone" 的优化方式：**
 
-- Only the default branch is fetched (typically the `main` branch).  This significantly reduces the download size.
+- 仅获取默认分支（通常是 `main` 分支）。这显著减少了下载大小。
 
-- Git blobless [partial clone](../reference/git_optimization.md) is enabled to postpone downloading file contents.
+- 启用了 Git 无 Blob 的[部分克隆](../reference/git_optimization.md)以延迟下载文件内容。
 
-- Git [sparse checkout](https://git-scm.com/docs/git-sparse-checkout) is used to clone only the ["skeleton" folders](../reference/skeleton_folders.md), which includes all workspace **package.json** files, but excludes the source code subfolders.
+- 使用 Git [稀疏签出](https://git-scm.com/docs/git-sparse-checkout) 仅克隆["骨架"文件夹](../reference/skeleton_folders.md)，其中包括所有工作区的 **package.json** 文件，但不包括源代码子文件夹。
 
-- Sparse checkout is configured for the more efficient ["cone mode"](https://git-scm.com/docs/git-sparse-checkout#_internalsnon_cone_problems).
+- 稀疏签出已配置为更高效的["锥形模式"](https://git-scm.com/docs/git-sparse-checkout#_internalsnon_cone_problems)。
 
-**Tip:** To inspect what actions and Git operations are being performed, invoke `sparo --debug clone` instead of `sparo clone`.
+**提示:** 如果想查看执行的操作和 Git 操作，使用 `sparo --debug clone` 代替 `sparo clone`。
 
-> 💡 Support for PNPM and Yarn workspaces is planned but not implemented yet. Contributions welcome!
+> 💡 目前支持 PNPM 和 Yarn 工作区的功能计划中，但尚未实现。欢迎贡献！
 
-## Step 3: Create a sparse profile
+## 第 3 步：创建稀疏配置文件
 
-Define a [Sparo profile](../configs/profile_json.md) describing the subset of repository folders for Git sparse checkout.
+定义一个 [Sparo 配置文件](../configs/profile_json.md)，描述 Git 稀疏签出的仓库文件夹子集。
 
 ```shell
-# Writes a template to common/sparo-profiles/my-team.json
+# 将模板写入 common/sparo-profiles/my-team.json
 sparo init-profile --profile my-team
 ```
 
-Edit the created **my-team.json** file to add a selector. For example:
+编辑创建的 **my-team.json** 文件并添加一个选择器。例如：
 
 **common/sparo-profiles/my-team.json**
 ```json
@@ -60,45 +60,44 @@ Edit the created **my-team.json** file to add a selector. For example:
   ]
 }
 ```
-👉 _If you're demoing **azure-sdk-for-js**, replace `my-rush-project` with `@azure/arm-commerce`._
+👉 _如果您正在演示 **azure-sdk-for-js**，请将 `my-rush-project` 替换为 `@azure/arm-commerce`。_
 
-In the above example, the `--to` [project selector](https://rushjs.io/pages/developer/selecting_subsets/#--to) instructs Sparo to checkout all dependencies in the workspace that are required to build `my-rush-project`.
+在上面的例子中，`--to` [项目选择器](https://rushjs.io/pages/developer/selecting_subsets/#--to) 指示 Sparo 签出工作区中构建 `my-rush-project` 所需的所有依赖项。
 
 ```shell
-# Commit your profile to Git.  (This step was skipped in the Quick Demo.)
-# Sparo profiles should generally be stored in Git, since this enables
-# you to move between branches without worrying about which projects
-# exist in a given branch.
+# 将您的配置文件提交到 Git。（此步骤在快速演示中已跳过。）
+# Sparo 配置文件通常应存储在 Git 中，因为这可以使您在分支之间移动时无需担心
+# 某个分支中存在哪些项目。
 sparo add .
 sparo commit -m "Created a new Sparo profile"
 ```
 
-## Step 4: Check out your Sparo profile
+## 第 4 步：签出您的 Sparo 配置文件
 
-The `--profile` parameter can be included with `sparo checkout` (and in the future also `sparo clone` and `sparo pull`).  This parameter specifies the name of the JSON file to be selected.  You can also combine multiple profiles (`sparo checkout --profile p1 --profile p2`), in which case the union of their selections will be used.  Combining profiles is an advanced scenario, but useful for example if your pull request will impact sets of projects belonging to multiple teams.
+`--profile` 参数可以与 `sparo checkout` 一起使用（未来也可以与 `sparo clone` 和 `sparo pull` 一起使用）。此参数指定要选择的 JSON 文件的名称。您还可以组合多个配置文件（`sparo checkout --profile p1 --profile p2`），在这种情况下，将使用它们选择的集合的并集。组合配置文件是一个高级场景，但在例如您的拉取请求将影响属于多个团队的项目集时非常有用。
 
-**Sparse checkout based on common/sparo-profiles/my-team.json**
+**基于 common/sparo-profiles/my-team.json 的稀疏签出**
 ```shell
 sparo checkout --profile my-team
 ```
 
-**More about "sparo checkout":**
+**关于 "sparo checkout" 的更多信息：**
 
-- Sparo automatically generates Git's `$GIT_DIR/info/sparse-checkout` [config file](https://git-scm.com/docs/git-sparse-checkout#_internalssparse_checkout) based on your profile selections.  To avoid conflicts, do not edit this file directly or rewrite it using other tools such as `git sparse-checkout`.  (Doing so won't break anything, but it may interfere with Sparo operations.)
+- Sparo 根据您的配置文件选择自动生成 Git 的 `$GIT_DIR/info/sparse-checkout` [配置文件](https://git-scm.com/docs/git-sparse-checkout#_internalssparse_checkout)。为避免冲突，请不要直接编辑此文件或使用其他工具（如 `git sparse-checkout`）重写它。（这样做不会破坏任何东西，但可能会干扰 Sparo 的操作。）
 
-- To checkout just the skeleton (returning to the initial state from Step 1 where no profile is chosen yet), specify `--no-profile` instead of `--profile NAME`.
+- 要仅签出骨架（返回到第 1 步尚未选择任何配置文件的初始状态），请指定 `--no-profile` 代替 `--profile NAME`。
 
-- To add more profiles, combining with your existing selection, use `--add-profile NAME` instead of `--profile NAME`.  For example, these two commands produce the same result as `sparo checkout --profile p1 --profile p2`:
+- 要添加更多配置文件，并与现有选择组合，请使用 `--add-profile NAME` 代替 `--profile NAME`。例如，以下两个命令与 `sparo checkout --profile p1 --profile p2` 产生相同的结果：
   ```shell
   sparo checkout --profile p1
   sparo checkout --add-profile p2
   ```
 
-## Step 5: Use the mirrored subcommands
+## 第 5 步：使用镜像子命令
 
-For everyday work, consider choosing [mirrored subcommands](../commands/overview.md) such as `sparo revert` instead of `git revert`. The Sparo wrapper provides (1) better defaults, (2) suggestions for better performance, and (3) optional anonymized performance metrics.
+在日常工作中，考虑选择 [镜像子命令](../commands/overview.md)，例如 `sparo revert` 而不是 `git revert`。Sparo 包装器提供 (1) 更好的默认设置，(2) 更好的性能建议，以及 (3) 可选的匿名化性能指标。
 
-Examples:
+示例：
 
 ```shell
 sparo pull

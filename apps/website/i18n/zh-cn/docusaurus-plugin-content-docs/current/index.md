@@ -1,5 +1,5 @@
 ---
-title: Overview
+title: 概述
 hide_title: true
 custom_edit_url: null
 ---
@@ -18,35 +18,34 @@ import { ThemedImage } from '@site/src/components/ThemedImage';
 
 
 
-## Clone faster!
+## 更快的克隆！
 
-Sparo optimizes performance of Git operations for your large frontend monorepo.
-
-<!-- Text below this line should stay in sync with the project and repo README.md -->
-<!-- ---------------------------------------------------------------------------- -->
-
-## Key features
-
-- **Familiar interface:** The `sparo` command-line interface (CLI) wrapper offers **better defaults** and **performance suggestions** without altering the familiar `git` syntax. (The native `git` CLI is also supported.)
-- **A proven solution:** Git provides [quite a lot of ingredients](https://tiktok.github.io/sparo/pages/reference/git_optimization/) for optimizing very large repos; Sparo is your recipe for combining these features intelligently.
-- **Simplified sparse checkout:** Work with sparse checkout [profiles](https://tiktok.github.io/sparo/pages/guide/sparo_profiles/) instead of confusing "cones" and globs
-- **Frontend integration:** Sparo leverages [Rush](https://rushjs.io/) and [PNPM](https://pnpm.io/) workspace configurations, including the ability to automatically checkout project dependencies
-- **Dual workflows:** The `sparo-ci` tool implements a specialized checkout model optimized for continuous integration (CI) pipelines
-- **Extra safeguards**: Avoid common Git mistakes such as checkouts with staged files outside the active view
-- **Go beyond Git hooks:** Optionally collect anonymized Git timing metrics in your monorepo, enabling your build team to set data-driven goals for _local_ developer experience (not just CI!)
-
-  _(Metrics are transmitted to your own service and are not accessible by any other party.)_
+Sparo 优化了 Git 操作在大型前端 monorepo 中的性能。
 
 <!-- ---------------------------------------------------------------------------- -->
-<!-- Text above this line should stay in sync with the project and repo README.md -->
 
-## Quick demo
+## 主要特点
 
-Try out Sparo in 5 easy steps:
+- **熟悉的界面:** `sparo` 命令行界面 (CLI) 包装器提供了 **更好的默认设置** 和 **性能建议**，而无需更改熟悉的 `git` 语法。（本地 `git` CLI 也受支持。）
+- **经过验证的解决方案:** Git 提供了[许多优化大型仓库的要素](https://tiktok.github.io/sparo/pages/reference/git_optimization/); Sparo 是将这些功能智能组合的配方。
+- **简化的稀疏签出:** 使用稀疏签出[配置文件](https://tiktok.github.io/sparo/pages/guide/sparo_profiles/) 而不是复杂的 "cones" 和 globs。
+- **前端集成:** Sparo 利用了 [Rush](https://rushjs.io/) 和 [PNPM](https://pnpm.io/) 的工作区配置，甚至可以自动签出项目依赖项。
+- **双重工作流程:** `sparo-ci` 工具实现了一个专门为持续集成 (CI) 流水线优化的签出模型。
+- **额外的安全措施:** 避免常见的 Git 错误，例如在活动视图之外的暂存文件签出。
+- **超越 Git hooks:** 可选地收集您的 monorepo 中的匿名化 Git 计时数据，使您的构建团队能够为_本地_开发者体验（不仅仅是 CI）设定数据驱动的目标。
 
-1. _**Upgrade to the latest Git version!**_ For macOS, we recommend to use [brew install git](https://git-scm.com/download/mac).  For other operating systems, see the [Git documentation](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git) for instructions.
+  _(这些指标会传输到您自己的服务，其他任何方都无法访问。)_
 
-2. For this demo, we'll use the Azure SDK which is a large public [RushJS](https://rushjs.io/) monorepo from GitHub.  The following command will check out the [skeleton folders](./pages/reference/skeleton_folders.md) but not the source code:
+<!-- ---------------------------------------------------------------------------- -->
+
+
+## 快速演示
+
+只需五个简单步骤即可试用 Sparo：
+
+1. _**升级到最新的 Git 版本！**_ 对于 macOS，我们推荐使用 [brew install git](https://git-scm.com/download/mac)。对于其他操作系统，请参阅 [Git 文档](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git) 了解安装说明。
+
+2. 在此演示中，我们将使用 Azure SDK，这是 GitHub 上一个大型的公共 [RushJS](https://rushjs.io/) monorepo。以下命令将签出[骨架文件夹](./pages/reference/skeleton_folders.md)，但不会签出源代码：
 
    ```shell
    sparo clone https://github.com/Azure/azure-sdk-for-js.git
@@ -54,53 +53,51 @@ Try out Sparo in 5 easy steps:
    cd azure-sdk-for-js
    ```
 
-   > 💡 Support for PNPM and Yarn workspaces is planned but not implemented yet. Contributions welcome!
+   > 💡 目前支持 PNPM 和 Yarn 工作区的功能计划中，但尚未实现。欢迎贡献！
 
-3. Define a [Sparo profile](./pages/configs/profile_json.md) describing the subset of repository folders for Git sparse checkout.
+3. 定义一个 [Sparo 配置文件](./pages/configs/profile_json.md)，描述 Git 稀疏签出的仓库文件夹子集。
 
    ```shell
-   # Writes a template to common/sparo-profiles/my-team.json
+   # 将模板写入 common/sparo-profiles/my-team.json
    sparo init-profile --profile my-team
    ```
 
-   Edit the created **my-team.json** file to add this selector:
+   编辑创建的 **my-team.json** 文件并添加以下选择器：
 
    **common/sparo-profiles/my-team.json**
    ```json
    {
      "selections": [
         {
-          // This demo profile will check out the "@azure/arm-commerce" project
-          // and all of its dependencies:
+          // 此演示配置文件将签出 "@azure/arm-commerce" 项目及其所有依赖项：
           "selector": "--to",
           "argument": "@azure/arm-commerce"
         }
      ]
    }
    ```
-   The `--to` [project selector](https://rushjs.io/pages/developer/selecting_subsets/#--to) instructs Sparo to checkout all dependencies in the workspace that are required to build `my-rush-project`.
+   `--to` [项目选择器](https://rushjs.io/pages/developer/selecting_subsets/#--to) 指示 Sparo 签出工作区中构建 `my-rush-project` 所需的所有依赖项。
 
 
 
-4. After saving your changes to **my-team.json**, now it's time to apply it:
+4. 在保存 **my-team.json** 的更改后，现在是应用它的时候了：
 
    ```shell
    sparo checkout --profile my-team
    ```
 
-   Try it out!  For example:
+   尝试一下！例如：
 
    ```shell
    rush install
 
-   # The build should succeed because Sparo ensured that dependency projects
-   # were included in the sparse checkout:
+   # 构建应该成功，因为 Sparo 确保依赖项目被包含在稀疏签出中：
    rush build --to @azure/arm-commerce
    ```
 
-5. For everyday work, consider choosing [mirrored subcommands](./pages/commands/overview.md) such as `sparo revert` instead of `git revert`. The Sparo wrapper provides (1) better defaults, (2) suggestions for better performance, and (3) optional anonymized performance metrics.
+5. 在日常工作中，考虑选择 [镜像子命令](./pages/commands/overview.md)，例如 `sparo revert` 而不是 `git revert`。Sparo 包装器提供 (1) 更好的默认设置，(2) 更好的性能建议，以及 (3) 可选的匿名化性能指标。
 
-   Examples:
+   示例：
 
    ```shell
    sparo pull
@@ -108,4 +105,4 @@ Try out Sparo in 5 easy steps:
    sparo commit -m "Example command"
    ```
 
-👍👍 This concludes the **Quick Demo.**  For a more detailed walkthrough, proceed to [Getting Started](./pages/guide/getting_started.md).
+👍👍 这就是 **快速演示** 的全部内容。有关更详细的教程，请继续阅读 [入门指南](./pages/guide/getting_started.md)。

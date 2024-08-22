@@ -3,12 +3,11 @@ title: sparo pull
 ---
 
 ```
-sparo pull [options] [repository] [refsepc...] [--profile <profile_name> |
---no-profile]
+sparo pull [options] [repository] [refspec...] [--profile <profile_name> | --no-profile]
 
-Incorporates changes from a remote repository into the current branch.
+将远程仓库的更改合并到当前分支。
 
-Options:
-  --help     Show help                                                 [boolean]
+选项:
+  --help     显示帮助                                                 [boolean]
   --profile                                                [array] [default: []]
 ```
