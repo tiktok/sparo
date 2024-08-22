@@ -1,0 +1,30 @@
+{
+  "version.label": {
+    "message": "Next",
+    "description": "The label for version current"
+  },
+  "sidebar.docsSidebar.category.Introduction": {
+    "message": "Introduction",
+    "description": "The label for category Introduction in sidebar docsSidebar"
+  },
+  "sidebar.docsSidebar.category.Reference": {
+    "message": "Reference",
+    "description": "The label for category Reference in sidebar docsSidebar"
+  },
+  "sidebar.docsSidebar.category.Config files": {
+    "message": "Config files",
+    "description": "The label for category Config files in sidebar docsSidebar"
+  },
+  "sidebar.docsSidebar.category.Commands": {
+    "message": "Commands",
+    "description": "The label for category Commands in sidebar docsSidebar"
+  },
+  "sidebar.docsSidebar.category.CI Commands": {
+    "message": "CI Commands",
+    "description": "The label for category CI Commands in sidebar docsSidebar"
+  },
+  "sidebar.docsSidebar.category.Support": {
+    "message": "Support",
+    "description": "The label for category Support in sidebar docsSidebar"
+  }
+}
