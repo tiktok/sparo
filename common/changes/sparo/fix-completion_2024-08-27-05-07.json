@@ -1,0 +1,10 @@
+{
+  "changes": [
+    {
+      "packageName": "sparo",
+      "comment": "Fix an edge case for shell completion",
+      "type": "none"
+    }
+  ],
+  "packageName": "sparo"
+}
