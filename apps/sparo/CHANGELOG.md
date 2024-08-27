@@ -1,6 +1,13 @@
 # Change Log - sparo
 
-This log was last generated on Fri, 16 Aug 2024 22:09:09 GMT and should not be manually modified.
+This log was last generated on Tue, 27 Aug 2024 17:48:19 GMT and should not be manually modified.
+
+## 1.7.0
+Tue, 27 Aug 2024 17:48:19 GMT
+
+### Updates
+
+- Fix an edge case for shell completion
 
 ## 1.6.0
 Fri, 16 Aug 2024 22:09:09 GMT

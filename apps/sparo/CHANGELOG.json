@@ -2,6 +2,18 @@
   "name": "sparo",
   "entries": [
     {
+      "version": "1.7.0",
+      "tag": "sparo_v1.7.0",
+      "date": "Tue, 27 Aug 2024 17:48:19 GMT",
+      "comments": {
+        "none": [
+          {
+            "comment": "Fix an edge case for shell completion"
+          }
+        ]
+      }
+    },
+    {
       "version": "1.6.0",
       "tag": "sparo_v1.6.0",
       "date": "Fri, 16 Aug 2024 22:09:09 GMT",
