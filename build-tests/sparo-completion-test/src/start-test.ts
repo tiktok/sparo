@@ -25,6 +25,11 @@ export async function runAsync(runScriptOptions: IRunScriptOptions): Promise<voi
       name: 'sparo-top-level-completion',
       args: prefixArgs.concat([])
     },
+    {
+      kind: 'sparo-command',
+      name: 'sparo-top-level-2-completion',
+      args: prefixArgs.concat([''])
+    },
     // auto-config
     {
       kind: 'sparo-command',

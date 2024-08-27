@@ -108,10 +108,7 @@ export class ArgvService {
     const finalCommandNameSet: Set<string> = new Set<string>(finalCommands.map((x) => x.name));
     const userInputCmdName: string = argv._[1] || '';
 
-    if (current.includes('sparo')) {
-      // top level completion
-      done(finalCommands.map(({ name, description }) => `${name}:${description}`));
-    } else if (finalCommandNameSet.has(userInputCmdName)) {
+    if (finalCommandNameSet.has(userInputCmdName)) {
       switch (current) {
         case 'add': {
           done(this._getFileCompletions());
@@ -159,14 +156,14 @@ export class ArgvService {
           break;
         }
       }
-    } else if (current) {
+    } else {
+      const prefix: string = current === 'sparo' ? '' : current;
       done(
         finalCommands
-          .filter(({ name }) => name.startsWith(current))
+          .filter(({ name }) => name.startsWith(prefix))
           .map(({ name, description }) => `${name}:${description}`)
       );
     }
-    done([]);
   };
 
   private _getFileCompletions(partial: string = ''): string[] {
