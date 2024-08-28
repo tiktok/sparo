@@ -8,7 +8,7 @@ sparo clone <repository> [directory]
 位置参数：
   repository  要克隆的远程仓库。                              [string] [required]
   directory   要克隆到的新目录名称。如果未明确指定目录名称，则使用源仓库的
-              “人性化”部分（对于 /path/to/repo.gitService 使用 repo，对于
+              名字部分（对于 /path/to/repo.gitService 使用 repo，对于
               host.xz:foo/.gitService 使用 foo）。仅当目录为空时，才允许克隆
               到现有目录中。                                           [string]
 
