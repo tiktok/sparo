@@ -14,7 +14,7 @@ title: <profile-name>.json
   "$schema": "https://tiktok.github.io/sparo/schemas/sparo-profile.schema.json",
 
   /**
-   * 一个 Rush 项目选择器列表，指示要包含在稀疏签出中的项目文件夹。
+   * 一个 Rush 项目选择器列表，指示要包含在稀疏检出中的项目文件夹。
    * 选择器将组合以构成项目的并集。详情请参阅 Rush 选择器文档：
    * https://rushjs.io/pages/developer/selecting_subsets/
    */
@@ -40,7 +40,7 @@ title: <profile-name>.json
   ],
 
   /**
-   * 要包含在签出中的任意其他文件夹列表，
+   * 要包含在检出中的任意其他文件夹列表，
    * 不一定对应于任何工作区项目。
    * 路径应使用正斜杠，不带前导斜杠，并且应指向 monorepo 的根文件夹。
    * 出于性能原因，不支持通配符和 glob 模式。
@@ -50,7 +50,7 @@ title: <profile-name>.json
   ],
 
   /**
-   * 要从签出中排除的文件夹列表。此字段优先于
+   * 要从检出中排除的文件夹列表。此字段优先于
    * "includeFolders" 和 "selections" 字段，确保指定的路径绝对不会被包含。
    * 路径应使用正斜杠，不带前导斜杠，并且应指向 monorepo 的根文件夹。
    * 出于性能原因，不支持通配符和 glob 模式。

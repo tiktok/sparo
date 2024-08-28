@@ -4,7 +4,7 @@ title: Sparo 配置文件
 
 ## 背景
 
-Git 的稀疏签出功能通常依赖于存储在 `.git/info/sparse-checkout` 配置文件中的一组 glob 模式。Git 维护者发现常规的 glob 语法效率太低，因此他们引入了一种["锥形模式"](https://git-scm.com/docs/git-sparse-checkout#_internalsnon_cone_problems)的 glob 解释，这种模式忽略文件匹配模式，只匹配目录。
+Git 的稀疏检出功能通常依赖于存储在 `.git/info/sparse-checkout` 配置文件中的一组 glob 模式。Git 维护者发现常规的 glob 语法效率太低，因此他们引入了一种["锥形模式"](https://git-scm.com/docs/git-sparse-checkout#_internalsnon_cone_problems)的 glob 解释，这种模式忽略文件匹配模式，只匹配目录。
 
 语法类似于以下内容：
 
@@ -21,7 +21,7 @@ Git 的稀疏签出功能通常依赖于存储在 `.git/info/sparse-checkout` �
 
 为了简化管理，Git 还提供了 `git sparse-checkout` 命令，用于简化从该文件中添加/删除模式的语法。然而，在一个包含数百个项目的大型 monorepo 中，管理这些 globs 仍然会令人困惑且容易出错。
 
-## Sparo 改进了稀疏签出
+## Sparo 改进了稀疏检出
 
 Sparo 通过从称为 **配置文件** 的配置文件自动生成 `.git/info/sparse-checkout` 配置，使生活变得更简单。这带来了许多好处：
 
@@ -29,9 +29,9 @@ Sparo 通过从称为 **配置文件** 的配置文件自动生成 `.git/info/sp
 
 - 配置文件存储在配置文件中并提交到 Git。这使得与团队成员共享它们变得容易。
 
-- 在分支切换时，配置文件会自动更新，确保确定性结果。例如，在签出一个非常旧的分支时，您希望获得旧的配置文件定义，而不是今天的版本。
+- 在分支切换时，配置文件会自动更新，确保确定性结果。例如，在检出一个非常旧的分支时，您希望获得旧的配置文件定义，而不是今天的版本。
 
-- 您可以将多个配置文件组合在一起（`sparo checkout --profile team1 --profile team2`），选择它们项目的并集。这在修改一个被多个其他团队的项目使用的库项目时非常有用。当然，您可以使用 `--from the-library` 签出这些项目，但其他团队可能已经在他们的配置文件中包括了其他相关项目。
+- 您可以将多个配置文件组合在一起（`sparo checkout --profile team1 --profile team2`），选择它们项目的并集。这在修改一个被多个其他团队的项目使用的库项目时非常有用。当然，您可以使用 `--from the-library` 检出这些项目，但其他团队可能已经在他们的配置文件中包括了其他相关项目。
 
 - Sparo 通过施加 `git sparse-checkout` 之外的额外限制来避免常见错误。这可以避免诸如尝试切换到缺少包含本地修改文件的项目文件夹的配置文件等错误。用户最好先暂存或提交此类修改。
 
@@ -49,7 +49,7 @@ Sparo 通过从称为 **配置文件** 的配置文件自动生成 `.git/info/sp
   "$schema": "https://tiktok.github.io/sparo/schemas/sparo-profile.schema.json",
 
   /**
-   * 一个 Rush 项目选择器列表，指示要包含在稀疏签出中的项目文件夹。
+   * 一个 Rush 项目选择器列表，指示要包含在稀疏检出中的项目文件夹。
    * 选择器将组合以构成项目的并集。详情请参阅 Rush 选择器文档：
    * https://rushjs.io/pages/developer/selecting_subsets/
    */
@@ -71,8 +71,8 @@ Sparo 通过从称为 **配置文件** 的配置文件自动生成 `.git/info/sp
 组合配置文件的简单方法是多次指定 `--profile`。例如：
 
 ```sh
-# 签出 team-a.json、team-b.json、team-c.json 配置文件的并集
-# 注意: 这将替换已签出的任何配置文件选择。
+# 检出 team-a.json、team-b.json、team-c.json 配置文件的并集
+# 注意: 这将替换已检出的任何配置文件选择。
 sparo checkout --profile team-a --profile team-b --profile team-c
 ```
 
@@ -85,10 +85,10 @@ sparo checkout --add-profile team-b
 sparo checkout --add-profile team-c
 ```
 
-如何完全不签出任何配置文件？也就是说，如何返回到仅包含[骨架](../reference/skeleton_folders.md)文件夹的干净 `sparo clone` 的初始状态？答案是使用 `--no-profile` 参数：
+如何完全不检出任何配置文件？也就是说，如何返回到仅包含[骨架](../reference/skeleton_folders.md)文件夹的干净 `sparo clone` 的初始状态？答案是使用 `--no-profile` 参数：
 
 ```shell
-# 尚未实现 - 仅签出骨架文件夹
+# 尚未实现 - 仅检出骨架文件夹
 # 而不应用任何配置文件
 sparo checkout --no-profile
 ```
@@ -102,10 +102,10 @@ sparo checkout --no-profile
 ```shell
 # 假设您需要为 "example-app" 项目进行修复。
 
-# 哪些稀疏签出配置文件包含 "example-app" 项目？
+# 哪些稀疏检出配置文件包含 "example-app" 项目？
 sparo list-profiles --project example-app
 
-# 很好，让我们将 "example-profile" 结果添加到我们当前的签出中
+# 很好，让我们将 "example-profile" 结果添加到我们当前的检出中
 # （与现有配置文件组合）。
 sparo checkout --add-profile example-profile
 ```
