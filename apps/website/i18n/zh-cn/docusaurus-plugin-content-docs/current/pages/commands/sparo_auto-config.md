@@ -5,7 +5,7 @@ title: sparo auto-config
 ```
 sparo auto-config
 
-自动设置优化的 Git 配置
+自动设置推荐的 Git 配置
 
 选项:
   -h, --help       显示帮助                                           [boolean]
