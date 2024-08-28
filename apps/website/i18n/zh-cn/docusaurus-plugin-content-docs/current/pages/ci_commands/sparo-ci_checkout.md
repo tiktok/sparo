@@ -5,7 +5,7 @@ title: sparo-ci checkout
 ```
 sparo-ci checkout
 
-用于 CI 的特殊签出命令。它目前只接受项目选择器，例如 --to 和 --from。
+用于 CI 场景的签出命令。它目前只接受项目选择器，例如 --to 和 --from。
 
 选项：
       --help  显示帮助                                               [boolean]
