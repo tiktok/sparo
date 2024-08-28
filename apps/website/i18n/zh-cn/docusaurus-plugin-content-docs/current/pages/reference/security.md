@@ -24,7 +24,7 @@ Git 没有提供正式的安全规范，因此为了便于分析 Sparo 贡献，
 假设一个不熟悉的远程 Git 仓库包含恶意文件，其中包括恶意配置文件，如 `.gitattributes`、`.gitignore` 和 Git 钩子脚本。以下操作应被认为是安全的：
 
 - 使用 `git clone` 克隆远程仓库。
-- 使用 `git checkout` 签出文件。
+- 使用 `git checkout` 检出文件。
 - 使用 `git commit` 提交本地文件的修改。
 
 Git 通过默认忽略 Git 钩子和 `.gitattributes` 过滤器来确保安全。用户必须显式运行命令以“选择加入”，表示他们相信该仓库没有恶意代码。例如，调用 `rush install` 将注册预定义的 Git 钩子，因为 NPM 安装涉及执行不受信任的脚本，因此表示信任克隆的仓库。另一个例子是，如果 `.gitattributes` 引用了 LFS 过滤器，用户必须先通过运行 `git lfs install` 选择加入，这表明他们相信过滤器的作者已实施安全保护措施以防止恶意输入。
