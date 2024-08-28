@@ -6,7 +6,7 @@ title: 概述
 
 Sparo 提供了一个单独的命令行工具 `sparo-ci`，专门针对 CI 流水线进行了优化。当前实现采用以下方法：
 
-- 使用 [treeless clone](https://github.blog/2020-12-21-get-up-to-speed-with-partial-clone-and-shallow-clone/) 而非 **blobless clone**，假设很少需要使用 Git 历史记录。
+- 使用 [treeless clone](https://github.blog/2020-12-21-get-up-to-speed-with-partial-clone-and-shallow-clone/) 而非 **blobless clone**，因为在 CI 环境会很少需要使用完整的 Git 历史记录。
 
   _Shallow clone 是一种常见的替代方案，但在支持需要与基准分支进行比较的增量构建或发布操作时会遇到困难。_
 
