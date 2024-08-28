@@ -15,6 +15,10 @@ For macOS, we recommend to use [brew install git](https://git-scm.com/download/m
 Clone your [RushJS](https://rushjs.io/) monorepo:
 
 ```shell
+# Globally install the Sparo CLI from NPM
+npm install -g sparo
+
+# Use Sparo to clone your repository
 sparo clone https://github.com/my-company/my-monorepo.git
 
 cd my-monorepo

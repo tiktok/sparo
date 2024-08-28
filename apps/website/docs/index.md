@@ -49,6 +49,10 @@ Try out Sparo in 5 easy steps:
 2. For this demo, we'll use the Azure SDK which is a large public [RushJS](https://rushjs.io/) monorepo from GitHub.  The following command will check out the [skeleton folders](./pages/reference/skeleton_folders.md) but not the source code:
 
    ```shell
+   # Globally install the Sparo CLI from NPM
+   npm install -g sparo
+
+   # Use Sparo to clone your repository
    sparo clone https://github.com/Azure/azure-sdk-for-js.git
 
    cd azure-sdk-for-js

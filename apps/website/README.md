@@ -29,6 +29,24 @@ Notes:
 - `@algolia/client-search` is included in **package.json** dependencies only because `@docusaurus/preset-classic` includes it as a peer dependency.
 
 
+## Managing translations
+
+Instructions for internationalization with Docusaurus: https://docusaurus.io/docs/i18n/introduction
+
+The supported locales for this project can be found in the `"i18n"` section of
+[docusaurus.config.js](./docusaurus.config.js).
+
+> **NOTE:** Each locale is built as a distinct standalone single-page application. The localhost
+> dev server builds only one locale at a time. To view multiple locales together, you must deploy
+> the site.
+
+Common commands:
+
+- `rushx start --locale zh-cn` - launch the localhost dev server in the specified language.
+
+- `rushx write-translations --locale zh-cn` - Update the `i18n/*.json` files with any new strings.
+
+
 ## Deployment
 
 1. If you will manually copy the files to a server, you can build the **apps/sparo/build** folder like this:

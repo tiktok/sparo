@@ -26,6 +26,7 @@
     "prism-react-renderer": "^2.3.1",
     "docusaurus-lunr-search": "^3.3.2",
     "lunr": "^2.3.9",
+    "lunr-languages": "^1.14.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "search-insights": "^2.13.0"
@@ -33,6 +34,7 @@
   "devDependencies": {
     "@docusaurus/module-type-aliases": "3.1.1",
     "@docusaurus/types": "3.1.1",
+    "@node-rs/jieba": "^1.10.3",
     "@types/react": "~18.2.59",
     "@types/react-dom": "~18.2.19",
     "typescript": "~5.3.3",

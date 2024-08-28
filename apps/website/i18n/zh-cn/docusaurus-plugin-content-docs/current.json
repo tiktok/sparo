@@ -1,0 +1,30 @@
+{
+  "version.label": {
+    "message": "下一个",
+    "description": "The label for version current"
+  },
+  "sidebar.docsSidebar.category.Introduction": {
+    "message": "介绍",
+    "description": "The label for category Introduction in sidebar docsSidebar"
+  },
+  "sidebar.docsSidebar.category.Reference": {
+    "message": "参考",
+    "description": "The label for category Reference in sidebar docsSidebar"
+  },
+  "sidebar.docsSidebar.category.Config files": {
+    "message": "配置文件",
+    "description": "The label for category Config files in sidebar docsSidebar"
+  },
+  "sidebar.docsSidebar.category.Commands": {
+    "message": "命令",
+    "description": "The label for category Commands in sidebar docsSidebar"
+  },
+  "sidebar.docsSidebar.category.CI Commands": {
+    "message": "CI 命令",
+    "description": "The label for category CI Commands in sidebar docsSidebar"
+  },
+  "sidebar.docsSidebar.category.Support": {
+    "message": "支持",
+    "description": "The label for category Support in sidebar docsSidebar"
+  }
+}
