@@ -28,7 +28,7 @@ Sparo 优化了 Git 操作在大型前端 monorepo 中的性能。
 
 - **熟悉的界面:** `sparo` 命令行工具 (CLI) 提供了 **更好的默认设置** 和 **性能建议**，而无需更改熟悉的 `git` 语法。（本地 `git` CLI 也受支持。）
 - **经过验证的解决方案:** Git 提供了[许多优化大型仓库的基础能力](https://tiktok.github.io/sparo/pages/reference/git_optimization/); Sparo 基于这些能力提供上层的解决方案。
-- **简化的稀疏签出:** 使用稀疏签出[配置文件](https://tiktok.github.io/sparo/pages/guide/sparo_profiles/) 而不是复杂的 "cones" 和 globs。
+- **简化的稀疏签出:** 使用稀疏签出[配置文件](https://tiktok.github.io/sparo/pages/guide/sparo_profiles/) 来定义文件签出范围，而不是复杂的 "cones" 和 globs。
 - **前端集成:** Sparo 利用了 [Rush](https://rushjs.io/) 和 [PNPM](https://pnpm.io/) 的工作区配置，甚至可以自动签出项目依赖项。
 - **双重工作流程:** `sparo-ci` 工具实现了一个专门为持续集成 (CI) 流水线优化的签出模型。
 - **额外的安全措施:** 避免常见的 Git 错误，例如在活动视图之外的暂存文件签出。
