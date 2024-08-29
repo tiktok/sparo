@@ -1,0 +1,18 @@
+diff --git a/.npmignore b/.npmignore
+deleted file mode 100644
+index dee86324b64e82374e8a5bc6bee027bbec12022c..0000000000000000000000000000000000000000
+diff --git a/lunr.js b/lunr.js
+index 6aa370fbcb7b1b94eb8a19c433a5038352183b2a..a1bbd049d275fbdca3cf904f494a86ae1f305a00 100644
+--- a/lunr.js
++++ b/lunr.js
+@@ -76,8 +76,8 @@ lunr.utils = {}
+ lunr.utils.warn = (function (global) {
+   /* eslint-disable no-console */
+   return function (message) {
+-    if (global.console && console.warn) {
+-      console.warn(message)
++    if (global.console && console.log) {
++      console.log('[WARN]', message)
+     }
+   }
+   /* eslint-enable no-console */

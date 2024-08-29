@@ -4,6 +4,11 @@ settings:
   autoInstallPeers: false
   excludeLinksFromLockfile: false
 
+patchedDependencies:
+  lunr@2.3.9:
+    hash: pgt6qd4rzkalm6lxuf4rydzxte
+    path: patches/lunr@2.3.9.patch
+
 importers:
 
   .: {}
@@ -116,7 +121,7 @@ importers:
         version: 3.3.2(@docusaurus/core@3.1.1)(react-dom@18.2.0)(react@18.2.0)
       lunr:
         specifier: ^2.3.9
-        version: 2.3.9
+        version: 2.3.9(patch_hash=pgt6qd4rzkalm6lxuf4rydzxte)
       lunr-languages:
         specifier: ^1.14.0
         version: 1.14.0
@@ -5836,7 +5841,7 @@ packages:
       hast-util-select: 4.0.2
       hast-util-to-text: 2.0.1
       hogan.js: 3.0.2
-      lunr: 2.3.9
+      lunr: 2.3.9(patch_hash=pgt6qd4rzkalm6lxuf4rydzxte)
       lunr-languages: 1.14.0
       mark.js: 8.11.1
       minimatch: 3.1.2
@@ -8673,9 +8678,10 @@ packages:
     resolution: {integrity: sha512-hWUAb2KqM3L7J5bcrngszzISY4BxrXn/Xhbb9TTCJYEGqlR1nG67/M14sp09+PTIRklobrn57IAxcdcO/ZFyNA==}
     dev: false
 
-  /lunr@2.3.9:
+  /lunr@2.3.9(patch_hash=pgt6qd4rzkalm6lxuf4rydzxte):
     resolution: {integrity: sha512-zTU3DaZaF3Rt9rhN3uBMGQD3dD2/vFQqnvZCDv4dl5iOzq2IZQqTxu90r4E5J+nP70J3ilqVCrbho2eWaeW8Ow==}
     dev: false
+    patched: true
 
   /make-dir@3.1.0:
     resolution: {integrity: sha512-g3FeP20LNwhALb/6Cz6Dd4F2ngze0jz7tbzrD2wAV+o9FeNHe4rL+yK2md0J/fiSf1sa1ADhXqi5+oVwOM/eGw==}
