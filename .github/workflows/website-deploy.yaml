@@ -6,6 +6,7 @@ on:
     paths:
       - .github/workflows/website-deploy.yaml
       - apps/website/**
+  workflow_dispatch:
 permissions:
   contents: write
 concurrency:
