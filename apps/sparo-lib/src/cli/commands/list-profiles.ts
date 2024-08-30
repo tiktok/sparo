@@ -1,5 +1,4 @@
-import childProcess from 'child_process';
-import { JsonFile, Sort } from '@rushstack/node-core-library';
+import { JsonFile, Sort, Async, Executable } from '@rushstack/node-core-library';
 import { inject } from 'inversify';
 import { SparoProfileService } from '../../services/SparoProfileService';
 import { ICommand } from './base';
@@ -7,6 +6,7 @@ import { Command } from '../../decorator';
 import { GitService } from '../../services/GitService';
 import { GitSparseCheckoutService } from '../../services/GitSparseCheckoutService';
 
+import type { ChildProcess } from 'child_process';
 import type { Argv, ArgumentsCamelCase } from 'yargs';
 import type { TerminalService } from '../../services/TerminalService';
 import type { SparoProfile } from '../../logic/SparoProfile';
@@ -98,25 +98,75 @@ export class ListProfilesCommand implements ICommand<IListProfilesCommandOptions
       Sort.sortMapKeys(sparoProfiles);
       terminalService.terminal.writeLine(Array.from(sparoProfiles.keys()).join('\n'));
     } else {
+      terminalService.terminal.writeLine(`Query profiles for project ${project}...`);
+
+      Executable.spawnSync('rush', ['list', '--help']);
+
       // Query all profiles that contain the specified project
       const profileProjects: Map<string, string[]> = new Map<string, string[]>();
-      for (const [profileName, sparoProfile] of sparoProfiles) {
-        const { toSelectors, fromSelectors } = sparoProfile.rushSelectors;
-        const rushListCmd: string = `rush list --json ${Array.from(toSelectors)
-          .map((x) => `--to ${x}`)
-          .join(' ')} ${Array.from(fromSelectors)
-          .map((x) => `--from ${x}`)
-          .join(' ')} `;
-        const res: { projects: IProject[] } = JSON.parse(childProcess.execSync(rushListCmd).toString());
-        for (const project of res.projects) {
-          if (profileProjects.has(project.name)) {
-            const profiles: string[] | undefined = profileProjects.get(project.name);
-            profiles?.push(profileName);
-          } else {
-            profileProjects.set(project.name, [profileName]);
+      await Async.forEachAsync(
+        sparoProfiles.entries(),
+        async ([profileName, sparoProfile]) => {
+          const { toSelectors, fromSelectors } = sparoProfile.rushSelectors;
+          const rushListArgs: string[] = ['list', '--json'];
+          for (const selector of toSelectors) {
+            rushListArgs.push('--to');
+            rushListArgs.push(selector);
           }
+          for (const selector of fromSelectors) {
+            rushListArgs.push('--from');
+            rushListArgs.push(selector);
+          }
+          const childProcess: ChildProcess = Executable.spawn('testrush', rushListArgs, {
+            stdio: ['ignore', 'pipe', 'pipe']
+          });
+          childProcess.stdout!.setEncoding('utf8');
+          childProcess.stderr!.setEncoding('utf8');
+
+          const rushListResultJsonString: string = await new Promise((resolve, reject) => {
+            let stdoutString: string = '';
+            let errorMessage: string = '';
+
+            childProcess.stdout!.on('data', (chunk: Buffer) => {
+              stdoutString += chunk.toString();
+            });
+            childProcess.stderr!.on('data', (chunk: Buffer) => {
+              errorMessage += chunk.toString();
+            });
+            childProcess.on('close', (exitCode: number | null, signal: NodeJS.Signals | null) => {
+              if (exitCode) {
+                reject(
+                  new Error(
+                    `rush exited with error code ${exitCode}${errorMessage ? `: ${errorMessage}` : ''}`
+                  )
+                );
+              } else if (signal) {
+                reject(new Error(`rush terminated by signal ${signal}`));
+              }
+              resolve(stdoutString);
+            });
+          });
+          try {
+            const res: { projects: IProject[] } = JSON.parse(rushListResultJsonString.trim());
+            for (const project of res.projects) {
+              if (profileProjects.has(project.name)) {
+                const profiles: string[] | undefined = profileProjects.get(project.name);
+                profiles?.push(profileName);
+              } else {
+                profileProjects.set(project.name, [profileName]);
+              }
+            }
+          } catch (e) {
+            console.warn('====', profileName, rushListArgs.join(' '));
+            console.warn(rushListResultJsonString.split('\n').slice(0, 10).join('\n'));
+            console.warn('======');
+            throw e;
+          }
+        },
+        {
+          concurrency: 3
         }
-      }
+      );
 
       const profilesContainProject: string[] | undefined = profileProjects.get(project);
       if (profilesContainProject) {
