@@ -35,6 +35,11 @@ export class GitRemoteFetchConfigService {
     this._gitService.executeGitCommand({
       args: ['remote', 'set-branches', '--add', remote, branch]
     });
+
+    // Example: branch.feature-foo.remote=origin
+    this._gitService.setGitConfig(`branch.${branch}.remote`, remote);
+    // Example: branch.feature-foo.merge=refs/heads/feature-foo
+    this._gitService.setGitConfig(`branch.${branch}.merge`, `refs/heads/${branch}`);
   }
 
   public pruneRemoteBranchesInGitConfigAsync = async (remote: string): Promise<void> => {
@@ -96,6 +101,12 @@ export class GitRemoteFetchConfigService {
       this._gracefulShutdownService.registerCallback(callback);
       this._setRemoteFetchInGitConfig(remote, Array.from(nextRemoteFetchConfigSet));
       this._gracefulShutdownService.unregisterCallback(callback);
+
+      // Clean up other git configurations
+      for (const invalidBranch of invalidBranches) {
+        this._gitService.unsetGitConfig(`branch.${invalidBranch}.remote`);
+        this._gitService.unsetGitConfig(`branch.${invalidBranch}.merge`);
+      }
     }
   };
 

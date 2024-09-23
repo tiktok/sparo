@@ -281,6 +281,9 @@ export class CheckoutCommand implements ICommand<ICheckoutCommandOptions> {
             }
           }
         }
+      } else {
+        const remote: string = this._gitService.getBranchRemote(operationBranch);
+        this._gitRemoteFetchConfigService.addRemoteBranchIfNotExists(remote, operationBranch);
       }
     }
 
