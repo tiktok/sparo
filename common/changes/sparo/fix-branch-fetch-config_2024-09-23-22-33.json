@@ -1,0 +1,10 @@
+{
+  "changes": [
+    {
+      "packageName": "sparo",
+      "comment": "Fix git configs for tracking branch",
+      "type": "none"
+    }
+  ],
+  "packageName": "sparo"
+}
