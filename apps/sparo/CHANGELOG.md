@@ -1,6 +1,13 @@
 # Change Log - sparo
 
-This log was last generated on Tue, 27 Aug 2024 17:48:19 GMT and should not be manually modified.
+This log was last generated on Tue, 01 Oct 2024 20:22:25 GMT and should not be manually modified.
+
+## 1.7.1
+Tue, 01 Oct 2024 20:22:25 GMT
+
+### Updates
+
+- Fix git configs for tracking branch
 
 ## 1.7.0
 Tue, 27 Aug 2024 17:48:19 GMT

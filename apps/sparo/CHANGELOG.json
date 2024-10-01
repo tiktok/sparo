@@ -2,6 +2,18 @@
   "name": "sparo",
   "entries": [
     {
+      "version": "1.7.1",
+      "tag": "sparo_v1.7.1",
+      "date": "Tue, 01 Oct 2024 20:22:25 GMT",
+      "comments": {
+        "none": [
+          {
+            "comment": "Fix git configs for tracking branch"
+          }
+        ]
+      }
+    },
+    {
       "version": "1.7.0",
       "tag": "sparo_v1.7.0",
       "date": "Tue, 27 Aug 2024 17:48:19 GMT",
