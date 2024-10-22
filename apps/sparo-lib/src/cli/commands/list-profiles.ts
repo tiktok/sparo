@@ -107,13 +107,23 @@ export class ListProfilesCommand implements ICommand<IListProfilesCommandOptions
           .join(' ')} ${Array.from(fromSelectors)
           .map((x) => `--from ${x}`)
           .join(' ')} `;
-        const res: { projects: IProject[] } = JSON.parse(childProcess.execSync(rushListCmd).toString());
-        for (const project of res.projects) {
-          if (profileProjects.has(project.name)) {
-            const profiles: string[] | undefined = profileProjects.get(project.name);
-            profiles?.push(profileName);
-          } else {
-            profileProjects.set(project.name, [profileName]);
+        let res: { projects: IProject[] } | undefined;
+        const resultString: string = childProcess.execSync(rushListCmd).toString();
+        try {
+          res = JSON.parse(resultString);
+        } catch (e) {
+          throw new Error(
+            `Parse json result from ${rushListCmd} failed.\nError: ${e.message}\nrush returns:\n${resultString}\n`
+          );
+        }
+        if (res) {
+          for (const project of res.projects) {
+            if (profileProjects.has(project.name)) {
+              const profiles: string[] | undefined = profileProjects.get(project.name);
+              profiles?.push(profileName);
+            } else {
+              profileProjects.set(project.name, [profileName]);
+            }
           }
         }
       }
