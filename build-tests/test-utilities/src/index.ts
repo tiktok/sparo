@@ -285,10 +285,12 @@ function replaceVersionString(text: string): string {
   return text.replace(/\d+\.\d+\.\d+/g, '__VERSION__');
 }
 /**
- * Replace all "in xx.yy seconds" strings with "in __DURATION__ seconds".
+ * Replace all "in xx.yy seconds" or "in x minute y.z seconds" strings with "in __DURATION__".
  */
 function replaceDurationString(text: string): string {
-  return text.replace(/in \d+(\.\d+)? seconds/g, 'in __DURATION__');
+  return text
+    .replace(/in \d+(\.\d+)? seconds/g, 'in __DURATION__')
+    .replace(/in \d+ minutes? \d+(\.\d+)? seconds/g, 'in __DURATION__');
 }
 /**
  * Replace all "<workingDirectory>" strings with "__WORKING_DIRECTORY__".
