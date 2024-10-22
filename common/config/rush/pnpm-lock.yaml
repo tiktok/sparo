@@ -55,6 +55,9 @@ importers:
       inversify:
         specifier: ~6.0.2
         version: 6.0.2
+      npm-package-arg:
+        specifier: ~6.1.0
+        version: 6.1.0
       reflect-metadata:
         specifier: ~0.2.1
         version: 0.2.1
@@ -80,6 +83,9 @@ importers:
       '@types/node':
         specifier: 20.11.16
         version: 20.11.16
+      '@types/npm-package-arg':
+        specifier: 6.1.0
+        version: 6.1.0
       '@types/semver':
         specifier: 7.5.7
         version: 7.5.7
@@ -3956,6 +3962,10 @@ packages:
     dependencies:
       undici-types: 5.26.5
 
+  /@types/npm-package-arg@6.1.0:
+    resolution: {integrity: sha512-vbt5fb0y1svMhu++1lwtKmZL76d0uPChFlw7kEzyUmTwfmpHRcFb8i0R8ElT69q/L+QLgK2hgECivIAvaEDwag==}
+    dev: true
+
   /@types/parse-json@4.0.2:
     resolution: {integrity: sha512-dISoDXWWQwUquiKsyZ4Ng+HX2KsPL7LyHKHQwgGFEA3IaKac4Obd+h2a/a6waisAoepJlBcx9paWqjA8/HVjCw==}
     dev: false
@@ -4889,6 +4899,10 @@ packages:
 
   /buffer-from@1.1.2:
     resolution: {integrity: sha512-E+XQCRwSbaaiChtv6k6Dwgc+bx+Bs6vuKJHHl5kox/BaKbhiXzqQOwK4cO22yElGp2OCmjwVhT3HmxgyPGnJfQ==}
+
+  /builtins@1.0.3:
+    resolution: {integrity: sha512-uYBjakWipfaO/bXI7E8rq6kpwHRZK5cNYrUv2OzZSI/FvmdMyXJ2tG9dKcjEC5YHmHpUAwsargWIZNWdxb/bnQ==}
+    dev: false
 
   /bytes@3.0.0:
     resolution: {integrity: sha512-pMhOfFDPiv9t5jjIXkHosWmkSyQbvsgEVNkz0ERHbuLh2T/7j4Mqqpz523Fe8MVY89KC6Sh/QfS2sM+SjgFDcw==}
@@ -7286,6 +7300,10 @@ packages:
       react-is: 16.13.1
     dev: false
 
+  /hosted-git-info@2.8.9:
+    resolution: {integrity: sha512-mxIDAb9Lsm6DoOJ7xH+5+X4y1LU/4Hi50L9C5sIswK3JzULS4bwk1FvjdBgvYR4bzT4tuUQiC15FE2f5HbLvYw==}
+    dev: false
+
   /hpack.js@2.1.6:
     resolution: {integrity: sha512-zJxVehUdMGIKsRaNt7apO2Gqp0BdqW5yaiGHXXmbpvxgBYVZnAql+BJb4RO5ad2MgpbZKn5G6nMnegrH1FcNYQ==}
     dependencies:
@@ -9506,6 +9524,15 @@ packages:
     resolution: {integrity: sha512-5PDmaAsVfnWUgTUbJ3ERwn7u79Z0dYxN9ErxCpVJJqe2RK0PJ3z+iFUxuqjwtlDDegXvtWoxD/3Fzxox7tFGWA==}
     dev: false
 
+  /npm-package-arg@6.1.0:
+    resolution: {integrity: sha512-zYbhP2k9DbJhA0Z3HKUePUgdB1x7MfIfKssC+WLPFMKTBZKpZh5m13PgexJjCq6KW7j17r0jHWcCpxEqnnncSA==}
+    dependencies:
+      hosted-git-info: 2.8.9
+      osenv: 0.1.5
+      semver: 5.7.2
+      validate-npm-package-name: 3.0.0
+    dev: false
+
   /npm-run-path@4.0.1:
     resolution: {integrity: sha512-S48WzZW777zhNIrn7gxOlISNAqi9ZC/uQFnRdbeIHhZhCA6UqpkOT8T1G7BvfdgP4Er8gF4sUbaS0i7QvIfCWw==}
     engines: {node: '>=8'}
@@ -9628,6 +9655,24 @@ packages:
       prelude-ls: 1.2.1
       type-check: 0.4.0
     dev: true
+
+  /os-homedir@1.0.2:
+    resolution: {integrity: sha512-B5JU3cabzk8c67mRRd3ECmROafjYMXbuzlwtqdM8IbS8ktlTix8aFGb2bAGKrSRIlnfKwovGUUr72JUPyOb6kQ==}
+    engines: {node: '>=0.10.0'}
+    dev: false
+
+  /os-tmpdir@1.0.2:
+    resolution: {integrity: sha512-D2FR03Vir7FIu45XBY20mTb+/ZSWB00sjU9jdQXt83gDrI4Ztz5Fs7/yy74g2N5SVQY4xY1qDr4rNddwYRVX0g==}
+    engines: {node: '>=0.10.0'}
+    dev: false
+
+  /osenv@0.1.5:
+    resolution: {integrity: sha512-0CWcCECdMVc2Rw3U5w9ZjqX6ga6ubk1xDVKxtBQPK7wis/0F2r9T6k4ydGYhecl7YUBxBVxhL5oisPsNxAPe2g==}
+    deprecated: This package is no longer supported.
+    dependencies:
+      os-homedir: 1.0.2
+      os-tmpdir: 1.0.2
+    dev: false
 
   /p-cancelable@1.1.0:
     resolution: {integrity: sha512-s73XxOZ4zpt1edZYZzvhqFa6uvQc1vwUa0K0BdtIZgQMAJj9IbebH+JkgKZc9h+B05PKHLOTl4ajG1BmNrVZlw==}
@@ -11096,6 +11141,11 @@ packages:
       semver: 7.6.0
     dev: false
 
+  /semver@5.7.2:
+    resolution: {integrity: sha512-cBznnQ9KjJqU67B52RMC65CMarK2600WFnbkcaiwWq3xy/5haFJlshgnpjovMVJ+Hff49d8GEn0b87C5pDQ10g==}
+    hasBin: true
+    dev: false
+
   /semver@6.3.1:
     resolution: {integrity: sha512-BR7VvDCVHO+q2xBEWskxS6DJE1qRnb7DxzUrogb71CWoSficBxYsiAGd+Kl0mmq/MprG9yArRkyrQxTO6XjMzA==}
     hasBin: true
@@ -12079,6 +12129,12 @@ packages:
       convert-source-map: 2.0.0
     dev: true
 
+  /validate-npm-package-name@3.0.0:
+    resolution: {integrity: sha512-M6w37eVCMMouJ9V/sdPGnC5H4uDr73/+xdq0FBLO3TFFX1+7wiUY6Es328NN+y43tmY+doUdN9g9J21vqB7iLw==}
+    dependencies:
+      builtins: 1.0.3
+    dev: false
+
   /validator@13.11.0:
     resolution: {integrity: sha512-Ii+sehpSfZy+At5nPdnyMhx78fEoPDkR2XW/zimHEL3MyGJQOCQ7WeP20jPYRz7ZCpcKLB21NxuXHF3bxjStBQ==}
     engines: {node: '>= 0.10'}
@@ -12570,6 +12626,7 @@ time:
   /@rushstack/terminal@0.8.1: '2024-02-20T21:48:45.317Z'
   /@types/heft-jest@1.0.6: '2023-11-07T07:22:05.861Z'
   /@types/node@20.11.16: '2024-02-01T17:35:24.929Z'
+  /@types/npm-package-arg@6.1.0: '2018-11-01T17:41:31.538Z'
   /@types/react-dom@18.2.19: '2024-02-07T17:06:58.412Z'
   /@types/react@18.2.59: '2024-02-26T19:07:45.111Z'
   /@types/semver@7.5.7: '2024-02-11T14:35:16.597Z'
@@ -12583,6 +12640,7 @@ time:
   /jest-diff@29.7.0: '2023-09-12T06:43:43.883Z'
   /lunr-languages@1.14.0: '2023-10-09T20:33:09.608Z'
   /lunr@2.3.9: '2020-08-19T20:30:07.948Z'
+  /npm-package-arg@6.1.0: '2018-04-10T17:45:45.725Z'
   /prism-react-renderer@2.3.1: '2023-12-18T14:23:38.265Z'
   /prismjs@1.29.0: '2022-08-23T10:42:14.395Z'
   /react-dom@18.2.0: '2022-06-14T19:46:48.370Z'
