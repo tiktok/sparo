@@ -109,11 +109,12 @@ export class ListProfilesCommand implements ICommand<IListProfilesCommandOptions
           .join(' ')} `;
         let res: { projects: IProject[] } | undefined;
         const resultString: string = childProcess.execSync(rushListCmd).toString();
+        const firstOpenBraceIndex: number = resultString.indexOf('{');
         try {
-          res = JSON.parse(resultString);
+          res = JSON.parse(resultString.slice(firstOpenBraceIndex));
         } catch (e) {
           throw new Error(
-            `Parse json result from ${rushListCmd} failed.\nError: ${e.message}\nrush returns:\n${resultString}\n`
+            `Parse json result from "${rushListCmd}" failed.\nError: ${e.message}\nrush returns:\n${resultString}\n`
           );
         }
         if (res) {
