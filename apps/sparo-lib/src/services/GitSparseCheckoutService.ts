@@ -421,7 +421,7 @@ export class GitSparseCheckoutService {
     });
 
     if (result.status !== 0) {
-      throw new Error(`Failed to evaluate the Sparo profile's project selectors: ${result.stderr}`);
+      throw new Error(`Failed to evaluate the Sparo profile's project selectors:\nstdout: ${result.stdout}\nstderr: ${result.stderr}`);
     }
 
     const processedResult: string = this._processListResult(result.stdout.toString());
