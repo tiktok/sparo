@@ -1,0 +1,10 @@
+{
+  "name": "generate-release-description",
+  "version": "1.0.0",
+  "private": true,
+  "dependencies": {
+    "@rushstack/node-core-library": "^5.9.0",
+    "@rushstack/rush-sdk": "^5.140.0",
+    "yargs": "^17.7.2"
+  }
+}

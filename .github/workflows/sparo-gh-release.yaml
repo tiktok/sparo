@@ -1,0 +1,42 @@
+name: Sparo GitHub Release
+on:
+  push:
+    tags:
+      - "sparo_v*.*.*"
+  workflow_dispatch:
+    inputs:
+      tag_name:
+        description: 'Tag name for release'
+        required: true
+        default: '' 
+jobs:
+  sparo-release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 2
+          token: ${{ secrets.BOT_ACCESS_TOKEN }}
+      - name: git config email
+        run: git config --local user.email tiktokbot@users.noreply.github.com
+      - name: git config name
+        run: git config --local user.name tiktokbot
+      - name: Extract version from tag
+        id: extract_version
+        run: |
+          # Get the tag name from GITHUB_REF (e.g., refs/tags/sparo_v1.0.0)
+          TAG_NAME="${GITHUB_REF##*/}"
+          # Extract the version number (v1.0.0) using regex
+          VERSION=$(echo "$TAG_NAME" | sed -E 's/^.*_v([0-9]+\.[0-9]+\.[0-9]+.*)$/\1/')
+          echo "Extracted version: $VERSION"
+          # Set the output for later use
+          echo "::set-output name=version::$VERSION"
+      - name: Generate Release Description
+        run : node common/scripts/install-run-rush.js generate-release-description --project sparo --version ${{ steps.extract_version.outputs.version }} 
+      - name: Sparo GitHub Release
+        uses: softprops/action-gh-release@v2
+        if: ${{ exists('RELEASE/SPARO.md') }}
+        with:
+          draft: true
+          body_path: RELEASE/SPARO.md
+

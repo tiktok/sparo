@@ -227,6 +227,17 @@
     },
 
     {
+      "name": "generate-release-description",
+      "commandKind": "global",
+      "summary": "Used by the CI. This command reads changelog of specified project and generate a release description",
+      "safeForSimultaneousRushProcesses": true,
+
+      "autoinstallerName": "generate-release-description",
+
+      "shellCommand": "node common/autoinstallers/generate-release-description/index.js"
+    },
+
+    {
       "name": "prettier",
       "commandKind": "global",
       "summary": "Used by the pre-commit Git hook. This command invokes Prettier to reformat staged changes.",
@@ -476,6 +487,20 @@
     //     }
     //   ]
     // }
+    {
+      "longName": "--project",
+      "parameterKind": "string",
+      "argumentName": "PROJECT",
+      "description": "a rush project",
+      "associatedCommands": ["generate-release-description"]
+    },
+    {
+      "longName": "--version",
+      "parameterKind": "string",
+      "argumentName": "VERSION",
+      "description": "version number",
+      "associatedCommands": ["generate-release-description"]
+    },
     {
       "longName": "--no-color",
       "parameterKind": "flag",
