@@ -92,3 +92,5 @@ dist-storybook
 # Docusaurus build outputs
 build
 .docusaurus
+
+RELEASE/
