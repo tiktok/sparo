@@ -1,6 +1,14 @@
 # Change Log - sparo
 
-This log was last generated on Tue, 01 Oct 2024 20:22:25 GMT and should not be manually modified.
+This log was last generated on Thu, 24 Oct 2024 20:28:32 GMT and should not be manually modified.
+
+## 1.8.0
+Thu, 24 Oct 2024 20:28:32 GMT
+
+### Updates
+
+- Introduce a quicker selection algorithm if applicable
+- Improve log when failed to evaluate project selectors
 
 ## 1.7.1
 Tue, 01 Oct 2024 20:22:25 GMT

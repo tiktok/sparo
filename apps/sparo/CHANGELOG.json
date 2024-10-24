@@ -2,6 +2,21 @@
   "name": "sparo",
   "entries": [
     {
+      "version": "1.8.0",
+      "tag": "sparo_v1.8.0",
+      "date": "Thu, 24 Oct 2024 20:28:32 GMT",
+      "comments": {
+        "none": [
+          {
+            "comment": "Introduce a quicker selection algorithm if applicable"
+          },
+          {
+            "comment": "Improve log when failed to evaluate project selectors"
+          }
+        ]
+      }
+    },
+    {
       "version": "1.7.1",
       "tag": "sparo_v1.7.1",
       "date": "Tue, 01 Oct 2024 20:22:25 GMT",
