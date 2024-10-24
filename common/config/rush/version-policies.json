@@ -103,7 +103,7 @@
     "policyName": "sparo",
     "definitionName": "lockStepVersion",
     "version": "1.7.1",
-    "nextBump": "patch",
+    "nextBump": "minor",
     "mainProject": "sparo"
   }
 ]
