@@ -1,6 +1,6 @@
 {
   "name": "sparo-lib",
-  "version": "1.7.1",
+  "version": "1.8.0",
   "description": "A library for writing scripts that interact with the Sparo",
   "license": "MIT",
   "homepage": "https://tiktok.github.io/sparo/",
