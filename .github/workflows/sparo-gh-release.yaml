@@ -3,12 +3,7 @@ on:
   push:
     tags:
       - "sparo_v*.*.*"
-  workflow_dispatch:
-    inputs:
-      tag_name:
-        description: 'Tag name for release'
-        required: true
-        default: '' 
+  workflow_dispatch: {}
 jobs:
   sparo-release:
     runs-on: ubuntu-latest
@@ -35,7 +30,6 @@ jobs:
         run : node common/scripts/install-run-rush.js generate-release-description --project sparo --version ${{ steps.extract_version.outputs.version }} 
       - name: Sparo GitHub Release
         uses: softprops/action-gh-release@v2
-        if: ${{ exists('RELEASE/SPARO.md') }}
         with:
           draft: true
           body_path: RELEASE/SPARO.md
