@@ -20,6 +20,7 @@ export async function runAsync(runScriptOptions: IRunScriptOptions): Promise<voi
   } = runScriptOptions;
 
   const temporaryDirectory: string = path.resolve(buildFolderPath, 'temp');
+  logger.terminal.writeLine(`Temporary directory: ${temporaryDirectory}`);
   const testRepoURL: string = 'https://github.com/tiktok/sparo.git';
   const testBranch: string = 'test-artifacts/sparo-real-repo-test';
   const repoFolder: string = path.resolve(temporaryDirectory, 'sparo');

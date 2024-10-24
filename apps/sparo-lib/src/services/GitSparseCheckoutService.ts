@@ -1,10 +1,10 @@
 import * as path from 'path';
-import * as child_process from 'child_process';
 import { inject } from 'inversify';
 import { Service } from '../decorator';
 import { GitService } from './GitService';
 import { TerminalService } from './TerminalService';
-import { Executable, FileSystem, JsonFile, JsonSyntax } from '@rushstack/node-core-library';
+import { SelectionParameterService } from './SelectionParameterService';
+import { FileSystem, JsonFile, JsonSyntax } from '@rushstack/node-core-library';
 import { Stopwatch } from '../logic/Stopwatch';
 
 import type { ISelection } from '../logic/SparoProfile';
@@ -26,6 +26,7 @@ export interface IRushProject {
 export class GitSparseCheckoutService {
   @inject(GitService) private _gitService!: GitService;
   @inject(TerminalService) private _terminalService!: TerminalService;
+  @inject(SelectionParameterService) private _selectionParameterService!: SelectionParameterService;
 
   private _rushConfigLoaded: boolean = false;
   private _rushProjects: IRushProject[] = [];
@@ -156,16 +157,46 @@ export class GitSparseCheckoutService {
       }
     }
 
+    // Validate incorrect package names
     const unfoundedPackages: string[] = [];
-    for (const selector of [...toSelectors, ...fromSelectors]) {
-      if (selector.indexOf(':') < 0) {
-        const packageName: string = selector;
+
+    let additionalFullPackageNames: string[] = [];
+    for (const selectorArg of toSelectors) {
+      if (selectorArg.indexOf(':') < 0) {
+        const packageName: string = selectorArg;
         const result: string | undefined = this._findProjectByShorthandName(packageName);
         if (!result) {
           unfoundedPackages.push(packageName);
+        } else {
+          // Ensure full package name used
+          toSelectors.delete(packageName);
+          // DO NOT add back to selectors in this loop
+          additionalFullPackageNames.push(result);
         }
       }
     }
+    for (const fullPackageName of additionalFullPackageNames) {
+      toSelectors.add(fullPackageName);
+    }
+    additionalFullPackageNames = [];
+    for (const selectorArg of fromSelectors) {
+      if (selectorArg.indexOf(':') < 0) {
+        const packageName: string = selectorArg;
+        const result: string | undefined = this._findProjectByShorthandName(packageName);
+        if (!result) {
+          unfoundedPackages.push(packageName);
+        } else {
+          // Ensure full package name used
+          fromSelectors.delete(packageName);
+          // DO NOT add back to selectors in this loop
+          additionalFullPackageNames.push(result);
+        }
+      }
+    }
+    for (const fullPackageName of additionalFullPackageNames) {
+      fromSelectors.add(fullPackageName);
+    }
+    additionalFullPackageNames = [];
 
     if (unfoundedPackages.length > 0) {
       throw new Error(`These packages: ${unfoundedPackages.join(', ')} does not exist in rush.json`);
@@ -175,11 +206,13 @@ export class GitSparseCheckoutService {
 
     if (toSelectors.size !== 0 || fromSelectors.size !== 0) {
       const stopwatch: Stopwatch = Stopwatch.start();
-      targetFolders = this._getTargetFoldersByRushList({ toSelectors, fromSelectors });
-      terminal.writeVerboseLine(`Run rush list command. (${stopwatch.toString()})`);
+      targetFolders = this._selectionParameterService.getSelectedFolders({ toSelectors, fromSelectors });
+      terminal.writeVerboseLine(`Get selected folders. (${stopwatch.toString()})`);
       stopwatch.stop();
     } else {
-      terminal.writeDebugLine('Skip rush list regarding the absence of from selectors and to selectors');
+      terminal.writeDebugLine(
+        'Skip getting selected folders regarding the absence of from selectors and to selectors'
+      );
     }
 
     // include rule
@@ -392,62 +425,5 @@ export class GitSparseCheckoutService {
       return unscopedName;
     }
     return packageName;
-  }
-
-  private _getTargetFoldersByRushList({
-    toSelectors,
-    fromSelectors
-  }: {
-    toSelectors: Iterable<string>;
-    fromSelectors: Iterable<string>;
-  }): string[] {
-    const { terminal } = this._terminalService;
-
-    const args: string[] = ['list', '--json'];
-
-    for (const toSelector of toSelectors) {
-      args.push('--to');
-      args.push(toSelector);
-    }
-    for (const fromSelector of fromSelectors) {
-      args.push('--from');
-      args.push(fromSelector);
-    }
-
-    terminal.writeVerboseLine(`Run command: rush ${args.join(' ')}`);
-
-    const result: child_process.SpawnSyncReturns<string> = Executable.spawnSync('rush', args, {
-      stdio: ['pipe', 'pipe', 'pipe']
-    });
-
-    if (result.status !== 0) {
-      throw new Error(`Failed to evaluate the Sparo profile's project selectors:\nstdout: ${result.stdout}\nstderr: ${result.stderr}`);
-    }
-
-    const processedResult: string = this._processListResult(result.stdout.toString());
-
-    terminal.writeVerboseLine(processedResult);
-
-    const { projects: targetDeps } = JSON.parse(processedResult) as {
-      projects: { path: string }[];
-    };
-
-    return targetDeps.map((targetDep) => targetDep.path);
-  }
-
-  private _processListResult(input: string): string {
-    const stringList: string[] = input.split('\n');
-    let endOfInstallScript: number = -1;
-
-    for (let i: number = 0; i < stringList.length; ++i) {
-      if (stringList[i][0] === '{') {
-        endOfInstallScript = i;
-        break;
-      }
-    }
-
-    const jsonStringList: string[] = stringList.slice(endOfInstallScript);
-
-    return jsonStringList.join('\n');
   }
 }
