@@ -6,3 +6,5 @@ const launchOptions: ILaunchOptions = {
 };
 
 Sparo.launchSparoAsync(launchOptions).catch(console.error);
+
+// TEST CHANGE - DO NOT MERGE
