@@ -35,7 +35,7 @@ jobs:
           fetch-depth: 2
       - name: Configure Git
         env:
-          GITHUB_TOKEN: ${{ secrets.BOT_ACCESS_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.SPARO_GITHUB_INSECURE_CI_TEST_TOKEN }}
         run: |
           git config --local user.name tiktokbot
           git config --local user.email tiktokbot@users.noreply.github.com
