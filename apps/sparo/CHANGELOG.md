@@ -1,6 +1,13 @@
 # Change Log - sparo
 
-This log was last generated on Thu, 24 Oct 2024 20:28:32 GMT and should not be manually modified.
+This log was last generated on Tue, 18 Mar 2025 21:26:48 GMT and should not be manually modified.
+
+## 1.9.0
+Tue, 18 Mar 2025 21:26:48 GMT
+
+### Updates
+
+- fix: use more accurate pattern when checking remote branch existence #99
 
 ## 1.8.0
 Thu, 24 Oct 2024 20:28:32 GMT

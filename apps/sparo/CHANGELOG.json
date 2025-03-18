@@ -2,6 +2,18 @@
   "name": "sparo",
   "entries": [
     {
+      "version": "1.9.0",
+      "tag": "sparo_v1.9.0",
+      "date": "Tue, 18 Mar 2025 21:26:48 GMT",
+      "comments": {
+        "none": [
+          {
+            "comment": "fix: use more accurate pattern when checking remote branch existence #99"
+          }
+        ]
+      }
+    },
+    {
       "version": "1.8.0",
       "tag": "sparo_v1.8.0",
       "date": "Thu, 24 Oct 2024 20:28:32 GMT",
