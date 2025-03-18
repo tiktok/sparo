@@ -1,0 +1,10 @@
+{
+  "changes": [
+    {
+      "packageName": "sparo",
+      "comment": "fix: use more accurate pattern when checking remote branch existence #99",
+      "type": "none"
+    }
+  ],
+  "packageName": "sparo"
+}
