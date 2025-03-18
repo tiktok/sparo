@@ -496,7 +496,8 @@ Please specify a directory on the command line
     const gitPath: string = this.getGitPathOrThrow();
     const currentWorkingDirectory: string = this.getRepoInfo().root;
     const isDebug: boolean = this._terminalService.isDebug;
-    const lsRemoteArgs: string[] = ['ls-remote', '--exit-code', '--heads', remote, branch];
+    const branchPattern: string = `refs/heads/${branch}`;
+    const lsRemoteArgs: string[] = ['ls-remote', '--exit-code', '--heads', remote, branchPattern];
     const { terminal } = this._terminalService;
     terminal.writeDebugLine(`Running git ${lsRemoteArgs.join(' ')}...`);
     const childProcess: child_process.ChildProcess = Executable.spawn(gitPath, lsRemoteArgs, {
@@ -506,7 +507,7 @@ Please specify a directory on the command line
     if (!childProcess.stdout || !childProcess.stderr) {
       terminal.writeDebugLine(`Failed to spawn git process, fallback to spawnSync`);
       const result: string = this.executeGitCommandAndCaptureOutput({
-        args: ['ls-remote', remote, branch]
+        args: ['ls-remote', remote, branchPattern]
       }).trim();
       return Promise.resolve(!!result);
     }
