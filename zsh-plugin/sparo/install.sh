@@ -4,7 +4,7 @@ BRANCH=${1:-main}
 
 # check ZSH environment
 if [ -z "$ZSH" ]; then
-    echo "ZSH environment variable does not defined."
+    echo "ZSH environment variable is not defined."
     exit 1
 fi
 
