@@ -17,4 +17,10 @@
 # environment variable, which can be referenced from .npmrc using ${} expansion.  For example:
 #
 #   //registry.npmjs.org/:_authToken=${NPM_AUTH_TOKEN}
+#
+
+# Explicitly specify the NPM registry that "rush publish" will use by default:
+registry=https://registry.npmjs.org/
+
+# Provide an authentication token for the above registry URL:
 //registry.npmjs.org/:_authToken=${NPM_AUTH_TOKEN}

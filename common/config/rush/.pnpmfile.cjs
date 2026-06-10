@@ -6,7 +6,7 @@
  * functionally similar to Yarn's "resolutions".)
  *
  * For details, see the PNPM documentation:
- * https://pnpm.js.org/docs/en/hooks.html
+ * https://pnpm.io/pnpmfile#hooks
  *
  * IMPORTANT: SINCE THIS FILE CONTAINS EXECUTABLE CODE, MODIFYING IT IS LIKELY TO INVALIDATE
  * ANY CACHED DEPENDENCY ANALYSIS.  After any modification to pnpmfile.js, it's recommended to run
@@ -27,7 +27,6 @@ module.exports = {
  * The return value is the updated object.
  */
 function readPackage(packageJson, context) {
-
   // // The karma types have a missing dependency on typings from the log4js package.
   // if (packageJson.name === '@types/karma') {
   //  context.log('Fixed up dependencies for @types/karma');
