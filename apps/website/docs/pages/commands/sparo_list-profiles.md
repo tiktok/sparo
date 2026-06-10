@@ -10,5 +10,5 @@ name
 
 Options:
   -h, --help     Show help                                             [boolean]
-      --project  List all profiles contains this specified project name [string]
+      --project  List all profiles that contain this specified project name [string]
 ```

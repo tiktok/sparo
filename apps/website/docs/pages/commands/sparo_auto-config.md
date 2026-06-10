@@ -5,7 +5,7 @@ title: sparo auto-config
 ```
 sparo auto-config
 
-Automatic setup optimized git config
+Automatically set up optimized git config
 
 Options:
   -h, --help       Show help                                           [boolean]

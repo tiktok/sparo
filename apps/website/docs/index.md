@@ -44,7 +44,7 @@ Sparo optimizes performance of Git operations for your large frontend monorepo.
 
 Try out Sparo in 5 easy steps:
 
-1. _**Upgrade to the latest Git version!**_ For macOS, we recommend to use [brew install git](https://git-scm.com/download/mac).  For other operating systems, see the [Git documentation](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git) for instructions.
+1. _**Upgrade to the latest Git version!**_ For macOS, we recommend using [brew install git](https://git-scm.com/download/mac).  For other operating systems, see the [Git documentation](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git) for instructions.
 
 2. For this demo, we'll use the Azure SDK which is a large public [RushJS](https://rushjs.io/) monorepo from GitHub.  The following command will check out the [skeleton folders](./pages/reference/skeleton_folders.md) but not the source code:
 
