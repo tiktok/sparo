@@ -1,0 +1,10 @@
+{
+  "changes": [
+    {
+      "packageName": "sparo",
+      "comment": "Improve user-facing messages",
+      "type": "none"
+    }
+  ],
+  "packageName": "sparo"
+}
