@@ -199,7 +199,7 @@ export class GitSparseCheckoutService {
     additionalFullPackageNames = [];
 
     if (unfoundedPackages.length > 0) {
-      throw new Error(`These packages: ${unfoundedPackages.join(', ')} does not exist in rush.json`);
+      throw new Error(`These packages do not exist in rush.json: ${unfoundedPackages.join(', ')}`);
     }
 
     let targetFolders: string[] = [];

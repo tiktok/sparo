@@ -1,6 +1,6 @@
 {
   "name": "sparo-completion-test",
-  "description": "Building this project tests Sparo command-line outputs",
+  "description": "Building this project tests Sparo command-completion outputs",
   "version": "1.0.0",
   "private": true,
   "scripts": {

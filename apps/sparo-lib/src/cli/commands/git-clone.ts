@@ -9,7 +9,7 @@ import type { ICommand } from './base';
 @Command()
 export class GitCloneCommand implements ICommand<{}> {
   public cmd: string = 'git-clone';
-  public description: string = 'original git clone command';
+  public description: string = 'Original git clone command';
   @inject(GitService) private _gitService!: GitService;
 
   public builder(yargs: Argv<{}>): void {

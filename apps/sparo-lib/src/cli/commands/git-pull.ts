@@ -9,7 +9,7 @@ import type { ICommand } from './base';
 @Command()
 export class GitPullCommand implements ICommand<{}> {
   public cmd: string = 'git-pull';
-  public description: string = 'original git pull command';
+  public description: string = 'Original git pull command';
   @inject(GitService) public _gitService!: GitService;
 
   public builder(yargs: Argv<{}>): void {

@@ -78,7 +78,7 @@ Building the projects in this monorepo:
    rush build
    ```
 
-How to invoke your locally build `sparo` command:
+How to invoke your locally built `sparo` command:
 
 ```shell
 cd apps/sparo

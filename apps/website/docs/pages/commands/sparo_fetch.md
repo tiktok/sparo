@@ -5,7 +5,7 @@ title: sparo fetch
 ```
 sparo fetch [remote] [branch]
 
-fetch remote branch to local
+Fetch a remote branch to local
 
 Positionals:
   remote                                                                [string]

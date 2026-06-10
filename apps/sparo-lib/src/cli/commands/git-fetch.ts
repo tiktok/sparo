@@ -9,7 +9,7 @@ import type { ICommand } from './base';
 @Command()
 export class GitFetchCommand implements ICommand<{}> {
   public cmd: string = 'git-fetch';
-  public description: string = 'original git fetch command';
+  public description: string = 'Original git fetch command';
 
   @inject(GitService) public _gitService!: GitService;
 

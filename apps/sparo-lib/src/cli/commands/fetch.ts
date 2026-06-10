@@ -17,7 +17,7 @@ export interface IFetchCommandOptions {
 @Command()
 export class FetchCommand implements ICommand<IFetchCommandOptions> {
   public cmd: string = 'fetch [remote] [branch]';
-  public description: string = 'fetch remote branch to local';
+  public description: string = 'Fetch a remote branch to local';
 
   @inject(GitService) private _gitService!: GitService;
   @inject(GitRemoteFetchConfigService) private _gitRemoteFetchConfigService!: GitRemoteFetchConfigService;
