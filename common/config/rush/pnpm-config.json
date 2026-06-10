@@ -1,6 +1,11 @@
 /**
  * This configuration file provides settings specific to the PNPM package manager.
  * More documentation is available on the Rush website: https://rushjs.io
+ *
+ * Rush normally looks for this file in `common/config/rush/pnpm-config.json`.  However,
+ * if `subspacesEnabled` is true in subspaces.json, then Rush will instead first look
+ * for `common/config/subspaces/<name>/pnpm-config.json`.  (If the file exists in both places,
+ * then the file under `common/config/rush` is ignored.)
  */
 {
   "$schema": "https://developer.microsoft.com/json-schemas/rush/v5/pnpm-config.schema.json",
@@ -63,6 +68,90 @@
   // "autoInstallPeers": false,
 
   /**
+   * The minimum number of minutes that must pass after a version is published before pnpm will install it.
+   * This setting helps reduce the risk of installing compromised packages, as malicious releases are typically
+   * discovered and removed within a short time frame.
+   *
+   * For example, the following setting ensures that only packages released at least one day ago can be installed:
+   *
+   * "minimumReleaseAgeMinutes": 1440
+   *
+   * (SUPPORTED ONLY IN PNPM 10.16.0 AND NEWER)
+   *
+   * PNPM documentation: https://pnpm.io/settings#minimumreleaseage
+   *
+   * The default value is 0 (disabled).
+   */
+  // "minimumReleaseAgeMinutes": 1440,
+
+  /**
+   * An array of package names or patterns to exclude from the minimumReleaseAgeMinutes check.
+   * This allows certain trusted packages to be installed immediately after publication.
+   * Patterns are supported using glob syntax (e.g., "@myorg/*" to exclude all packages from an organization).
+   *
+   * For example:
+   *
+   * "minimumReleaseAgeExclude": ["webpack", "react", "@myorg/*"]
+   *
+   * (SUPPORTED ONLY IN PNPM 10.16.0 AND NEWER)
+   *
+   * PNPM documentation: https://pnpm.io/settings#minimumreleaseageexclude
+   */
+  // "minimumReleaseAgeExclude": ["@myorg/*"],
+
+  /**
+   * The trust policy controls whether pnpm should block installation of package versions where
+   * the trust level has decreased (e.g., a package previously published with provenance is now
+   * published without it). Setting this to `"no-downgrade"` enables the protection.
+   *
+   * (SUPPORTED ONLY IN PNPM 10.21.0 AND NEWER)
+   *
+   * PNPM documentation: https://pnpm.io/settings#trustpolicy
+   *
+   * Possible values are: `off` and `no-downgrade`.
+   * The default is `off`.
+   */
+  // "trustPolicy": "no-downgrade",
+
+  /**
+   * An array of package names or patterns to exclude from the trust policy check.
+   * These packages will be allowed to install even if their trust level has decreased.
+   * Patterns are supported using glob syntax (e.g., "@myorg/*" to exclude all packages
+   * from an organization).
+   *
+   * For example:
+   *
+   * "trustPolicyExclude": ["@babel/core@7.28.5", "chokidar@4.0.3", "@myorg/*"]
+   *
+   * (SUPPORTED ONLY IN PNPM 10.22.0 AND NEWER)
+   *
+   * PNPM documentation: https://pnpm.io/settings#trustpolicyexclude
+   *
+   * The default value is [].
+   */
+  // "trustPolicyExclude": ["@myorg/*"],
+
+  /**
+   * The number of minutes after which pnpm will ignore trust level downgrades. Packages
+   * published longer ago than this threshold will not be blocked even if their trust level
+   * has decreased. This is useful when enabling strict trust policies, as it allows older versions
+   * of packages (which may lack a process for publishing with signatures or provenance) to be
+   * installed without manual exclusion, assuming they are safe due to their age.
+   *
+   * For example, the following setting ignores trust level changes for packages published
+   * more than 14 days ago:
+   *
+   * "trustPolicyIgnoreAfterMinutes": 20160
+   *
+   * (SUPPORTED ONLY IN PNPM 10.27.0 AND NEWER)
+   *
+   * PNPM documentation: https://pnpm.io/settings#trustpolicyignoreafter
+   *
+   * The default value is undefined (no exclusion).
+   */
+  // "trustPolicyIgnoreAfterMinutes": 20160,
+
+  /**
    * If true, then Rush will add the `--strict-peer-dependencies` command-line parameter when
    * invoking PNPM.  This causes `rush update` to fail if there are unsatisfied peer dependencies,
    * which is an invalid state that can cause build failures or incompatible dependency versions.
@@ -118,6 +207,68 @@
    * The default value is false.
    */
   // "preventManualShrinkwrapChanges": true,
+
+  /**
+   * When a project uses `workspace:` to depend on another Rush project, PNPM normally installs
+   * it by creating a symlink under `node_modules`.  This generally works well, but in certain
+   * cases such as differing `peerDependencies` versions, symlinking may cause trouble
+   * such as incorrectly satisfied versions.  For such cases, the dependency can be declared
+   * as "injected", causing PNPM to copy its built output into `node_modules` like a real
+   * install from a registry.  Details here: https://rushjs.io/pages/advanced/injected_deps/
+   *
+   * When using Rush subspaces, these sorts of versioning problems are much more likely if
+   * `workspace:` refers to a project from a different subspace.  This is because the symlink
+   * would point to a separate `node_modules` tree installed by a different PNPM lockfile.
+   * A comprehensive solution is to enable `alwaysInjectDependenciesFromOtherSubspaces`,
+   * which automatically treats all projects from other subspaces as injected dependencies
+   * without having to manually configure them.
+   *
+   * NOTE: Use carefully -- excessive file copying can slow down the `rush install` and
+   * `pnpm-sync` operations if too many dependencies become injected.
+   *
+   * The default value is false.
+   */
+  // "alwaysInjectDependenciesFromOtherSubspaces": false,
+
+  /**
+   * Defines the policies to be checked for the `pnpm-lock.yaml` file.
+   */
+  "pnpmLockfilePolicies": {
+    /**
+     * This policy will cause "rush update" to report an error if `pnpm-lock.yaml` contains
+     * any SHA1 integrity hashes.
+     *
+     * For each NPM dependency, `pnpm-lock.yaml` normally stores an `integrity` hash.  Although
+     * its main purpose is to detect corrupted or truncated network requests, this hash can also
+     * serve as a security fingerprint to protect against attacks that would substitute a
+     * malicious tarball, for example if a misconfigured .npmrc caused a machine to accidentally
+     * download a matching package name+version from npmjs.com instead of the private NPM registry.
+     * NPM originally used a SHA1 hash; this was insecure because an attacker can too easily craft
+     * a tarball with a matching fingerprint.  For this reason, NPM later deprecated SHA1 and
+     * instead adopted a cryptographically strong SHA512 hash.  Nonetheless, SHA1 hashes can
+     * occasionally reappear during "rush update", for example due to missing metadata fallbacks
+     * (https://github.com/orgs/pnpm/discussions/6194) or an incompletely migrated private registry.
+     * The `disallowInsecureSha1` policy prevents this, avoiding potential security/compliance alerts.
+     */
+    // "disallowInsecureSha1": {
+    //   /**
+    //    * Enables the "disallowInsecureSha1" policy.  The default value is false.
+    //    */
+    //   "enabled": true,
+    //
+    //   /**
+    //    * In rare cases, a private NPM registry may continue to serve SHA1 hashes for very old
+    //    * package versions, perhaps due to a caching issue or database migration glitch.  To avoid
+    //    * having to disable the "disallowInsecureSha1" policy for the entire monorepo, the problematic
+    //    * package versions can be individually ignored.  The "exemptPackageVersions" key is the
+    //    * package name, and the array value lists exact version numbers to be ignored.
+    //    */
+    //   "exemptPackageVersions": {
+    //     "example1": ["1.0.0"],
+    //     "example2": ["2.0.0", "2.0.1"]
+    //   }
+    // }
+  },
 
   /**
    * The "globalOverrides" setting provides a simple mechanism for overriding version selections
@@ -195,6 +346,44 @@
    * PNPM documentation: https://pnpm.io/package_json#pnpmneverbuiltdependencies
    */
   "globalNeverBuiltDependencies": [
+    // "fsevents"
+  ],
+
+  /**
+   * The `globalOnlyBuiltDependencies` setting specifies which dependencies are permitted to run
+   * build scripts (`preinstall`, `install`, and `postinstall` lifecycle events). This is the inverse
+   * of `globalNeverBuiltDependencies`. In PNPM 10.x, build scripts are disabled by default for
+   * security, so this setting is required to explicitly permit specific packages to run their
+   * build scripts. The settings are written to the `onlyBuiltDependencies` field of the
+   * `pnpm-workspace.yaml` file that is generated by Rush during installation.
+   *
+   * (SUPPORTED ONLY IN PNPM 10.1.0 AND NEWER)
+   *
+   * PNPM documentation: https://pnpm.io/settings#onlybuiltdependencies
+   *
+   * Example:
+   *   "globalOnlyBuiltDependencies": [
+   *     "esbuild",
+   *     "playwright",
+   *     "@swc/core"
+   *   ]
+   */
+  // "globalOnlyBuiltDependencies": [
+  //   "esbuild"
+  // ],
+
+  /**
+   * The `globalIgnoredOptionalDependencies` setting suppresses the installation of optional NPM
+   * dependencies specified in the list. This is useful when certain optional dependencies are
+   * not needed in your environment, such as platform-specific packages or dependencies that
+   * fail during installation but are not critical to your project.
+   * These settings are copied into the `pnpm.overrides` field of the `common/temp/package.json`
+   * file that is generated by Rush during installation, instructing PNPM to ignore the specified
+   * optional dependencies.
+   *
+   * PNPM documentation: https://pnpm.io/package_json#pnpmignoredoptionaldependencies
+   */
+  "globalIgnoredOptionalDependencies": [
     // "fsevents"
   ],
 
