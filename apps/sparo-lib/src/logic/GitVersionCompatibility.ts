@@ -16,7 +16,7 @@ export class GitVersionCompatibility {
     if (major < 2 || minor < 43) {
       const terminalService: TerminalService = getFromContainer(TerminalService);
       terminalService.terminal.writeErrorLine(
-        `It appears your Git version(${major}.${minor}.${patch}) is too old. The minimal supported version is >=2.43.0.\nPlease upgrade to the latest Git version. Many Git optimizations are relatively new and not available in older versions of the software.`
+        `It appears your Git version (${major}.${minor}.${patch}) is too old. The minimum supported version is >=2.43.0.\nPlease upgrade to the latest Git version. Many Git optimizations are relatively new and not available in older versions of the software.`
       );
       return true;
     }

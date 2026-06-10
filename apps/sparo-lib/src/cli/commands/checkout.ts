@@ -45,7 +45,7 @@ export class CheckoutCommand implements ICommand<ICheckoutCommandOptions> {
      * git checkout [-f|--ours|--theirs|-m|--conflict=<style>] --pathspec-from-file=<file> [--pathspec-file-nul]
      * git checkout (-p|--patch) [<tree-ish>] [--] [<pathspec>...]
      *
-     * The above list shows all the functions of the `git checkout` command. Currently, only the following two basic scenarios
+     * The above list shows all the functions of the `git checkout` command. Currently, only the following three basic scenarios
      *  have been implemented, while other scenarios are yet to be implemented.
      * 1. sparo checkout [-b|-B] <new-branch> [start-point] [--profile <profile...>]
      * 2. sparo checkout [branch] [--profile <profile...>]
@@ -294,7 +294,7 @@ export class CheckoutCommand implements ICommand<ICheckoutCommandOptions> {
         profilesFromArg: args.profile
       });
 
-    // Check wether profiles exist in local or operation branch
+    // Check whether profiles exist in local or operation branch
     // Skip check in the following cases:
     // 1. No profile
     // 2. The target kind is file path

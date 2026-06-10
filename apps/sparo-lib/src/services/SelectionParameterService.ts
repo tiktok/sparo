@@ -100,7 +100,7 @@ export class SelectionParameterService {
     for (const toSelector of toSelectors) {
       const rushProjectSlim: RushProjectSlim | undefined = packageNameToRushProjectSlim.get(toSelector);
       if (!rushProjectSlim) {
-        throw new Error(`Can not found project definition for "${toSelector}"`);
+        throw new Error(`Cannot find project definition for "${toSelector}"`);
       }
       evalToSelectorForProject(rushProjectSlim);
     }
@@ -123,7 +123,7 @@ export class SelectionParameterService {
     for (const fromSelector of fromSelectors) {
       const rushProjectSlim: RushProjectSlim | undefined = packageNameToRushProjectSlim.get(fromSelector);
       if (!rushProjectSlim) {
-        throw new Error(`Can not found project definition for "${fromSelector}"`);
+        throw new Error(`Cannot find project definition for "${fromSelector}"`);
       }
       evalFromSelectorForProject(rushProjectSlim);
     }

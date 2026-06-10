@@ -9,7 +9,7 @@ import type { ICommand } from './base';
 @Command()
 export class GitCheckoutCommand implements ICommand<{}> {
   public cmd: string = 'git-checkout';
-  public description: string = 'original git checkout command';
+  public description: string = 'Original git checkout command';
   @inject(GitService) private _gitService!: GitService;
 
   public builder(yargs: Argv<{}>): void {

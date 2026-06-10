@@ -156,7 +156,7 @@ export class GitService {
       }
     }
     if (hasExistingConfig && !overwrite) {
-      throw new Error(`git config already exist: \n${errors.join('\n')}`);
+      throw new Error(`git config already exists:\n${errors.join('\n')}`);
     } else {
       for (const item of recommendedConfigs) {
         this.setGitConfig(item[0], item[1], { global: item[2] === 1, dryRun });

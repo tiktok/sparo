@@ -32,7 +32,7 @@ export class ListProfilesCommand implements ICommand<IListProfilesCommandOptions
     yargs
       .option('project', {
         type: 'string',
-        description: 'List all profiles contains this specified project name'
+        description: 'List all profiles that contain this specified project name'
       })
       .completion('completion', false, (current, argv, done) => {
         const longParameters: string[] = [argv.project ? '' : '--project'].filter(Boolean);

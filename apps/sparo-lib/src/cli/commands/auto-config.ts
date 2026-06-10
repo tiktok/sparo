@@ -15,7 +15,7 @@ export interface IAutoConfigCommandOptions {
 @Command()
 export class AutoConfigCommand implements ICommand<IAutoConfigCommandOptions> {
   public cmd: string = 'auto-config';
-  public description: string = 'Automatic setup optimized git config';
+  public description: string = 'Automatically set up optimized git config';
   @inject(GitService) private _gitService!: GitService;
 
   public builder(yargs: Argv<IAutoConfigCommandOptions>): void {
