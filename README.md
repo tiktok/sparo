@@ -11,8 +11,8 @@
 ## Key features
 
 - **Familiar interface:** The `sparo` command-line interface (CLI) wrapper offers **better defaults** and **performance suggestions** without altering the familiar `git` syntax. (The native `git` CLI is also supported.)
-- **A proven solution:** Git provides [quite a lot of ingredients](https://tiktok.github.io/sparo/pages/reference/git_optimization/) for optimizing very large repos; Sparo is your recipe for combining these features intelligently.
-- **Simplified sparse checkout:** Work with sparse checkout [profiles](https://tiktok.github.io/sparo/pages/guide/sparo_profiles/) instead of confusing "cones" and globs
+- **A proven solution:** Git provides [quite a lot of ingredients](./pages/guide/git_features.md) for optimizing very large repos; Sparo is your recipe for combining these features intelligently.
+- **Simplified sparse checkout:** Work with sparse checkout [profiles](./pages/guide/sparo_profiles.md) instead of confusing "cones" and globs
 - **Frontend integration:** Sparo leverages [Rush](https://rushjs.io/) and [PNPM](https://pnpm.io/) workspace configurations, including the ability to automatically checkout project dependencies
 - **Dual workflows:** The `sparo-ci` tool implements a specialized checkout model optimized for continuous integration (CI) pipelines
 - **Extra safeguards**: Avoid common Git mistakes such as checkouts with staged files outside the active view
