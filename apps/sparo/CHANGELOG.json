@@ -2,6 +2,12 @@
   "name": "sparo",
   "entries": [
     {
+      "version": "1.9.2",
+      "tag": "sparo_v1.9.2",
+      "date": "Fri, 10 Jul 2026 07:15:06 GMT",
+      "comments": {}
+    },
+    {
       "version": "1.9.1",
       "tag": "sparo_v1.9.1",
       "date": "Wed, 10 Jun 2026 20:40:10 GMT",
