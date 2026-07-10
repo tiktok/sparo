@@ -2,6 +2,18 @@
   "name": "sparo",
   "entries": [
     {
+      "version": "1.9.1",
+      "tag": "sparo_v1.9.1",
+      "date": "Fri, 10 Jul 2026 07:00:48 GMT",
+      "comments": {
+        "none": [
+          {
+            "comment": "Improve user-facing messages"
+          }
+        ]
+      }
+    },
+    {
       "version": "1.9.0",
       "tag": "sparo_v1.9.0",
       "date": "Wed, 19 Mar 2025 01:09:25 GMT",

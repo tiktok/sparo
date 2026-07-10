@@ -1,6 +1,13 @@
 # Change Log - sparo
 
-This log was last generated on Wed, 19 Mar 2025 01:09:25 GMT and should not be manually modified.
+This log was last generated on Fri, 10 Jul 2026 07:00:48 GMT and should not be manually modified.
+
+## 1.9.1
+Fri, 10 Jul 2026 07:00:48 GMT
+
+### Updates
+
+- Improve user-facing messages
 
 ## 1.9.0
 Wed, 19 Mar 2025 01:09:25 GMT
